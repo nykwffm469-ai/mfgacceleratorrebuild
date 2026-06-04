@@ -287,6 +287,139 @@ function showLegacyNotice(message) {
   showLegacyProcessing(message);
 }
 
+function closeLegacyCommandMenu() {
+  document.querySelectorAll(".legacy-command-modal").forEach((node) => node.remove());
+}
+
+function openLegacyCommandMenu({ title, subtitle, options = [] }) {
+  closeLegacyCommandMenu();
+  const windowEl = document.querySelector(".legacy-window");
+  if (!windowEl) {
+    return;
+  }
+
+  const modal = document.createElement("div");
+  modal.className = "legacy-command-modal";
+  modal.innerHTML = `
+    <div class="legacy-command-dialog">
+      <div class="legacy-command-head">${title}</div>
+      <div class="legacy-command-sub">${subtitle || "Select an operation."}</div>
+      <div class="legacy-command-options">
+        ${options
+          .map(
+            (opt, index) =>
+              `<button class="legacy-btn legacy-command-btn" data-command-index="${index}">${opt.label}</button><span class="legacy-command-detail">${opt.detail || ""}</span>`
+          )
+          .join("")}
+      </div>
+      <div class="legacy-command-footer">
+        <button class="legacy-btn" data-command-close="1">Close</button>
+      </div>
+    </div>
+  `;
+
+  windowEl.appendChild(modal);
+
+  modal.querySelectorAll("[data-command-index]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const index = Number(button.getAttribute("data-command-index"));
+      const selected = options[index];
+      if (selected && typeof selected.run === "function") {
+        selected.run();
+      }
+      closeLegacyCommandMenu();
+    });
+  });
+
+  modal.querySelector("[data-command-close]")?.addEventListener("click", () => {
+    closeLegacyCommandMenu();
+  });
+}
+
+function createRecordFromVisibleForm() {
+  const form = document.querySelector("#legacy-record-form, #record-form, #entry-form, #challenge-form");
+  if (!form) {
+    showLegacyNotice("New record wizard opened - no editable form available in current view");
+    return;
+  }
+
+  const fields = Array.from(form.querySelectorAll("input,select,textarea"));
+  const token = `AUTO-${new Date().getTime().toString().slice(-5)}`;
+  fields.forEach((field, index) => {
+    if (field.disabled) {
+      return;
+    }
+    if (field.tagName === "SELECT") {
+      field.selectedIndex = field.options.length > 1 ? 1 : 0;
+      return;
+    }
+    if (!field.value) {
+      field.value = index === 0 ? token : `Queue ${index}`;
+    }
+  });
+
+  const submit = form.querySelector("button[type='submit']");
+  if (submit) {
+    submit.click();
+    showLegacyNotice("New record inserted into work queue");
+  } else {
+    showLegacyNotice("New record draft prepared - submit required");
+  }
+}
+
+function handleNewAction() {
+  openLegacyCommandMenu({
+    title: "Create New",
+    subtitle: "Legacy command options for queue and intake workflows",
+    options: [
+      {
+        label: "New Work Queue Record",
+        detail: "Creates a seeded queue record in the active module.",
+        run: () => createRecordFromVisibleForm()
+      },
+      {
+        label: "New Exception Case",
+        detail: "Queues a case for supervisor review and escalation.",
+        run: () => showLegacyNotice("Exception case queued - supervisor approval required")
+      },
+      {
+        label: "New Import Batch",
+        detail: "Creates a pending import batch in nightly processing queue.",
+        run: () => showLegacyNotice("Import queue created - batch job processing")
+      }
+    ]
+  });
+}
+
+function runGenericToolbarFallback(action) {
+  const label = action
+    .split("-")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+
+  openLegacyCommandMenu({
+    title: `${label} Command`,
+    subtitle: "No direct implementation in this module. Choose a legacy mock operation.",
+    options: [
+      {
+        label: `Execute ${label}`,
+        detail: "Runs a mocked background operation and writes audit telemetry.",
+        run: () => showLegacyNotice(`${label} executed - workflow in progress`)
+      },
+      {
+        label: "Queue For Supervisor Review",
+        detail: "Pushes action into supervisor approval queue.",
+        run: () => showLegacyNotice("Supervisor approval required")
+      },
+      {
+        label: "Open Detailed Sub-Menu",
+        detail: "Displays operational details for historical enterprise workflow.",
+        run: () => showLegacyNotice(`${label} detail view opened in new window`) 
+      }
+    ]
+  });
+}
+
 function installGlobalLegacyActions() {
   if (typeof window === "undefined" || typeof document === "undefined") {
     return;
@@ -296,7 +429,22 @@ function installGlobalLegacyActions() {
     return;
   }
 
-  const handled = new Set(["export-excel", "print-preview", "generate-pdf", "retry-failed", "view-audit"]);
+  const handled = new Set([
+    "export-excel",
+    "print-preview",
+    "generate-pdf",
+    "retry-failed",
+    "view-audit",
+    "new",
+    "toggle-first",
+    "delete-last",
+    "seed-reset",
+    "reset",
+    "scramble",
+    "escalate",
+    "approve-first",
+    "process"
+  ]);
 
   document.addEventListener(
     "click",
@@ -308,11 +456,13 @@ function installGlobalLegacyActions() {
 
       const action = target.getAttribute("data-action");
       if (!action || !handled.has(action)) {
+        if (target.classList.contains("legacy-btn") && target.hasAttribute("data-action")) {
+          runGenericToolbarFallback(action || "command");
+        }
         return;
       }
 
       event.preventDefault();
-      event.stopPropagation();
 
       if (action === "export-excel") {
         runExcelExport(target);
@@ -324,9 +474,13 @@ function installGlobalLegacyActions() {
         showLegacyNotice("Retry failed records queued - 7 records scheduled for reprocessing");
       } else if (action === "view-audit") {
         showLegacyNotice("Audit history opened in review mode");
+      } else if (action === "new") {
+        handleNewAction();
+      } else {
+        // Action is implemented in the app module-specific handlers.
       }
     },
-    true
+    false
   );
 
   window.__legacyActionsInstalled = true;

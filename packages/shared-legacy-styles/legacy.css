@@ -246,6 +246,63 @@ body {
   font-weight: 700;
 }
 
+.legacy-command-modal {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  background: rgba(196, 205, 216, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.legacy-command-dialog {
+  width: 560px;
+  max-width: calc(100% - 24px);
+  border: 1px solid #6c7885;
+  background: #edf2f7;
+  box-shadow: 2px 2px 0 #8d99a7;
+}
+
+.legacy-command-head {
+  padding: 6px 8px;
+  font-weight: 700;
+  border-bottom: 1px solid #7d8b9a;
+  background: linear-gradient(to bottom, #e8eef5 0%, #bccad8 100%);
+}
+
+.legacy-command-sub {
+  padding: 6px 8px;
+  border-bottom: 1px solid #8c98a5;
+  font-size: 11px;
+  color: #3d4a57;
+}
+
+.legacy-command-options {
+  display: grid;
+  grid-template-columns: 190px 1fr;
+  gap: 4px 8px;
+  padding: 8px;
+  align-items: center;
+}
+
+.legacy-command-btn {
+  width: 100%;
+  text-align: left;
+}
+
+.legacy-command-detail {
+  font-size: 11px;
+  color: #435261;
+}
+
+.legacy-command-footer {
+  border-top: 1px solid #8c98a5;
+  padding: 6px 8px;
+  display: flex;
+  justify-content: flex-end;
+}
+
 .legacy-panel {
   border: 1px solid #7e8894;
   background: #f2f5f8;
