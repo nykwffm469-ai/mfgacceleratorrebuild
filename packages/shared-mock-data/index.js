@@ -1,12 +1,30 @@
+const seedRegistry = new Map();
+
+function safeParse(raw) {
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+}
+
 export function ensureSeed(namespace, seedFactory) {
+  if (typeof seedFactory === "function") {
+    seedRegistry.set(namespace, seedFactory);
+  }
+
   const key = `legacy-demo:${namespace}`;
   const existing = localStorage.getItem(key);
 
   if (existing) {
-    return JSON.parse(existing);
+    const parsed = safeParse(existing);
+    if (parsed !== null) {
+      return parsed;
+    }
   }
 
-  const seeded = seedFactory();
+  const factory = seedRegistry.get(namespace) || seedFactory;
+  const seeded = (typeof factory === "function" ? factory() : {}) || {};
   localStorage.setItem(key, JSON.stringify(seeded));
   return seeded;
 }
@@ -15,9 +33,16 @@ export function loadSeed(namespace, fallbackFactory) {
   const key = `legacy-demo:${namespace}`;
   const raw = localStorage.getItem(key);
   if (!raw) {
-    return ensureSeed(namespace, fallbackFactory);
+    const factory = seedRegistry.get(namespace) || fallbackFactory;
+    return ensureSeed(namespace, factory);
   }
-  return JSON.parse(raw);
+  const parsed = safeParse(raw);
+  if (parsed !== null) {
+    return parsed;
+  }
+
+  const factory = seedRegistry.get(namespace) || fallbackFactory;
+  return ensureSeed(namespace, factory);
 }
 
 export function saveSeed(namespace, value) {
