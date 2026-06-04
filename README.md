@@ -17,9 +17,11 @@ Guardrails:
 
 Current scale:
 
-- 33 front-end legacy app simulations
+- 49 front-end legacy app simulations
 - 15 core legacy line-of-business apps
 - 18 RPA-target workflow-heavy apps
+- 15 platform-style complement/competitor apps
+- 1 dedicated RPA Challenge app for self-healing automation testing
 
 ## Monorepo layout
 
@@ -72,6 +74,28 @@ scripts/build-portfolio-site.mjs
 - ap-statement-reconciliation: open-item matching and discrepancy cases
 - order-hold-release: credit/fraud hold review and release approvals
 
+### Platform-Style Faux Apps (15)
+
+- customer-cloud-hub: CRM-like pipeline, account, and activity execution suite
+- service-desk-plus: ITSM-like incident, request, and change operations desk
+- data-warehouse-ops: Snowflake-style warehouse and query operations console
+- erp-command-center: SAP/Oracle-style cross-functional ERP operations cockpit
+- finance-close-studio: period-close orchestration and journal approval workflow
+- procurement-sourcing-suite: sourcing events, bid scoring, and award flow
+- subscription-revenue-studio: subscription lifecycle, billing, and retention actions
+- field-service-workbench: dispatch, route, parts, and closure management
+- lowcode-flow-studio: flow registry, connectors, and run-history operations
+- process-mining-lab: event-log mining, bottleneck discovery, and action backlog
+- integration-gateway-manager: route maps, queue health, transform and replay tools
+- master-data-governor: golden record stewardship and publish governance
+- portfolio-work-boards: Smartsheet-like row/dependency portfolio execution
+- hr-case-lifecycle: employee case intake, routing, approvals, and history
+- compliance-automation-center: control testing, evidence, and audit response
+
+### RPA Challenge App (1)
+
+- rpa-challenge: same field set on every run, with field order scrambled on each submit to test RPA resilience and self-healing selector strategies
+
 ## Azure Hosting
 
 - Portfolio root: https://ashy-water-06d69bd1e.7.azurestaticapps.net/
@@ -82,6 +106,8 @@ Examples:
 - https://ashy-water-06d69bd1e.7.azurestaticapps.net/crm-classic/
 - https://ashy-water-06d69bd1e.7.azurestaticapps.net/vendor-onboarding-desk/
 - https://ashy-water-06d69bd1e.7.azurestaticapps.net/order-hold-release/
+- https://ashy-water-06d69bd1e.7.azurestaticapps.net/customer-cloud-hub/
+- https://ashy-water-06d69bd1e.7.azurestaticapps.net/rpa-challenge/
 
 ## Run locally
 
