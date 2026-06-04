@@ -420,6 +420,184 @@ function runGenericToolbarFallback(action) {
   });
 }
 
+function navigateToModule(moduleId) {
+  const target = document.querySelector(`[data-module="${moduleId}"]`);
+  if (!target) {
+    return false;
+  }
+  target.click();
+  return true;
+}
+
+function openMainMenuCommand(menuId, menuLabel, contextButton) {
+  if (menuId === "file") {
+    openLegacyCommandMenu({
+      title: "File",
+      subtitle: "Legacy file operations",
+      options: [
+        {
+          label: "Export To Excel",
+          detail: "Exports the active grid to CSV for Excel ingestion.",
+          run: () => runExcelExport(contextButton)
+        },
+        {
+          label: "Print Preview",
+          detail: "Opens print report view for active queue grid.",
+          run: () => openPrintWindow(contextButton, "print")
+        },
+        {
+          label: "Open In New Window",
+          detail: "Launches this workspace in a separate browser window.",
+          run: () => window.open(window.location.href, "_blank")
+        }
+      ]
+    });
+    return;
+  }
+
+  if (menuId === "edit") {
+    openLegacyCommandMenu({
+      title: "Edit",
+      subtitle: "Record maintenance and queue mutation tools",
+      options: [
+        {
+          label: "Create New Record",
+          detail: "Invokes the New command wizard for active module.",
+          run: () => handleNewAction()
+        },
+        {
+          label: "Retry Failed Records",
+          detail: "Schedules failed validation rows for reprocessing.",
+          run: () => showLegacyNotice("Retry failed records queued - 7 records scheduled for reprocessing")
+        },
+        {
+          label: "Reset Seed Data",
+          detail: "Resets local seeded dataset and reloads queue.",
+          run: () => {
+            const resetButton = document.querySelector('[data-action="seed-reset"], [data-action="reset"]');
+            if (resetButton) {
+              resetButton.click();
+            } else {
+              showLegacyNotice("No reset action available for this module");
+            }
+          }
+        }
+      ]
+    });
+    return;
+  }
+
+  if (menuId === "view") {
+    openLegacyCommandMenu({
+      title: "View",
+      subtitle: "Operational visibility and audit review",
+      options: [
+        {
+          label: "View Audit History",
+          detail: "Opens audit timeline and record change history.",
+          run: () => showLegacyNotice("Audit history opened in review mode")
+        },
+        {
+          label: "Supervisor Review Queue",
+          detail: "Displays pending approvals and escalation list.",
+          run: () => showLegacyNotice("Supervisor review queue opened")
+        },
+        {
+          label: "Refresh Active Queue",
+          detail: "Reloads current module records from local repository.",
+          run: () => window.location.reload()
+        }
+      ]
+    });
+    return;
+  }
+
+  if (menuId === "admin") {
+    openLegacyCommandMenu({
+      title: "Admin",
+      subtitle: "Administrative and compliance tools",
+      options: [
+        {
+          label: "Posting Period Controls",
+          detail: "Checks posting period lock and approval status.",
+          run: () => showLegacyNotice("Posting period closed - supervisor override required")
+        },
+        {
+          label: "Document Retention Policy",
+          detail: "Opens retention and archive policy controls.",
+          run: () => showLegacyNotice("Document retention policy review opened")
+        },
+        {
+          label: "Maintenance Window",
+          detail: "Displays upcoming maintenance and outage plans.",
+          run: () => showLegacyNotice("System maintenance window scheduled")
+        }
+      ]
+    });
+    return;
+  }
+
+  if (menuId === "help") {
+    openLegacyCommandMenu({
+      title: "Help",
+      subtitle: "Legacy support and operating references",
+      options: [
+        {
+          label: "Operator Quick Guide",
+          detail: "Shows workflow steps for queue processing.",
+          run: () => showLegacyNotice("Operator quick guide opened")
+        },
+        {
+          label: "Session Timeout Policy",
+          detail: "Displays idle timeout and reconnect guidance.",
+          run: () => showLegacyNotice("Session timeout warning")
+        },
+        {
+          label: "Support Escalation Contacts",
+          detail: "Lists support tiers and escalation contacts.",
+          run: () => showLegacyNotice("Escalation contacts opened")
+        }
+      ]
+    });
+    return;
+  }
+
+  if (menuId.startsWith("module:")) {
+    const moduleId = menuId.split(":")[1];
+    if (!navigateToModule(moduleId)) {
+      showLegacyNotice(`Unable to open module: ${menuLabel}`);
+    }
+    return;
+  }
+
+  if (menuId.startsWith("ops:")) {
+    openLegacyCommandMenu({
+      title: menuLabel,
+      subtitle: "Operations command group",
+      options: [
+        {
+          label: "Queue Batch Process",
+          detail: "Runs staged queue jobs and writes batch audit entry.",
+          run: () => showLegacyNotice("Batch job processing")
+        },
+        {
+          label: "Pending Compliance Review",
+          detail: "Displays compliance exceptions awaiting review.",
+          run: () => showLegacyNotice("Pending compliance review")
+        },
+        {
+          label: "Generate PDF Report",
+          detail: "Opens report window for print-to-PDF workflow.",
+          run: () => openPrintWindow(contextButton, "pdf")
+        }
+      ]
+    });
+    return;
+  }
+
+  showLegacyNotice(`${menuLabel} menu opened`);
+}
+
 function installGlobalLegacyActions() {
   if (typeof window === "undefined" || typeof document === "undefined") {
     return;
@@ -449,6 +627,16 @@ function installGlobalLegacyActions() {
   document.addEventListener(
     "click",
     (event) => {
+      const menuTarget = event.target instanceof Element ? event.target.closest("[data-menu]") : null;
+      if (menuTarget) {
+        event.preventDefault();
+        const menuId = menuTarget.getAttribute("data-menu") || "";
+        const menuLabel = menuTarget.getAttribute("data-menu-label") || menuId;
+        const contextButton = document.querySelector("[data-action='export-excel']") || menuTarget;
+        openMainMenuCommand(menuId, menuLabel, contextButton);
+        return;
+      }
+
       const target = event.target instanceof Element ? event.target.closest("[data-action]") : null;
       if (!target) {
         return;
@@ -576,10 +764,20 @@ function renderTopTabs({ modules, activeModule }) {
 }
 
 function renderMenuBar({ modules, menuVerb }) {
-  const staticMenus = ["File", "Edit", "View", menuVerb, "Admin", "Help"];
-  const dynamic = modules.slice(0, 2).map((mod) => mod.label);
+  const staticMenus = [
+    { id: "file", label: "File" },
+    { id: "edit", label: "Edit" },
+    { id: "view", label: "View" },
+    { id: `ops:${menuVerb.toLowerCase()}`, label: menuVerb },
+    { id: "admin", label: "Admin" },
+    { id: "help", label: "Help" }
+  ];
+  const dynamic = modules.slice(0, 2).map((mod) => ({ id: `module:${mod.id}`, label: mod.label }));
   return `<div class=\"legacy-menubar\">${[...staticMenus, ...dynamic]
-    .map((item) => `<span class=\"legacy-menu-item\">${item}</span>`)
+    .map(
+      (item) =>
+        `<button class=\"legacy-menu-item\" type=\"button\" data-menu=\"${item.id}\" data-menu-label=\"${item.label}\">${item.label}</button>`
+    )
     .join("")}</div>`;
 }
 
