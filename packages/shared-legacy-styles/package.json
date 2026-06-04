@@ -1,0 +1,11 @@
+{
+  "name": "@legacy/shared-legacy-styles",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "legacy.css",
+  "scripts": {
+    "build": "node -e \"console.log('shared-legacy-styles: nothing to build')\"",
+    "test": "node -e \"console.log('shared-legacy-styles: no tests')\""
+  }
+}

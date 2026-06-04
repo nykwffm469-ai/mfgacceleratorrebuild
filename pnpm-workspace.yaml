@@ -1,5 +1,7 @@
 packages:
-  - apps/samplecode/web
-  - apps/samplecode/api
-  - apps/samplecode/agents
-  - apps/samplecode/packages/*
+  - apps/crm-classic
+  - apps/warehouse-terminal
+  - apps/hr-portal
+  - apps/procurement-pro
+  - apps/helpdesk-ops
+  - packages/*

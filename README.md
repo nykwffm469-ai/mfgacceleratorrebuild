@@ -1,85 +1,67 @@
-# Manufacturing Accelerator Rebuild (AI-Ready, 2026)
+# Legacy Enterprise App Portfolio (2010-2012 Simulations)
 
-This repository is a modern rebuild of the 2020 Manufacturing Accelerator with the same top-level structure:
+This repository is a deterministic portfolio of fake but believable legacy enterprise front-end systems.
 
-- `apps`
-- `CDS.solutions`
-- `documentation`
+Purpose:
 
-The rebuild replaces legacy SaaS assumptions with an AI-native architecture focused on:
+- demonstrate modernization scenarios later with Power Platform, Power Automate, RPA, OCR, and workflow automation
+- provide safe, seeded, local demo applications without real backend dependencies
 
-- agent-assisted supplier qualification and onboarding
-- composable APIs and typed domain contracts
-- modern CI/CD and container-based development
-- markdown-first documentation and infrastructure-as-code friendly assets
+Guardrails in this repo:
 
-## Why this rebuild
+- no real backend or database connections
+- no real enterprise data
+- no proprietary logos or assets
+- no AI features inside the apps
+- all apps use seeded mock data and local storage only
 
-The original project was Dataverse and model-driven-app heavy. This rebuild keeps the recognizable structure while introducing:
-
-- TypeScript monorepo and package boundaries
-- Next.js 15 web experience
-- Fastify API service for orchestration and integrations
-- domain package with Zod-validated contracts
-- agent package for supplier-risk and workflow automation
-
-## Repository structure
+## Monorepo layout
 
 ```text
-.
-|-- apps/
-|   `-- samplecode/
-|       |-- web/
-|       |-- api/
-|       |-- agents/
-|       `-- packages/domain/
-|-- CDS.solutions/
-|   |-- Dynamics365ManufacturingAccelerator/
-|   |-- Dynamics365ManufacturingAcceleratorModelDrivenApp/
-|   `-- Manufacturing_Anchor/
-`-- documentation/
+apps/
+	crm-classic/
+	warehouse-terminal/
+	hr-portal/
+	procurement-pro/
+	helpdesk-ops/
+packages/
+	shared-legacy-styles/
+	shared-mock-data/
+	shared-ui/
 ```
 
-## Quick start
+## Apps
 
-### Prerequisites
+- `crm-classic`: CRM-style dense line-of-business interface with Accounts, Contacts, Opportunities, Activities, Dashboard
+- `warehouse-terminal`: keyboard-first warehouse terminal simulation with inventory lookup and shipment processing screens
+- `hr-portal`: internal onboarding and approvals portal inspired by old intranet systems
+- `procurement-pro`: requisitions, vendors, POs, invoice queue, and approvals in legacy purchasing style
+- `helpdesk-ops`: service desk queues, SLA tracking, assignment and escalation simulation
 
-- Node.js 22+
-- pnpm 10+
-- Docker (optional, for containerized local stack)
+## Run locally
 
-### Install and run
+1. Install dependencies:
 
 ```bash
-pnpm install
-pnpm dev
+corepack pnpm install
 ```
 
-### Lint, typecheck, test
+2. Run an app:
 
 ```bash
-pnpm lint
-pnpm typecheck
-pnpm test
+corepack pnpm dev:crm
+corepack pnpm dev:warehouse
+corepack pnpm dev:hr
+corepack pnpm dev:procurement
+corepack pnpm dev:helpdesk
 ```
 
-## Environment
-
-Copy `.env.example` to `.env` and set values as needed.
-
-Required for AI routes:
-
-- `OPENAI_API_KEY`
-- `OPENAI_MODEL` (default `gpt-4.1-mini`)
-
-## Publishing workflow
+3. Build all apps:
 
 ```bash
-git add .
-git commit -m "Rebuild manufacturing accelerator for AI-native 2026 stack"
-git push origin main
+corepack pnpm build
 ```
 
-## Status
+## Persistence model
 
-This is a baseline modernization scaffold intended for rapid extension by ISVs, SIs, and enterprise teams.
+Each app seeds fake data on first run and persists to `localStorage` per app namespace.

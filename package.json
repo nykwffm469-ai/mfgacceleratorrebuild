@@ -1,17 +1,17 @@
 {
-  "name": "mfgacceleratorrebuild",
+  "name": "legacy-enterprise-portfolio",
   "private": true,
-  "version": "0.1.0",
-  "description": "AI-ready modernization of the Manufacturing Accelerator",
+  "version": "0.2.0",
+  "description": "Portfolio of legacy enterprise app simulations (2010-2012)",
   "packageManager": "pnpm@10.0.0",
   "scripts": {
-    "dev": "corepack pnpm -r --parallel --filter @mfg/web --filter @mfg/api dev",
+    "dev": "echo Run one app with: pnpm dev:crm | pnpm dev:warehouse | pnpm dev:hr | pnpm dev:procurement | pnpm dev:helpdesk",
+    "dev:crm": "corepack pnpm --filter @legacy/crm-classic dev",
+    "dev:warehouse": "corepack pnpm --filter @legacy/warehouse-terminal dev",
+    "dev:hr": "corepack pnpm --filter @legacy/hr-portal dev",
+    "dev:procurement": "corepack pnpm --filter @legacy/procurement-pro dev",
+    "dev:helpdesk": "corepack pnpm --filter @legacy/helpdesk-ops dev",
     "build": "corepack pnpm -r build",
-    "lint": "corepack pnpm -r lint",
-    "typecheck": "corepack pnpm -r typecheck",
     "test": "corepack pnpm -r test"
-  },
-  "devDependencies": {
-    "typescript": "^5.7.2"
   }
 }
