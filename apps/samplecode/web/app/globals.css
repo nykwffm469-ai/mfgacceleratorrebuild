@@ -153,6 +153,32 @@ p {
   margin-top: 0;
 }
 
+.row-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.action-button {
+  border: 1px solid #0a5558;
+  background: #0f6a6e;
+  color: #f7fffe;
+  border-radius: 10px;
+  padding: 0.45rem 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.action-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.action-button:hover:not(:disabled) {
+  background: #0b5457;
+}
+
 @media (max-width: 720px) {
   main {
     padding-top: 1.4rem;
@@ -160,6 +186,10 @@ p {
 
   .checklist-item {
     flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .row-actions {
     align-items: flex-start;
   }
 }

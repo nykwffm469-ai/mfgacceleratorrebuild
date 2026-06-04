@@ -1,7 +1,28 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { ExperienceNav } from "../../components/ExperienceNav";
-import { riskSignals } from "../../lib/mockData";
+import { escalateSignal, fetchRiskSignals } from "../../lib/apiClient";
+import { RiskSignal } from "../../lib/mockData";
 
 export default function RiskWorkbenchPage() {
+  const [signals, setSignals] = useState<RiskSignal[]>([]);
+
+  useEffect(() => {
+    fetchRiskSignals().then(setSignals);
+  }, []);
+
+  async function onEscalate(title: string) {
+    const updated = await escalateSignal(title);
+    if (!updated) {
+      return;
+    }
+
+    setSignals((current) =>
+      current.map((signal) => (signal.title === title ? updated : signal))
+    );
+  }
+
   return (
     <main>
       <h1>Risk Workbench</h1>
@@ -9,7 +30,7 @@ export default function RiskWorkbenchPage() {
       <ExperienceNav />
 
       <section className="grid section-spacer">
-        {riskSignals.map((signal) => (
+        {signals.map((signal) => (
           <article className="card" key={signal.title}>
             <div className="risk-header">
               <h3>{signal.title}</h3>
@@ -17,6 +38,14 @@ export default function RiskWorkbenchPage() {
             </div>
             <p>{signal.summary}</p>
             <p>Owner: {signal.owner}</p>
+            <button
+              className="action-button"
+              type="button"
+              onClick={() => onEscalate(signal.title)}
+              disabled={signal.level === "critical"}
+            >
+              Escalate risk
+            </button>
           </article>
         ))}
       </section>
