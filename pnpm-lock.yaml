@@ -136,7 +136,39 @@ importers:
         specifier: ^6.0.0
         version: 6.4.3(@types/node@22.19.19)(tsx@4.22.4)
 
+  apps/contract-labor-compliance:
+    dependencies:
+      '@legacy/shared-legacy-styles':
+        specifier: workspace:*
+        version: link:../../packages/shared-legacy-styles
+      '@legacy/shared-mock-data':
+        specifier: workspace:*
+        version: link:../../packages/shared-mock-data
+      '@legacy/shared-ui':
+        specifier: workspace:*
+        version: link:../../packages/shared-ui
+    devDependencies:
+      vite:
+        specifier: ^6.0.0
+        version: 6.4.3(@types/node@22.19.19)(tsx@4.22.4)
+
   apps/contract-renewal-tracker:
+    dependencies:
+      '@legacy/shared-legacy-styles':
+        specifier: workspace:*
+        version: link:../../packages/shared-legacy-styles
+      '@legacy/shared-mock-data':
+        specifier: workspace:*
+        version: link:../../packages/shared-mock-data
+      '@legacy/shared-ui':
+        specifier: workspace:*
+        version: link:../../packages/shared-ui
+    devDependencies:
+      vite:
+        specifier: ^6.0.0
+        version: 6.4.3(@types/node@22.19.19)(tsx@4.22.4)
+
+  apps/credit-memo-routing:
     dependencies:
       '@legacy/shared-legacy-styles':
         specifier: workspace:*
@@ -216,6 +248,54 @@ importers:
         specifier: ^6.0.0
         version: 6.4.3(@types/node@22.19.19)(tsx@4.22.4)
 
+  apps/dealer-incentive-settlement:
+    dependencies:
+      '@legacy/shared-legacy-styles':
+        specifier: workspace:*
+        version: link:../../packages/shared-legacy-styles
+      '@legacy/shared-mock-data':
+        specifier: workspace:*
+        version: link:../../packages/shared-mock-data
+      '@legacy/shared-ui':
+        specifier: workspace:*
+        version: link:../../packages/shared-ui
+    devDependencies:
+      vite:
+        specifier: ^6.0.0
+        version: 6.4.3(@types/node@22.19.19)(tsx@4.22.4)
+
+  apps/dock-appointment-scheduler:
+    dependencies:
+      '@legacy/shared-legacy-styles':
+        specifier: workspace:*
+        version: link:../../packages/shared-legacy-styles
+      '@legacy/shared-mock-data':
+        specifier: workspace:*
+        version: link:../../packages/shared-mock-data
+      '@legacy/shared-ui':
+        specifier: workspace:*
+        version: link:../../packages/shared-ui
+    devDependencies:
+      vite:
+        specifier: ^6.0.0
+        version: 6.4.3(@types/node@22.19.19)(tsx@4.22.4)
+
+  apps/document-imaging-queue:
+    dependencies:
+      '@legacy/shared-legacy-styles':
+        specifier: workspace:*
+        version: link:../../packages/shared-legacy-styles
+      '@legacy/shared-mock-data':
+        specifier: workspace:*
+        version: link:../../packages/shared-mock-data
+      '@legacy/shared-ui':
+        specifier: workspace:*
+        version: link:../../packages/shared-ui
+    devDependencies:
+      vite:
+        specifier: ^6.0.0
+        version: 6.4.3(@types/node@22.19.19)(tsx@4.22.4)
+
   apps/erp-command-center:
     dependencies:
       '@legacy/shared-legacy-styles':
@@ -240,6 +320,22 @@ importers:
       '@legacy/shared-mock-data':
         specifier: workspace:*
         version: link:../../packages/shared-mock-data
+    devDependencies:
+      vite:
+        specifier: ^6.0.0
+        version: 6.4.3(@types/node@22.19.19)(tsx@4.22.4)
+
+  apps/export-compliance-screening:
+    dependencies:
+      '@legacy/shared-legacy-styles':
+        specifier: workspace:*
+        version: link:../../packages/shared-legacy-styles
+      '@legacy/shared-mock-data':
+        specifier: workspace:*
+        version: link:../../packages/shared-mock-data
+      '@legacy/shared-ui':
+        specifier: workspace:*
+        version: link:../../packages/shared-ui
     devDependencies:
       vite:
         specifier: ^6.0.0
@@ -341,6 +437,22 @@ importers:
         specifier: ^6.0.0
         version: 6.4.3(@types/node@22.19.19)(tsx@4.22.4)
 
+  apps/government-benefits-intake:
+    dependencies:
+      '@legacy/shared-legacy-styles':
+        specifier: workspace:*
+        version: link:../../packages/shared-legacy-styles
+      '@legacy/shared-mock-data':
+        specifier: workspace:*
+        version: link:../../packages/shared-mock-data
+      '@legacy/shared-ui':
+        specifier: workspace:*
+        version: link:../../packages/shared-ui
+    devDependencies:
+      vite:
+        specifier: ^6.0.0
+        version: 6.4.3(@types/node@22.19.19)(tsx@4.22.4)
+
   apps/helpdesk-ops:
     dependencies:
       '@legacy/shared-legacy-styles':
@@ -405,6 +517,22 @@ importers:
         specifier: ^6.0.0
         version: 6.4.3(@types/node@22.19.19)(tsx@4.22.4)
 
+  apps/inventory-cyclecount-console:
+    dependencies:
+      '@legacy/shared-legacy-styles':
+        specifier: workspace:*
+        version: link:../../packages/shared-legacy-styles
+      '@legacy/shared-mock-data':
+        specifier: workspace:*
+        version: link:../../packages/shared-mock-data
+      '@legacy/shared-ui':
+        specifier: workspace:*
+        version: link:../../packages/shared-ui
+    devDependencies:
+      vite:
+        specifier: ^6.0.0
+        version: 6.4.3(@types/node@22.19.19)(tsx@4.22.4)
+
   apps/legal-docket:
     dependencies:
       '@legacy/shared-legacy-styles':
@@ -422,6 +550,22 @@ importers:
         version: 6.4.3(@types/node@22.19.19)(tsx@4.22.4)
 
   apps/license-permit-renewal:
+    dependencies:
+      '@legacy/shared-legacy-styles':
+        specifier: workspace:*
+        version: link:../../packages/shared-legacy-styles
+      '@legacy/shared-mock-data':
+        specifier: workspace:*
+        version: link:../../packages/shared-mock-data
+      '@legacy/shared-ui':
+        specifier: workspace:*
+        version: link:../../packages/shared-ui
+    devDependencies:
+      vite:
+        specifier: ^6.0.0
+        version: 6.4.3(@types/node@22.19.19)(tsx@4.22.4)
+
+  apps/loan-servicing-collections:
     dependencies:
       '@legacy/shared-legacy-styles':
         specifier: workspace:*
@@ -517,6 +661,38 @@ importers:
         specifier: ^6.0.0
         version: 6.4.3(@types/node@22.19.19)(tsx@4.22.4)
 
+  apps/payable-batch-uploader:
+    dependencies:
+      '@legacy/shared-legacy-styles':
+        specifier: workspace:*
+        version: link:../../packages/shared-legacy-styles
+      '@legacy/shared-mock-data':
+        specifier: workspace:*
+        version: link:../../packages/shared-mock-data
+      '@legacy/shared-ui':
+        specifier: workspace:*
+        version: link:../../packages/shared-ui
+    devDependencies:
+      vite:
+        specifier: ^6.0.0
+        version: 6.4.3(@types/node@22.19.19)(tsx@4.22.4)
+
+  apps/plant-safety-observation-log:
+    dependencies:
+      '@legacy/shared-legacy-styles':
+        specifier: workspace:*
+        version: link:../../packages/shared-legacy-styles
+      '@legacy/shared-mock-data':
+        specifier: workspace:*
+        version: link:../../packages/shared-mock-data
+      '@legacy/shared-ui':
+        specifier: workspace:*
+        version: link:../../packages/shared-ui
+    devDependencies:
+      vite:
+        specifier: ^6.0.0
+        version: 6.4.3(@types/node@22.19.19)(tsx@4.22.4)
+
   apps/portfolio-work-boards:
     dependencies:
       '@legacy/shared-legacy-styles':
@@ -534,6 +710,22 @@ importers:
         version: 6.4.3(@types/node@22.19.19)(tsx@4.22.4)
 
   apps/process-mining-lab:
+    dependencies:
+      '@legacy/shared-legacy-styles':
+        specifier: workspace:*
+        version: link:../../packages/shared-legacy-styles
+      '@legacy/shared-mock-data':
+        specifier: workspace:*
+        version: link:../../packages/shared-mock-data
+      '@legacy/shared-ui':
+        specifier: workspace:*
+        version: link:../../packages/shared-ui
+    devDependencies:
+      vite:
+        specifier: ^6.0.0
+        version: 6.4.3(@types/node@22.19.19)(tsx@4.22.4)
+
+  apps/procurement-invoice-holdboard:
     dependencies:
       '@legacy/shared-legacy-styles':
         specifier: workspace:*
@@ -614,6 +806,38 @@ importers:
         version: 6.4.3(@types/node@22.19.19)(tsx@4.22.4)
 
   apps/quality-audit:
+    dependencies:
+      '@legacy/shared-legacy-styles':
+        specifier: workspace:*
+        version: link:../../packages/shared-legacy-styles
+      '@legacy/shared-mock-data':
+        specifier: workspace:*
+        version: link:../../packages/shared-mock-data
+      '@legacy/shared-ui':
+        specifier: workspace:*
+        version: link:../../packages/shared-ui
+    devDependencies:
+      vite:
+        specifier: ^6.0.0
+        version: 6.4.3(@types/node@22.19.19)(tsx@4.22.4)
+
+  apps/quality-release-gate:
+    dependencies:
+      '@legacy/shared-legacy-styles':
+        specifier: workspace:*
+        version: link:../../packages/shared-legacy-styles
+      '@legacy/shared-mock-data':
+        specifier: workspace:*
+        version: link:../../packages/shared-mock-data
+      '@legacy/shared-ui':
+        specifier: workspace:*
+        version: link:../../packages/shared-ui
+    devDependencies:
+      vite:
+        specifier: ^6.0.0
+        version: 6.4.3(@types/node@22.19.19)(tsx@4.22.4)
+
+  apps/returns-disposition-center:
     dependencies:
       '@legacy/shared-legacy-styles':
         specifier: workspace:*
@@ -742,6 +966,22 @@ importers:
         version: 6.4.3(@types/node@22.19.19)(tsx@4.22.4)
 
   apps/utility-bill-reconciliation:
+    dependencies:
+      '@legacy/shared-legacy-styles':
+        specifier: workspace:*
+        version: link:../../packages/shared-legacy-styles
+      '@legacy/shared-mock-data':
+        specifier: workspace:*
+        version: link:../../packages/shared-mock-data
+      '@legacy/shared-ui':
+        specifier: workspace:*
+        version: link:../../packages/shared-ui
+    devDependencies:
+      vite:
+        specifier: ^6.0.0
+        version: 6.4.3(@types/node@22.19.19)(tsx@4.22.4)
+
+  apps/utility-outage-switchboard:
     dependencies:
       '@legacy/shared-legacy-styles':
         specifier: workspace:*
