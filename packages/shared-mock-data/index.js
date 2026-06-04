@@ -8,6 +8,10 @@ function safeParse(raw) {
   }
 }
 
+function isEmptyObject(value) {
+  return value && typeof value === "object" && !Array.isArray(value) && Object.keys(value).length === 0;
+}
+
 export function ensureSeed(namespace, seedFactory) {
   if (typeof seedFactory === "function") {
     seedRegistry.set(namespace, seedFactory);
@@ -18,7 +22,7 @@ export function ensureSeed(namespace, seedFactory) {
 
   if (existing) {
     const parsed = safeParse(existing);
-    if (parsed !== null) {
+    if (parsed !== null && !isEmptyObject(parsed)) {
       return parsed;
     }
   }
@@ -37,7 +41,7 @@ export function loadSeed(namespace, fallbackFactory) {
     return ensureSeed(namespace, factory);
   }
   const parsed = safeParse(raw);
-  if (parsed !== null) {
+  if (parsed !== null && !isEmptyObject(parsed)) {
     return parsed;
   }
 
