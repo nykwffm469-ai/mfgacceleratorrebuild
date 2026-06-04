@@ -169,6 +169,171 @@ const FAMILY_STYLES = [
   }
 ];
 
+function extractTableRows(table) {
+  const rows = Array.from(table.querySelectorAll("tr"));
+  return rows.map((row) =>
+    Array.from(row.querySelectorAll("th,td")).map((cell) => (cell.textContent || "").trim().replace(/\s+/g, " "))
+  );
+}
+
+function toCsv(rows) {
+  return rows
+    .map((row) =>
+      row
+        .map((cell) => {
+          const escaped = String(cell).replace(/"/g, '""');
+          return `"${escaped}"`;
+        })
+        .join(",")
+    )
+    .join("\r\n");
+}
+
+function sanitizeFileName(input) {
+  return (input || "legacy-export")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+function showLegacyProcessing(message) {
+  const windowEl = document.querySelector(".legacy-window");
+  if (!windowEl) {
+    return;
+  }
+
+  const overlay = document.createElement("div");
+  overlay.className = "legacy-processing-overlay";
+  overlay.innerHTML = `<div class="legacy-processing-dialog">${message}</div>`;
+  windowEl.appendChild(overlay);
+
+  window.setTimeout(() => {
+    overlay.remove();
+  }, 1100);
+}
+
+function runExcelExport(button) {
+  const host = button.closest(".legacy-window") || document.querySelector(".legacy-window");
+  const table = host?.querySelector(".legacy-main .legacy-grid");
+  if (!table) {
+    showLegacyProcessing("Export queue empty - no grid rows found");
+    return;
+  }
+
+  showLegacyProcessing("Batch job processing - preparing Excel export");
+
+  const rows = extractTableRows(table);
+  const csv = `\uFEFF${toCsv(rows)}`;
+  const title = host?.querySelector(".legacy-titlebar span")?.textContent || "legacy-grid";
+  const stamp = new Date().toISOString().slice(0, 10);
+  const fileName = `${sanitizeFileName(title)}-${stamp}.csv`;
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(link.href);
+}
+
+function openPrintWindow(button, mode = "print") {
+  const host = button.closest(".legacy-window") || document.querySelector(".legacy-window");
+  const table = host?.querySelector(".legacy-main .legacy-grid");
+  if (!table) {
+    showLegacyProcessing("Print queue empty - no grid loaded");
+    return;
+  }
+
+  const title = host?.querySelector(".legacy-titlebar span")?.textContent || "Legacy Report";
+  const styles = Array.from(document.querySelectorAll("style,link[rel='stylesheet']"))
+    .map((node) => node.outerHTML)
+    .join("\n");
+
+  const now = new Date().toLocaleString();
+  const reportHtml = `<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>${title} - ${mode === "pdf" ? "PDF" : "Print"} Preview</title>
+    ${styles}
+    <style>
+      body { padding: 10px; }
+      .legacy-report-head { margin-bottom: 8px; border: 1px solid #7f8b96; background: #e6edf4; padding: 6px; }
+      .legacy-report-meta { font-size: 11px; color: #3e4a56; }
+    </style>
+  </head>
+  <body>
+    <div class="legacy-report-head">
+      <div><strong>${title}</strong> - ${mode === "pdf" ? "Generate PDF" : "Print Preview"}</div>
+      <div class="legacy-report-meta">Generated: ${now} | View audit history available in main application</div>
+    </div>
+    ${table.outerHTML}
+  </body>
+</html>`;
+
+  showLegacyProcessing(mode === "pdf" ? "Generate PDF - report window opened" : "Print preview rendering");
+  const printWindow = window.open("", "_blank", "width=1100,height=760");
+  if (!printWindow) {
+    return;
+  }
+  printWindow.document.open();
+  printWindow.document.write(reportHtml);
+  printWindow.document.close();
+  printWindow.focus();
+}
+
+function showLegacyNotice(message) {
+  showLegacyProcessing(message);
+}
+
+function installGlobalLegacyActions() {
+  if (typeof window === "undefined" || typeof document === "undefined") {
+    return;
+  }
+
+  if (window.__legacyActionsInstalled) {
+    return;
+  }
+
+  const handled = new Set(["export-excel", "print-preview", "generate-pdf", "retry-failed", "view-audit"]);
+
+  document.addEventListener(
+    "click",
+    (event) => {
+      const target = event.target instanceof Element ? event.target.closest("[data-action]") : null;
+      if (!target) {
+        return;
+      }
+
+      const action = target.getAttribute("data-action");
+      if (!action || !handled.has(action)) {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (action === "export-excel") {
+        runExcelExport(target);
+      } else if (action === "print-preview") {
+        openPrintWindow(target, "print");
+      } else if (action === "generate-pdf") {
+        openPrintWindow(target, "pdf");
+      } else if (action === "retry-failed") {
+        showLegacyNotice("Retry failed records queued - 7 records scheduled for reprocessing");
+      } else if (action === "view-audit") {
+        showLegacyNotice("Audit history opened in review mode");
+      }
+    },
+    true
+  );
+
+  window.__legacyActionsInstalled = true;
+}
+
+installGlobalLegacyActions();
+
 function hashText(value) {
   let hash = 0;
   for (let i = 0; i < value.length; i += 1) {

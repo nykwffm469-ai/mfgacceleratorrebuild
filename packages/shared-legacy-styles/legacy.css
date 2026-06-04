@@ -38,6 +38,7 @@ body {
   background: var(--legacy-panel);
   margin: 8px;
   filter: hue-rotate(var(--legacy-hue-shift));
+  position: relative;
 }
 
 .legacy-titlebar {
@@ -225,6 +226,24 @@ body {
   background: #c3ced9;
   padding: 4px 8px;
   color: #2c3641;
+}
+
+.legacy-processing-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(191, 201, 214, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 25;
+}
+
+.legacy-processing-dialog {
+  border: 1px solid #6f7f90;
+  background: linear-gradient(to bottom, #f4f8fc 0%, #cfd8e2 100%);
+  padding: 8px 12px;
+  font-size: 11px;
+  font-weight: 700;
 }
 
 .legacy-panel {
