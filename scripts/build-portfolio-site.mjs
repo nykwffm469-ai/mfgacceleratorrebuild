@@ -269,11 +269,38 @@ const html = `<!doctype html>
         padding: 3px 6px;
         font-size: 11px;
         background: linear-gradient(to bottom, #fff 0%, #d4dde7 100%);
+      }
+      .filterbar {
+        padding: 5px 6px;
+        border-top: 1px solid #e2e7ed;
+        border-bottom: 1px solid #7d8893;
+        background: linear-gradient(to bottom, #f7f9fb 0%, #d7e0ea 100%);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+      .filterbar .filter-label {
+        font-weight: 700;
+        margin-right: 2px;
+      }
+      .filterbar input {
+        border: 1px solid #6f7b87;
+        padding: 3px 6px;
+        font-size: 11px;
+        width: 320px;
+        background: #fcfdff;
+      }
+      .filterbar select, .filterbar label {
+        border: 1px solid #6f7b87;
+        padding: 3px 6px;
+        font-size: 11px;
+        background: linear-gradient(to bottom, #fff 0%, #d4dde7 100%);
         margin-right: 6px;
         display: inline-flex;
         align-items: center;
       }
-      .toolbar label input {
+      .filterbar label input {
         margin-right: 4px;
       }
       .content {
@@ -337,6 +364,9 @@ const html = `<!doctype html>
         <span>Mode: Read/Write localStorage</span>
         <span>Total Apps: ${totalAppCount}</span>
         <span>Source: <a href="${repoUrl}" target="_blank" rel="noreferrer">GitHub Repo</a></span>
+      </div>
+      <div class="filterbar">
+        <span class="filter-label">Search & Filters:</span>
         <input id="app-search" type="search" placeholder="Search apps, workflow, or URL..." aria-label="Search applications" />
         <select id="area-filter" aria-label="Filter by business area">
           <option value="">All Areas</option>
