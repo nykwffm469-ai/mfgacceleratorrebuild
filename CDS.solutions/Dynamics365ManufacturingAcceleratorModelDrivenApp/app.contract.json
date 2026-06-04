@@ -1,0 +1,13 @@
+{
+  "name": "SupplierManagement",
+  "views": [
+    "SupplierOverview",
+    "RiskWorkbench",
+    "QualificationChecklist",
+    "OnboardingTimeline"
+  ],
+  "embeddedExperience": {
+    "copilotPanel": true,
+    "actions": ["Assess risk", "Draft outreach", "Create remediation plan"]
+  }
+}

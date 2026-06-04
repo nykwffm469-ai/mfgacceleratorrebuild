@@ -1,0 +1,17 @@
+{
+  "name": "mfgacceleratorrebuild",
+  "private": true,
+  "version": "0.1.0",
+  "description": "AI-ready modernization of the Manufacturing Accelerator",
+  "packageManager": "pnpm@10.0.0",
+  "scripts": {
+    "dev": "corepack pnpm -r --parallel --filter @mfg/web --filter @mfg/api dev",
+    "build": "corepack pnpm -r build",
+    "lint": "corepack pnpm -r lint",
+    "typecheck": "corepack pnpm -r typecheck",
+    "test": "corepack pnpm -r test"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2"
+  }
+}

@@ -1,0 +1,5 @@
+packages:
+  - apps/samplecode/web
+  - apps/samplecode/api
+  - apps/samplecode/agents
+  - apps/samplecode/packages/*

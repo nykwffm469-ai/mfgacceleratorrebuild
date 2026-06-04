@@ -1,0 +1,20 @@
+services:
+  api:
+    image: node:22-alpine
+    working_dir: /repo
+    command: sh -c "corepack enable && pnpm install && pnpm --filter @mfg/api dev"
+    env_file:
+      - .env
+    ports:
+      - "8787:8787"
+    volumes:
+      - ./:/repo
+
+  web:
+    image: node:22-alpine
+    working_dir: /repo
+    command: sh -c "corepack enable && pnpm install && pnpm --filter @mfg/web dev"
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./:/repo

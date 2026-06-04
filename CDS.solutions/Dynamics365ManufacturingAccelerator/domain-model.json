@@ -1,0 +1,29 @@
+{
+  "entities": [
+    {
+      "name": "Supplier",
+      "key": "supplierId",
+      "fields": ["legalName", "region", "status", "riskScore"]
+    },
+    {
+      "name": "Capability",
+      "key": "capabilityId",
+      "fields": ["name", "category", "criticality"]
+    },
+    {
+      "name": "Certification",
+      "key": "certificationId",
+      "fields": ["name", "issuingBody", "expirationDate"]
+    },
+    {
+      "name": "Assessment",
+      "key": "assessmentId",
+      "fields": ["supplierId", "riskBand", "summary", "recommendedActions"]
+    }
+  ],
+  "relationships": [
+    { "from": "Supplier", "to": "Capability", "type": "manyToMany" },
+    { "from": "Supplier", "to": "Certification", "type": "manyToMany" },
+    { "from": "Supplier", "to": "Assessment", "type": "oneToMany" }
+  ]
+}

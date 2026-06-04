@@ -1,0 +1,14 @@
+{
+  "solutionName": "Dynamics365ManufacturingAccelerator",
+  "version": "2.0.0",
+  "targetYear": 2026,
+  "capabilities": [
+    "Supplier onboarding",
+    "Qualification workflows",
+    "AI risk scoring",
+    "Document intelligence hooks"
+  ],
+  "artifacts": [
+    "domain-model.json"
+  ]
+}
