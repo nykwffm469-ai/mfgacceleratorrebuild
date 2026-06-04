@@ -1,0 +1,19 @@
+{
+  "name": "@legacy/license-permit-renewal",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build --base ./",
+    "test": "node -e \"console.log('license-permit-renewal: no tests yet')\""
+  },
+  "dependencies": {
+    "@legacy/shared-legacy-styles": "workspace:*",
+    "@legacy/shared-mock-data": "workspace:*",
+    "@legacy/shared-ui": "workspace:*"
+  },
+  "devDependencies": {
+    "vite": "^6.0.0"
+  }
+}

@@ -1,101 +1,45 @@
-import { cpSync, existsSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 const root = process.cwd();
 const outputRoot = join(root, "portfolio-dist");
 
-const apps = [
-  {
-    id: "crm-classic",
-    title: "CRM Classic",
-    subtitle: "2008-2011 style CRM for accounts, contacts, opportunities, activities, and dashboard views.",
-    distPath: join(root, "apps", "crm-classic", "dist")
-  },
-  {
-    id: "warehouse-terminal",
-    title: "Warehouse Terminal",
-    subtitle: "AS/400-inspired inventory and shipment terminal with fixed-width status screens.",
-    distPath: join(root, "apps", "warehouse-terminal", "dist")
-  },
-  {
-    id: "hr-portal",
-    title: "HR Portal",
-    subtitle: "SharePoint-era onboarding and internal approvals portal with task and policy tracking.",
-    distPath: join(root, "apps", "hr-portal", "dist")
-  },
-  {
-    id: "procurement-pro",
-    title: "Procurement Pro",
-    subtitle: "Legacy purchasing workspace for requisitions, vendors, POs, invoice queues, and approvals.",
-    distPath: join(root, "apps", "procurement-pro", "dist")
-  },
-  {
-    id: "helpdesk-ops",
-    title: "Helpdesk Ops",
-    subtitle: "Internal service desk with ticket queues, SLA tracking, assignments, and knowledge items.",
-    distPath: join(root, "apps", "helpdesk-ops", "dist")
-  },
-  {
-    id: "finance-ledger",
-    title: "Finance Ledger",
-    subtitle: "Journal posting, account balances, aging, period-close tasks, and exception queues.",
-    distPath: join(root, "apps", "finance-ledger", "dist")
-  },
-  {
-    id: "claims-desk",
-    title: "Claims Desk",
-    subtitle: "Claims intake, adjuster routing, reserve tracking, payments, and appeal handling.",
-    distPath: join(root, "apps", "claims-desk", "dist")
-  },
-  {
-    id: "project-tracker",
-    title: "Project Tracker",
-    subtitle: "PMO-style projects, milestones, risks, issues, and dependency management.",
-    distPath: join(root, "apps", "project-tracker", "dist")
-  },
-  {
-    id: "maintenance-cmms",
-    title: "Maintenance CMMS",
-    subtitle: "Work order control, preventive maintenance, assets, parts, and downtime history.",
-    distPath: join(root, "apps", "maintenance-cmms", "dist")
-  },
-  {
-    id: "field-dispatch",
-    title: "Field Dispatch",
-    subtitle: "Dispatch board, technician assignment, route logs, and check-in records.",
-    distPath: join(root, "apps", "field-dispatch", "dist")
-  },
-  {
-    id: "billing-collections",
-    title: "Billing Collections",
-    subtitle: "Invoice queues, dunning workflow, dispute tracking, and payment promise logs.",
-    distPath: join(root, "apps", "billing-collections", "dist")
-  },
-  {
-    id: "legal-docket",
-    title: "Legal Docket",
-    subtitle: "Case dockets, hearings, counsel workload, evidence tracking, and filing calendars.",
-    distPath: join(root, "apps", "legal-docket", "dist")
-  },
-  {
-    id: "compliance-register",
-    title: "Compliance Register",
-    subtitle: "Controls inventory, findings, remediation plans, attestations, and audit windows.",
-    distPath: join(root, "apps", "compliance-register", "dist")
-  },
-  {
-    id: "fleet-ops",
-    title: "Fleet Ops",
-    subtitle: "Vehicle units, dispatch routes, service bookings, fuel logs, and incident records.",
-    distPath: join(root, "apps", "fleet-ops", "dist")
-  },
-  {
-    id: "quality-audit",
-    title: "Quality Audit",
-    subtitle: "Inspection lots, NCR records, CAPA actions, release gates, and quality metrics.",
-    distPath: join(root, "apps", "quality-audit", "dist")
+function toTitleCase(slug) {
+  return slug
+    .split("-")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
+function readAppSummary(appRoot) {
+  const readmePath = join(appRoot, "README.md");
+  if (!existsSync(readmePath)) {
+    return "Legacy enterprise simulation module.";
   }
-];
+
+  const lines = readFileSync(readmePath, "utf8")
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0);
+
+  const summary = lines.find((line) => !line.startsWith("#") && line !== "Run:" && !line.startsWith("```"));
+  return summary || "Legacy enterprise simulation module.";
+}
+
+const appsRoot = join(root, "apps");
+const apps = readdirSync(appsRoot, { withFileTypes: true })
+  .filter((entry) => entry.isDirectory() && entry.name !== "samplecode")
+  .map((entry) => {
+    const id = entry.name;
+    const appRoot = join(appsRoot, id);
+    return {
+      id,
+      title: toTitleCase(id),
+      subtitle: readAppSummary(appRoot),
+      distPath: join(appRoot, "dist")
+    };
+  })
+  .sort((a, b) => a.title.localeCompare(b.title));
 
 rmSync(outputRoot, { recursive: true, force: true });
 mkdirSync(outputRoot, { recursive: true });
@@ -208,7 +152,7 @@ const html = `<!doctype html>
         <div class="panel">
           <h2>Purpose</h2>
           <div class="body">
-            This site hosts fifteen fake but believable legacy enterprise front-end simulations designed for modernization demos. All data is seeded locally and stored in browser localStorage only.
+            This site hosts ${apps.length} fake but believable legacy enterprise front-end simulations designed for modernization demos. All data is seeded locally and stored in browser localStorage only.
           </div>
         </div>
         <div class="panel">

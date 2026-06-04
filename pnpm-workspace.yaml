@@ -1,17 +1,3 @@
 packages:
-  - apps/crm-classic
-  - apps/warehouse-terminal
-  - apps/hr-portal
-  - apps/procurement-pro
-  - apps/helpdesk-ops
-  - apps/finance-ledger
-  - apps/claims-desk
-  - apps/project-tracker
-  - apps/maintenance-cmms
-  - apps/field-dispatch
-  - apps/billing-collections
-  - apps/legal-docket
-  - apps/compliance-register
-  - apps/fleet-ops
-  - apps/quality-audit
+  - apps/*
   - packages/*

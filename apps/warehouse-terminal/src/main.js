@@ -65,7 +65,10 @@ function render() {
 
   document.getElementById("app").innerHTML = `
     <div class="legacy-window">
-      <div class="legacy-titlebar">Warehouse Terminal Control 2010</div>
+      <div class="legacy-titlebar">
+        <span>Warehouse Terminal Control 2010</span>
+        <a class="legacy-backlink" href="../" aria-label="Back to main page">Main</a>
+      </div>
       <div class="legacy-toolbar">
         <button class="legacy-btn" data-screen="lookup">F2 Lookup</button>
         <button class="legacy-btn" data-screen="shipments">F4 Shipments</button>

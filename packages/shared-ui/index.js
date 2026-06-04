@@ -12,7 +12,10 @@ export function appShell({ title, modules, activeModule, toolbarButtons, statusT
 
   return `
     <div class=\"legacy-window\">
-      <div class=\"legacy-titlebar\">${title}</div>
+      <div class="legacy-titlebar">
+        <span>${title}</span>
+        <a class="legacy-backlink" href="../" aria-label="Back to main page">Main</a>
+      </div>
       <div class=\"legacy-toolbar\">${toolbarHtml}</div>
       <div class=\"legacy-layout\">
         <aside class=\"legacy-nav\">${navHtml}</aside>

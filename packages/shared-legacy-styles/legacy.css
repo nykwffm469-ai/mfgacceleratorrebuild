@@ -41,6 +41,22 @@ body {
   border-bottom: 1px solid #7d8893;
   font-weight: 700;
   padding: 6px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.legacy-backlink {
+  font-size: 10px;
+  font-weight: 400;
+  color: #4e5a66;
+  text-decoration: none;
+  opacity: 0.8;
+}
+
+.legacy-backlink:hover {
+  text-decoration: underline;
+  opacity: 1;
 }
 
 .legacy-toolbar {
