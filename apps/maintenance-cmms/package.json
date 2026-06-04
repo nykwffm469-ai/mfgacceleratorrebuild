@@ -1,0 +1,19 @@
+{
+  "name": "@legacy/maintenance-cmms",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build --base ./",
+    "test": "node -e \"console.log('maintenance-cmms: no tests yet')\""
+  },
+  "dependencies": {
+    "@legacy/shared-legacy-styles": "workspace:*",
+    "@legacy/shared-mock-data": "workspace:*",
+    "@legacy/shared-ui": "workspace:*"
+  },
+  "devDependencies": {
+    "vite": "^6.0.0"
+  }
+}

@@ -1,0 +1,8 @@
+:root {
+  --legacy-bg: #d6dce5;
+  --legacy-panel: #eef3f8;
+  --legacy-nav: #c8d2de;
+  --legacy-active: #2f587f;
+}
+.legacy-titlebar { background: linear-gradient(to bottom, #eaf0f6 0%, #93abc4 100%); }
+.legacy-panel-head { background: linear-gradient(to bottom, #edf3f8 0%, #c5d1dc 100%); }

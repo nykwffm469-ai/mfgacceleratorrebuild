@@ -1,0 +1,10 @@
+:root {
+  --legacy-bg: #d8d3c4;
+  --legacy-panel: #f4f0e4;
+  --legacy-nav: #cfc7b1;
+  --legacy-active: #496238;
+  --legacy-grid-head: #d8d0bc;
+}
+body { font-family: "MS Sans Serif", Tahoma, Arial, sans-serif; }
+.legacy-titlebar { background: linear-gradient(to bottom, #efe7d4 0%, #bcae8a 100%); }
+.legacy-statusbar { background: #c6bea6; }

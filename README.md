@@ -24,6 +24,16 @@ apps/
 	hr-portal/
 	procurement-pro/
 	helpdesk-ops/
+	finance-ledger/
+	claims-desk/
+	project-tracker/
+	maintenance-cmms/
+	field-dispatch/
+	billing-collections/
+	legal-docket/
+	compliance-register/
+	fleet-ops/
+	quality-audit/
 packages/
 	shared-legacy-styles/
 	shared-mock-data/
@@ -37,6 +47,16 @@ packages/
 - `hr-portal`: internal onboarding and approvals portal inspired by old intranet systems
 - `procurement-pro`: requisitions, vendors, POs, invoice queue, and approvals in legacy purchasing style
 - `helpdesk-ops`: service desk queues, SLA tracking, assignment and escalation simulation
+- `finance-ledger`: old accounting and close-workbench experience with journals, aging, and exception queues
+- `claims-desk`: claims intake and adjuster desk with reserve and payment processing flows
+- `project-tracker`: PMO tracker for projects, milestones, risks, and dependencies
+- `maintenance-cmms`: work-order driven plant maintenance and preventive schedule system
+- `field-dispatch`: route/crew assignment console for dispatch operations
+- `billing-collections`: AR collections queue with dunning and dispute handling
+- `legal-docket`: legal operations docket, hearing, and filings tracker
+- `compliance-register`: controls, findings, remediation, and attestation register
+- `fleet-ops`: vehicle fleet operations, routing, service, and fuel logs
+- `quality-audit`: inspection, NCR, CAPA, and release gate tracking
 
 ## App Showcase
 
@@ -90,6 +110,16 @@ This portfolio is packaged for Azure Static Web Apps Free tier using a generated
 - HR Portal: https://ashy-water-06d69bd1e.7.azurestaticapps.net/hr-portal/
 - Procurement Pro: https://ashy-water-06d69bd1e.7.azurestaticapps.net/procurement-pro/
 - Helpdesk Ops: https://ashy-water-06d69bd1e.7.azurestaticapps.net/helpdesk-ops/
+- Finance Ledger: https://ashy-water-06d69bd1e.7.azurestaticapps.net/finance-ledger/
+- Claims Desk: https://ashy-water-06d69bd1e.7.azurestaticapps.net/claims-desk/
+- Project Tracker: https://ashy-water-06d69bd1e.7.azurestaticapps.net/project-tracker/
+- Maintenance CMMS: https://ashy-water-06d69bd1e.7.azurestaticapps.net/maintenance-cmms/
+- Field Dispatch: https://ashy-water-06d69bd1e.7.azurestaticapps.net/field-dispatch/
+- Billing Collections: https://ashy-water-06d69bd1e.7.azurestaticapps.net/billing-collections/
+- Legal Docket: https://ashy-water-06d69bd1e.7.azurestaticapps.net/legal-docket/
+- Compliance Register: https://ashy-water-06d69bd1e.7.azurestaticapps.net/compliance-register/
+- Fleet Ops: https://ashy-water-06d69bd1e.7.azurestaticapps.net/fleet-ops/
+- Quality Audit: https://ashy-water-06d69bd1e.7.azurestaticapps.net/quality-audit/
 
 ## Run locally
 
@@ -107,6 +137,16 @@ corepack pnpm dev:warehouse
 corepack pnpm dev:hr
 corepack pnpm dev:procurement
 corepack pnpm dev:helpdesk
+corepack pnpm dev:finance
+corepack pnpm dev:claims
+corepack pnpm dev:projects
+corepack pnpm dev:cmms
+corepack pnpm dev:dispatch
+corepack pnpm dev:billing
+corepack pnpm dev:legal
+corepack pnpm dev:compliance
+corepack pnpm dev:fleet
+corepack pnpm dev:quality
 ```
 
 3. Build all apps:

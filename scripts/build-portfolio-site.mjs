@@ -34,6 +34,66 @@ const apps = [
     title: "Helpdesk Ops",
     subtitle: "Internal service desk with ticket queues, SLA tracking, assignments, and knowledge items.",
     distPath: join(root, "apps", "helpdesk-ops", "dist")
+  },
+  {
+    id: "finance-ledger",
+    title: "Finance Ledger",
+    subtitle: "Journal posting, account balances, aging, period-close tasks, and exception queues.",
+    distPath: join(root, "apps", "finance-ledger", "dist")
+  },
+  {
+    id: "claims-desk",
+    title: "Claims Desk",
+    subtitle: "Claims intake, adjuster routing, reserve tracking, payments, and appeal handling.",
+    distPath: join(root, "apps", "claims-desk", "dist")
+  },
+  {
+    id: "project-tracker",
+    title: "Project Tracker",
+    subtitle: "PMO-style projects, milestones, risks, issues, and dependency management.",
+    distPath: join(root, "apps", "project-tracker", "dist")
+  },
+  {
+    id: "maintenance-cmms",
+    title: "Maintenance CMMS",
+    subtitle: "Work order control, preventive maintenance, assets, parts, and downtime history.",
+    distPath: join(root, "apps", "maintenance-cmms", "dist")
+  },
+  {
+    id: "field-dispatch",
+    title: "Field Dispatch",
+    subtitle: "Dispatch board, technician assignment, route logs, and check-in records.",
+    distPath: join(root, "apps", "field-dispatch", "dist")
+  },
+  {
+    id: "billing-collections",
+    title: "Billing Collections",
+    subtitle: "Invoice queues, dunning workflow, dispute tracking, and payment promise logs.",
+    distPath: join(root, "apps", "billing-collections", "dist")
+  },
+  {
+    id: "legal-docket",
+    title: "Legal Docket",
+    subtitle: "Case dockets, hearings, counsel workload, evidence tracking, and filing calendars.",
+    distPath: join(root, "apps", "legal-docket", "dist")
+  },
+  {
+    id: "compliance-register",
+    title: "Compliance Register",
+    subtitle: "Controls inventory, findings, remediation plans, attestations, and audit windows.",
+    distPath: join(root, "apps", "compliance-register", "dist")
+  },
+  {
+    id: "fleet-ops",
+    title: "Fleet Ops",
+    subtitle: "Vehicle units, dispatch routes, service bookings, fuel logs, and incident records.",
+    distPath: join(root, "apps", "fleet-ops", "dist")
+  },
+  {
+    id: "quality-audit",
+    title: "Quality Audit",
+    subtitle: "Inspection lots, NCR records, CAPA actions, release gates, and quality metrics.",
+    distPath: join(root, "apps", "quality-audit", "dist")
   }
 ];
 
@@ -148,7 +208,7 @@ const html = `<!doctype html>
         <div class="panel">
           <h2>Purpose</h2>
           <div class="body">
-            This site hosts five fake but believable legacy enterprise front-end simulations designed for modernization demos. All data is seeded locally and stored in browser localStorage only.
+            This site hosts fifteen fake but believable legacy enterprise front-end simulations designed for modernization demos. All data is seeded locally and stored in browser localStorage only.
           </div>
         </div>
         <div class="panel">
