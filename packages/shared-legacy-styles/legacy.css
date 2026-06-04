@@ -15,6 +15,9 @@
   --legacy-grid-row-alt: #edf1f5;
   --legacy-terminal-bg: #121917;
   --legacy-terminal-text: #b1ffae;
+  --legacy-font: Tahoma, Verdana, Arial, sans-serif;
+  --legacy-hue-shift: 0deg;
+  --legacy-title-shade: 100%;
 }
 
 * {
@@ -25,7 +28,7 @@ body {
   margin: 0;
   background: var(--legacy-bg);
   color: var(--legacy-text);
-  font-family: Tahoma, Verdana, Arial, sans-serif;
+  font-family: var(--legacy-font);
   font-size: 12px;
   line-height: 1.3;
 }
@@ -34,6 +37,7 @@ body {
   border: 1px solid #6d7885;
   background: var(--legacy-panel);
   margin: 8px;
+  filter: hue-rotate(var(--legacy-hue-shift));
 }
 
 .legacy-titlebar {
@@ -44,6 +48,28 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  filter: saturate(0.92) brightness(var(--legacy-title-shade));
+}
+
+.legacy-menubar {
+  border-bottom: 1px solid #87919c;
+  background: #d4dbe3;
+  padding: 3px 6px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.legacy-menu-item {
+  border: 1px solid transparent;
+  padding: 1px 6px;
+  font-size: 11px;
+  cursor: default;
+}
+
+.legacy-menu-item:hover {
+  border-color: #738194;
+  background: #e9eef5;
 }
 
 .legacy-backlink {
@@ -106,6 +132,44 @@ body {
   cursor: pointer;
 }
 
+.legacy-list-nav {
+  list-style: square;
+  margin: 0;
+  padding: 0 0 0 16px;
+}
+
+.legacy-list-nav li {
+  margin: 0 0 4px;
+}
+
+.legacy-nav-item.compact {
+  font-size: 10px;
+  padding: 3px 5px;
+}
+
+.legacy-top-tabs {
+  display: flex;
+  gap: 2px;
+  padding: 4px 6px 0;
+  border-bottom: 1px solid #798491;
+  background: #d0d7e0;
+}
+
+.legacy-top-tab {
+  border: 1px solid #7f8a96;
+  border-bottom: none;
+  border-radius: 2px 2px 0 0;
+  background: #d8e0e9;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-size: 11px;
+}
+
+.legacy-top-tab.active {
+  background: #f3f6f9;
+  font-weight: 700;
+}
+
 .legacy-nav-item.active {
   background: linear-gradient(to bottom, #b7d0ed 0%, #86a8cb 100%);
   border-color: #426995;
@@ -165,6 +229,34 @@ body {
   background: var(--legacy-grid-row-alt);
 }
 
+.legacy-window[data-grid-style="dense"] .legacy-grid th,
+.legacy-window[data-grid-style="dense"] .legacy-grid td {
+  padding: 2px 4px;
+  font-size: 10px;
+}
+
+.legacy-window[data-grid-style="soft"] .legacy-grid th,
+.legacy-window[data-grid-style="soft"] .legacy-grid td {
+  border-color: #b4c2d1;
+}
+
+.legacy-window[data-grid-style="hard"] .legacy-grid th,
+.legacy-window[data-grid-style="hard"] .legacy-grid td {
+  border-color: #5f6973;
+}
+
+.legacy-window[data-grid-style="bordered"] .legacy-grid {
+  border: 2px solid #7e8892;
+}
+
+.legacy-window[data-grid-style="striped"] .legacy-grid tbody tr:nth-child(odd) {
+  background: #ececec;
+}
+
+.legacy-window[data-grid-style="striped"] .legacy-grid tbody tr:nth-child(even) {
+  background: #dadada;
+}
+
 .legacy-form-grid {
   display: grid;
   grid-template-columns: 140px 1fr;
@@ -214,4 +306,71 @@ body {
 .legacy-terminal .line {
   white-space: pre;
   margin-bottom: 4px;
+}
+
+.legacy-window[data-density="compact"] {
+  font-size: 11px;
+}
+
+.legacy-window[data-density="compact"] .legacy-main,
+.legacy-window[data-density="compact"] .legacy-panel-body,
+.legacy-window[data-density="compact"] .legacy-nav {
+  padding: 6px;
+}
+
+.legacy-window[data-density="cozy"] .legacy-main,
+.legacy-window[data-density="cozy"] .legacy-panel-body,
+.legacy-window[data-density="cozy"] .legacy-nav {
+  padding: 10px;
+}
+
+.legacy-window[data-button-style="flat"] .legacy-btn {
+  background: #d4dde8;
+  border-radius: 0;
+}
+
+.legacy-window[data-button-style="square"] .legacy-btn {
+  border-radius: 0;
+  border-width: 2px;
+}
+
+.legacy-window[data-button-style="rounded"] .legacy-btn,
+.legacy-window[data-button-style="pill"] .legacy-btn {
+  border-radius: 10px;
+}
+
+.legacy-window[data-button-style="outline"] .legacy-btn {
+  background: transparent;
+  border-style: dashed;
+}
+
+.legacy-window[data-button-style="sunken"] .legacy-btn {
+  box-shadow: inset 1px 1px 0 #7c8a7c, inset -1px -1px 0 #f5fff5;
+}
+
+.legacy-window[data-nav-pattern="top-tabs"] .legacy-layout {
+  grid-template-columns: 1fr;
+}
+
+.legacy-window[data-nav-pattern="tree-list"] .legacy-nav-item {
+  text-align: left;
+  font-family: "Lucida Console", "Courier New", monospace;
+}
+
+.legacy-window[data-nav-pattern="menu-compact"] .legacy-toolbar {
+  justify-content: space-between;
+}
+
+.legacy-window.legacy-family-oracle .legacy-titlebar,
+.legacy-window.legacy-family-oracle .legacy-panel-head {
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.legacy-window.legacy-family-sharepoint .legacy-menubar {
+  background: #ccd9e7;
+}
+
+.legacy-window.legacy-family-bootstrap2 .legacy-btn {
+  font-weight: 600;
 }
