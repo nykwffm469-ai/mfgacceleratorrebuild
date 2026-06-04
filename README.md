@@ -2,6 +2,9 @@
 
 This repository is a deterministic portfolio of fake but believable legacy enterprise front-end systems.
 
+GitHub repository: https://github.com/nykwffm469-ai/mfgacceleratorrebuild
+Live portfolio: https://ashy-water-06d69bd1e.7.azurestaticapps.net/
+
 Purpose:
 
 - demonstrate modernization scenarios with Power Platform, Power Automate, RPA, OCR, and workflow automation
@@ -17,11 +20,9 @@ Guardrails:
 
 Current scale:
 
-- 49 front-end legacy app simulations
-- 15 core legacy line-of-business apps
-- 18 RPA-target workflow-heavy apps
-- 15 platform-style complement/competitor apps
-- 1 dedicated RPA Challenge app for self-healing automation testing
+- 72 total listed apps on the launcher
+- 65 local legacy simulations plus 7 hosted companion apps
+- homepage filtering by business area, interface style, console/terminal-only, and local/hosted type
 
 ## Monorepo layout
 

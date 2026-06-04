@@ -3,6 +3,7 @@ import { join } from "node:path";
 
 const root = process.cwd();
 const outputRoot = join(root, "portfolio-dist");
+const repoUrl = "https://github.com/nykwffm469-ai/mfgacceleratorrebuild";
 
 function toTitleCase(slug) {
   return slug
@@ -258,6 +259,11 @@ const html = `<!doctype html>
         width: 260px;
         background: #fcfdff;
       }
+      .toolbar a {
+        color: #123d6b;
+        text-decoration: none;
+        font-weight: 700;
+      }
       .toolbar select, .toolbar label {
         border: 1px solid #6f7b87;
         padding: 3px 6px;
@@ -330,6 +336,7 @@ const html = `<!doctype html>
         <span>Hosting: Azure Static Web Apps</span>
         <span>Mode: Read/Write localStorage</span>
         <span>Total Apps: ${totalAppCount}</span>
+        <span>Source: <a href="${repoUrl}" target="_blank" rel="noreferrer">GitHub Repo</a></span>
         <input id="app-search" type="search" placeholder="Search apps, workflow, or URL..." aria-label="Search applications" />
         <select id="area-filter" aria-label="Filter by business area">
           <option value="">All Areas</option>
