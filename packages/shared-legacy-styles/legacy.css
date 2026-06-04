@@ -179,6 +179,47 @@ body {
   padding: 8px;
 }
 
+.legacy-ops-strip {
+  border: 1px solid #7a8794;
+  background: #e7edf3;
+  margin-bottom: 8px;
+  padding: 6px;
+}
+
+.legacy-ops-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.legacy-pill {
+  border: 1px solid #7b8793;
+  background: #d4dde7;
+  font-size: 10px;
+  padding: 1px 6px;
+}
+
+.legacy-alert-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.legacy-alert-item {
+  border: 1px solid #9c7a40;
+  background: #f0dfb8;
+  color: #4c3716;
+  font-size: 10px;
+  padding: 1px 5px;
+}
+
+.legacy-small {
+  max-width: 170px;
+  font-size: 10px;
+}
+
 .legacy-statusbar {
   border-top: 1px solid #7b8794;
   background: #c3ced9;

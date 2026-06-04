@@ -264,10 +264,78 @@ function renderMenuBar({ modules, menuVerb }) {
     .join("")}</div>`;
 }
 
+function renderOpsStrip(identityHash) {
+  const syncMinute = 10 + (identityHash % 45);
+  const syncStamp = `2:${String(syncMinute).padStart(2, "0")} AM`;
+  const warnings = [
+    "ERP export pending",
+    "7 records failed validation",
+    "Batch job processing",
+    "Supervisor approval required",
+    "Record locked by another user",
+    "Workflow in progress",
+    "Pending compliance review",
+    "Posting period closed",
+    "Review aging exceptions",
+    "Import queue",
+    "Document retention policy",
+    "Escalation triggered",
+    "Awaiting business approval",
+    "System maintenance window scheduled",
+    "Session timeout warning"
+  ];
+
+  return `
+    <section class=\"legacy-ops-strip\">
+      <div class=\"legacy-ops-row\">
+        <span class=\"legacy-pill\">Last nightly sync completed: ${syncStamp}</span>
+        <span class=\"legacy-pill\">Queue-driven workflow active</span>
+        <span class=\"legacy-pill\">Supervisor review queue: ${(identityHash % 5) + 2} items</span>
+        <span class=\"legacy-pill\">Open in new window</span>
+      </div>
+      <div class=\"legacy-ops-row\">
+        <label>Saved View</label>
+        <select class=\"legacy-field legacy-small\">
+          <option>My Work Queue</option>
+          <option>Exceptions - Aging</option>
+          <option>Supervisor Review</option>
+          <option>Retry / Reprocess</option>
+        </select>
+        <button class=\"legacy-btn\" data-action=\"export-excel\">Export to Excel</button>
+        <button class=\"legacy-btn\" data-action=\"print-preview\">Print Preview</button>
+        <button class=\"legacy-btn\" data-action=\"generate-pdf\">Generate PDF</button>
+        <button class=\"legacy-btn\" data-action=\"retry-failed\">Retry failed records</button>
+        <button class=\"legacy-btn\" data-action=\"view-audit\">View audit history</button>
+      </div>
+      <div class=\"legacy-alert-list\">${warnings
+        .slice(0, 5)
+        .map((warning) => `<span class=\"legacy-alert-item\">${warning}</span>`)
+        .join("")}</div>
+    </section>
+  `;
+}
+
 export function appShell({ title, modules, activeModule, toolbarButtons, statusText, contentHtml, identityKey }) {
   const identity = buildLegacyIdentity({ title, modules, identityKey });
+  const identityHash = hashText(identityKey || title);
   const navHtml = renderNav({ modules, activeModule, navPattern: identity.navPattern });
-  const toolbarHtml = toolbarButtons
+  const shellButtons = [
+    { id: "export-excel", label: "Export Excel" },
+    { id: "print-preview", label: "Print Preview" },
+    { id: "retry-failed", label: "Retry Failed" },
+    ...(toolbarButtons || [])
+  ];
+
+  const seen = new Set();
+  const dedupedButtons = shellButtons.filter((btn) => {
+    if (seen.has(btn.id)) {
+      return false;
+    }
+    seen.add(btn.id);
+    return true;
+  });
+
+  const toolbarHtml = dedupedButtons
     .map((btn) => `<button class=\"legacy-btn\" data-action=\"${btn.id}\">${btn.label}</button>`)
     .join("");
 
@@ -282,7 +350,7 @@ export function appShell({ title, modules, activeModule, toolbarButtons, statusT
       ${identity.navPattern === "top-tabs" ? renderTopTabs({ modules, activeModule }) : ""}
       <div class=\"legacy-layout\">
         ${identity.navPattern === "top-tabs" ? "" : `<aside class=\"legacy-nav\">${navHtml}</aside>`}
-        <main class=\"legacy-main\">${contentHtml}</main>
+        <main class=\"legacy-main\">${renderOpsStrip(identityHash)}${contentHtml}</main>
       </div>
       <div class=\"legacy-statusbar\">${statusText}</div>
     </div>
