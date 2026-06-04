@@ -232,6 +232,19 @@ importers:
         specifier: ^6.0.0
         version: 6.4.3(@types/node@22.19.19)(tsx@4.22.4)
 
+  apps/erp-tcode-workbench:
+    dependencies:
+      '@legacy/shared-legacy-styles':
+        specifier: workspace:*
+        version: link:../../packages/shared-legacy-styles
+      '@legacy/shared-mock-data':
+        specifier: workspace:*
+        version: link:../../packages/shared-mock-data
+    devDependencies:
+      vite:
+        specifier: ^6.0.0
+        version: 6.4.3(@types/node@22.19.19)(tsx@4.22.4)
+
   apps/field-dispatch:
     dependencies:
       '@legacy/shared-legacy-styles':

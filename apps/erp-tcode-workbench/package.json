@@ -1,0 +1,18 @@
+{
+  "name": "@legacy/erp-tcode-workbench",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build --base ./",
+    "test": "node -e \"console.log('erp-tcode-workbench: no tests yet')\""
+  },
+  "dependencies": {
+    "@legacy/shared-legacy-styles": "workspace:*",
+    "@legacy/shared-mock-data": "workspace:*"
+  },
+  "devDependencies": {
+    "vite": "^6.0.0"
+  }
+}
