@@ -12,6 +12,7 @@
     "dev:procurement": "corepack pnpm --filter @legacy/procurement-pro dev",
     "dev:helpdesk": "corepack pnpm --filter @legacy/helpdesk-ops dev",
     "build": "corepack pnpm -r build",
+    "build:site": "corepack pnpm build && node scripts/build-portfolio-site.mjs",
     "test": "corepack pnpm -r test"
   }
 }
