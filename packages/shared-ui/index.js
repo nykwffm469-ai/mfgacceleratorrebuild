@@ -169,93 +169,107 @@ const FAMILY_STYLES = [
   }
 ];
 
-const LEGACY_AP_DESCRIPTION = `LEGACY APP DESCRIPTION - AP Statement Reconciliation 2008
+function buildDefaultLegacyDescription(title, modules = []) {
+  const moduleList = modules.map((item) => item.label).join(", ") || "Operations Queue";
+  return `LEGACY APP DESCRIPTION - ${title}
 
-AP Statement Reconciliation 2008 is a finance operations application used by enterprise Accounts Payable teams to reconcile vendor statements against open ERP transactions.
+${title} is an enterprise operations platform from the 2009-2012 era designed for high-volume back-office processing.
 
-The platform centralizes reconciliation workflows including:
-- vendor statement ingestion
-- invoice matching
-- discrepancy management
-- supervisor approvals
-- ERP export coordination
-- audit tracking
-- reconciliation closures
+Primary module areas:
+- ${moduleList}
 
-The application was commonly deployed between 2008-2015 within:
-- manufacturing organizations
-- retail shared-services centers
-- logistics providers
-- healthcare finance teams
-- enterprise accounting departments
+Typical legacy integrations:
+- ERP host synchronization (SAP / Oracle / AS400)
+- shared drive document exchange
+- spreadsheet-based reconciliation imports
+- nightly batch processing and retry queues
 
-The system integrates with multiple legacy platforms including:
-- SAP ECC
-- Oracle Financials
-- JD Edwards
-- Lawson
-- AS400 terminal systems
-- Excel-based reconciliation processes
-- network file-share repositories
+Workflow characteristics:
+- queue-driven processing
+- supervisor approval gates
+- audit trail requirements
+- exception routing and reprocessing
+- print/export packet generation
 
-Operational workflows are organized around queue-based processing stages such as:
-- imported statements
-- matching review
-- discrepancy resolution
-- supervisor approval
-- ERP export
-- archival closure
+Operational users:
+- shared-services analysts
+- operations supervisors
+- quality/compliance reviewers
+- finance and customer operations staff
 
-The user experience reflects enterprise desktop applications commonly built using:
-- VB.NET WinForms
-- Java Swing
-- PowerBuilder
-- early .NET Framework desktop clients
-
-The application includes:
-- reconciliation dashboards
-- queue monitoring
-- ERP synchronization tracking
-- audit history viewers
-- retry processing tools
-- report generation
-- background batch processing indicators
-
-Typical users include:
-- AP analysts
-- finance operations specialists
-- controllers
-- audit reviewers
-- shared-services reconciliation teams
-
-RPA PROBLEM STATEMENT
-
-Many reconciliation tasks within finance operations still rely on repetitive manual interaction across disconnected systems and legacy interfaces.
-
-Common operational activities include:
-- downloading emailed statements
-- importing reconciliation files
-- entering ERP transaction references
-- validating failed exports
-- navigating terminal-based applications
-- generating reconciliation reports
-- updating spreadsheets
-- routing records for supervisor approval
-
-These repetitive workflows create opportunities for RPA solutions to:
-- automate data entry
-- streamline reconciliation processing
-- reduce manual ERP interaction
-- improve queue management
-- automate audit-document generation
-- accelerate discrepancy resolution
-- support attended and unattended automation scenarios`;
+RPA modernization opportunities:
+- screen automation for repetitive data entry
+- queue monitoring and exception triage
+- OCR/document ingestion and validation handoff
+- approval routing and notification automation
+- report and audit packet generation`;
+}
 
 function extractTableRows(table) {
   const rows = Array.from(table.querySelectorAll("tr"));
   return rows.map((row) =>
     Array.from(row.querySelectorAll("th,td")).map((cell) => (cell.textContent || "").trim().replace(/\s+/g, " "))
   );
+}
+
+function setSelectedGridRow(row) {
+  const table = row?.closest(".legacy-grid");
+  if (!table) {
+    return;
+  }
+  table.querySelectorAll("tbody tr").forEach((node) => node.classList.remove("legacy-row-selected"));
+  row.classList.add("legacy-row-selected");
+}
+
+function sortActiveGrid(button) {
+  const host = button.closest(".legacy-window") || document.querySelector(".legacy-window");
+  const table = host?.querySelector(".legacy-main .legacy-grid");
+  if (!table) {
+    showLegacyNotice("No active queue grid available for sort");
+    return;
+  }
+
+  const tbody = table.querySelector("tbody");
+  if (!tbody) {
+    return;
+  }
+
+  const rows = Array.from(tbody.querySelectorAll("tr"));
+  const asc = table.dataset.sortOrder !== "asc";
+  table.dataset.sortOrder = asc ? "asc" : "desc";
+  rows.sort((leftRow, rightRow) => {
+    const left = (leftRow.cells[0]?.textContent || "").trim();
+    const right = (rightRow.cells[0]?.textContent || "").trim();
+    return asc ? left.localeCompare(right) : right.localeCompare(left);
+  });
+  rows.forEach((row) => tbody.appendChild(row));
+  showLegacyNotice(`Queue sort order set to ${asc ? "ascending" : "descending"}`);
+}
+
+function editSelectedGridRow(button) {
+  const host = button.closest(".legacy-window") || document.querySelector(".legacy-window");
+  const table = host?.querySelector(".legacy-main .legacy-grid");
+  const selected = table?.querySelector("tbody tr.legacy-row-selected") || table?.querySelector("tbody tr");
+  const form = host?.querySelector("#entry-form, #record-form, #legacy-record-form");
+  if (!selected || !form) {
+    showLegacyNotice("Select a queue row and ensure entry form is visible");
+    return;
+  }
+
+  const headers = Array.from(table.querySelectorAll("thead th")).map((node) => (node.textContent || "").trim());
+  const values = Array.from(selected.querySelectorAll("td")).map((node) => (node.textContent || "").trim());
+  const formFields = Array.from(form.querySelectorAll("[name]"));
+
+  headers.forEach((header, index) => {
+    const direct = form.querySelector(`[name="${header}"]`);
+    const fallback = formFields.find((field) => String(field.getAttribute("name") || "").toLowerCase() === header.toLowerCase());
+    const target = direct || fallback;
+    if (target) {
+      target.value = values[index] || "";
+    }
+  });
+
+  showLegacyNotice("Selected row loaded into entry form");
 }
 
 function toCsv(rows) {
@@ -389,7 +403,8 @@ function openLegacyDescriptionModal() {
     return;
   }
 
-  const appDescription = windowEl.querySelector("[data-app-description]")?.textContent?.trim() || LEGACY_AP_DESCRIPTION;
+  const title = windowEl.querySelector(".legacy-titlebar span")?.textContent?.trim() || "Legacy Operations Application";
+  const appDescription = windowEl.querySelector("[data-app-description]")?.textContent?.trim() || buildDefaultLegacyDescription(title, []);
 
   const modal = document.createElement("div");
   modal.className = "legacy-command-modal legacy-description-modal";
@@ -735,6 +750,9 @@ function installGlobalLegacyActions() {
     "generate-pdf",
     "retry-failed",
     "view-audit",
+    "supervisor-review",
+    "global-toggle-sort",
+    "global-edit-selected",
     "legacy-app-help",
     "new",
     "toggle-first",
@@ -758,6 +776,11 @@ function installGlobalLegacyActions() {
         const contextButton = document.querySelector("[data-action='export-excel']") || menuTarget;
         openMainMenuCommand(menuId, menuLabel, contextButton);
         return;
+      }
+
+      const rowTarget = event.target instanceof Element ? event.target.closest(".legacy-grid tbody tr") : null;
+      if (rowTarget) {
+        setSelectedGridRow(rowTarget);
       }
 
       const target = event.target instanceof Element ? event.target.closest("[data-action]") : null;
@@ -787,6 +810,27 @@ function installGlobalLegacyActions() {
         showLegacyNotice("Retry failed records queued - 7 records scheduled for reprocessing");
       } else if (action === "view-audit") {
         showLegacyNotice("Audit history opened in review mode");
+      } else if (action === "supervisor-review") {
+        openLegacyCommandMenu({
+          title: "Supervisor Review Queue",
+          subtitle: "Approve, reject, or reroute exception records.",
+          options: [
+            {
+              label: "Open Pending Approvals",
+              detail: "Loads supervisor queue with aging records.",
+              run: () => showLegacyNotice("Supervisor review queue opened")
+            },
+            {
+              label: "Escalate High Priority",
+              detail: "Routes top priority queue items for immediate action.",
+              run: () => showLegacyNotice("Workflow escalation triggered")
+            }
+          ]
+        });
+      } else if (action === "global-toggle-sort") {
+        sortActiveGrid(target);
+      } else if (action === "global-edit-selected") {
+        editSelectedGridRow(target);
       } else if (action === "legacy-app-help") {
         openLegacyDescriptionModal();
       } else if (action === "new") {
@@ -972,6 +1016,9 @@ export function appShell({ title, modules, activeModule, toolbarButtons, statusT
   const navHtml = renderNav({ modules, activeModule, navPattern: identity.navPattern });
   const shellButtons = [
     { id: "open-window", label: "Open Window" },
+    { id: "global-edit-selected", label: "Edit Selected" },
+    { id: "global-toggle-sort", label: "Toggle Sort" },
+    { id: "supervisor-review", label: "Supervisor Review" },
     { id: "export-excel", label: "Export Excel" },
     { id: "print-preview", label: "Print Preview" },
     { id: "generate-pdf", label: "Generate PDF" },
@@ -1002,7 +1049,7 @@ export function appShell({ title, modules, activeModule, toolbarButtons, statusT
           <a class=\"legacy-backlink\" href=\"../\" aria-label=\"Back to main page\">Main</a>
         </div>
       </div>
-      <div data-app-description style=\"display:none;\">${escapeHtml(appDescription || `Legacy application context is not configured for ${title}.`)}</div>
+      <div data-app-description style="display:none;">${escapeHtml(appDescription || buildDefaultLegacyDescription(title, modules))}</div>
       ${renderMenuBar({ modules, menuVerb: identity.menuVerb })}
       <div class=\"legacy-toolbar\">${toolbarHtml}</div>
       ${identity.navPattern === "top-tabs" ? renderTopTabs({ modules, activeModule }) : ""}
