@@ -46,7 +46,7 @@ let selectedRowIndex = -1;
 let sortAsc = true;
 let activeModal = "";
 
-ensureSeed(namespace, () => ({
+const buildInitialData = () => ({
   incidents: [{ incidentId: "INC-420", service: "Exchange", priority: "P2", assignmentGroup: "Messaging Ops", sla: "00:45", status: "In Progress" }],
   requests: [{ requestId: "REQ-812", requestor: "M. Lee", catalogItem: "VPN Access", fulfillmentTeam: "Identity Ops", target: "24h", status: "Pending Approval" }],
   problems: [{ problemId: "PRB-10", service: "Network", rootCause: "Core router failover", knownError: "KE-77", owner: "Infra", status: "Investigating" }],
@@ -59,7 +59,23 @@ ensureSeed(namespace, () => ({
   release: [{ releaseId: "REL-12", train: "June-Train-A", environment: "Prod", goNoGo: "Pending", owner: "Release Mgr", status: "Ready for CAB" }],
   approvals: [{ approvalId: "APR-334", recordType: "Change", recordRef: "CHG-58", approver: "CAB Board", ageHours: "17", status: "Awaiting Review" }],
   sla: [{ slaId: "SLA-7", metric: "P1 Response", target: "00:15", breached: "2", owner: "NOC", status: "At Risk" }]
-}));
+});
+
+ensureSeed(namespace, buildInitialData);
+
+function loadItsmData() {
+  const source = loadSeed(namespace, buildInitialData);
+  const fallback = buildInitialData();
+  const normalized = { ...fallback, ...(source && typeof source === "object" ? source : {}) };
+
+  modules.forEach((module) => {
+    if (!Array.isArray(normalized[module.id])) {
+      normalized[module.id] = [...fallback[module.id]];
+    }
+  });
+
+  return normalized;
+}
 
 function applyPalette() {
   const root = document.documentElement;
@@ -162,7 +178,7 @@ function renderModal(data) {
 
 function render() {
   applyPalette();
-  const data = loadSeed(namespace, () => ({}));
+  const data = loadItsmData();
   const moduleColumns = columns[activeModule];
   const rows = sortedRows(data, moduleColumns);
   const grid = dataGrid(moduleColumns, rows);
@@ -219,7 +235,7 @@ function render() {
   document.querySelectorAll("[data-local-action]").forEach((button) => {
     button.addEventListener("click", () => {
       const action = button.getAttribute("data-local-action");
-      const latest = loadSeed(namespace, () => ({}));
+      const latest = loadItsmData();
       if (action === "toggle-sort") {
         sortAsc = !sortAsc;
       } else if (action === "edit-selected") {
@@ -257,7 +273,7 @@ function render() {
   document.querySelectorAll("[data-action]").forEach((button) => {
     button.addEventListener("click", () => {
       const action = button.getAttribute("data-action");
-      const latest = loadSeed(namespace, () => ({}));
+      const latest = loadItsmData();
       if (action === "toggle-first" && latest[activeModule][0]) {
         const first = latest[activeModule][0];
         if (first.status) {
@@ -290,7 +306,7 @@ function render() {
     if (!row[keyField]) {
       row[keyField] = makeId(moduleName.slice(0, 3).toUpperCase());
     }
-    const latest = loadSeed(namespace, () => ({}));
+    const latest = loadItsmData();
     const index = latest[moduleName].findIndex((item) => item[keyField] === row[keyField]);
     if (index >= 0) {
       latest[moduleName][index] = row;
