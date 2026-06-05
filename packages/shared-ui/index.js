@@ -729,6 +729,7 @@ function installGlobalLegacyActions() {
   }
 
   const handled = new Set([
+    "open-window",
     "export-excel",
     "print-preview",
     "generate-pdf",
@@ -774,7 +775,9 @@ function installGlobalLegacyActions() {
 
       event.preventDefault();
 
-      if (action === "export-excel") {
+      if (action === "open-window") {
+        window.open(window.location.href, "_blank", "noopener,noreferrer");
+      } else if (action === "export-excel") {
         runExcelExport(target);
       } else if (action === "print-preview") {
         openPrintWindow(target, "print");
@@ -908,31 +911,37 @@ function renderMenuBar({ modules, menuVerb }) {
 function renderOpsStrip(identityHash) {
   const syncMinute = 10 + (identityHash % 45);
   const syncStamp = `2:${String(syncMinute).padStart(2, "0")} AM`;
-  const warnings = [
-    "ERP export pending",
-    "7 records failed validation",
-    "Batch job processing",
-    "Supervisor approval required",
-    "Record locked by another user",
-    "Workflow in progress",
-    "Pending compliance review",
-    "Posting period closed",
-    "Review aging exceptions",
-    "Import queue",
-    "Document retention policy",
-    "Escalation triggered",
-    "Awaiting business approval",
-    "System maintenance window scheduled",
-    "Session timeout warning"
-  ];
+        const env = ["PROD", "QA", "UAT"][identityHash % 3];
+        const workstation = `WS-${String((identityHash % 90) + 10)}`;
+        const operator = `OPR-${String((identityHash % 300) + 100)}`;
+        const statuses = [
+          "ERP export pending",
+          "records failed validation",
+          "batch job processing",
+          "supervisor approval required",
+          "record locked by another user"
+        ];
+        const backgroundAlerts = [
+          "Queue processor unavailable",
+          "Batch rollback initiated",
+          "ERP synchronization delayed",
+          "Validation exception detected",
+          "Workflow approval pending",
+          "Retry engine active",
+          "Oracle host timeout",
+          "AS400 session reconnect initiated"
+        ];
 
   return `
     <section class=\"legacy-ops-strip\">
       <div class=\"legacy-ops-row\">
-        <span class=\"legacy-pill\">Last nightly sync completed: ${syncStamp}</span>
-        <span class=\"legacy-pill\">Queue-driven workflow active</span>
-        <span class=\"legacy-pill\">Supervisor review queue: ${(identityHash % 5) + 2} items</span>
-        <span class=\"legacy-pill\">Open in new window</span>
+              <span class="legacy-pill legacy-pill-env">Environment: ${env}</span>
+              <span class="legacy-pill">Workstation: ${workstation}</span>
+              <span class="legacy-pill">Operator ID: ${operator}</span>
+              <span class="legacy-pill">Last nightly sync completed: ${syncStamp}</span>
+              <span class="legacy-pill">Queue-driven workflow active</span>
+              <span class="legacy-pill">Supervisor review queue: ${(identityHash % 5) + 2} items</span>
+              <button class="legacy-btn" data-action="open-window">Open in new window</button>
       </div>
       <div class=\"legacy-ops-row\">
         <label>Saved View</label>
@@ -948,10 +957,11 @@ function renderOpsStrip(identityHash) {
         <button class=\"legacy-btn\" data-action=\"retry-failed\">Retry failed records</button>
         <button class=\"legacy-btn\" data-action=\"view-audit\">View audit history</button>
       </div>
-      <div class=\"legacy-alert-list\">${warnings
-        .slice(0, 5)
-        .map((warning) => `<span class=\"legacy-alert-item\">${warning}</span>`)
-        .join("")}</div>
+            <div class="legacy-alert-list">${statuses.map((warning) => `<span class="legacy-alert-item">${warning}</span>`).join("")}</div>
+            <div class="legacy-alert-list legacy-alert-background">${backgroundAlerts
+              .slice(identityHash % 2, (identityHash % 2) + 3)
+              .map((warning) => `<span class="legacy-alert-item legacy-alert-bg-item">${warning}</span>`)
+              .join("")}</div>
     </section>
   `;
 }
@@ -961,8 +971,11 @@ export function appShell({ title, modules, activeModule, toolbarButtons, statusT
   const identityHash = hashText(identityKey || title);
   const navHtml = renderNav({ modules, activeModule, navPattern: identity.navPattern });
   const shellButtons = [
+    { id: "open-window", label: "Open Window" },
     { id: "export-excel", label: "Export Excel" },
     { id: "print-preview", label: "Print Preview" },
+    { id: "generate-pdf", label: "Generate PDF" },
+    { id: "view-audit", label: "View Audit" },
     { id: "retry-failed", label: "Retry Failed" },
     ...(toolbarButtons || [])
   ];

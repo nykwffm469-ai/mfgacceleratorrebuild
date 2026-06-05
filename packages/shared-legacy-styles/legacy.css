@@ -29,8 +29,8 @@ body {
   background: var(--legacy-bg);
   color: var(--legacy-text);
   font-family: var(--legacy-font);
-  font-size: 12px;
-  line-height: 1.3;
+  font-size: 11px;
+  line-height: 1.2;
 }
 
 .legacy-window {
@@ -128,6 +128,15 @@ body {
   padding: 3px 8px;
   font-size: 11px;
   cursor: pointer;
+  box-shadow: inset 1px 1px 0 #f9fbfe, inset -1px -1px 0 #9ca9b6;
+}
+
+.legacy-btn:hover {
+  filter: brightness(0.95);
+}
+
+.legacy-btn:active {
+  box-shadow: inset 1px 1px 0 #8c98a4, inset -1px -1px 0 #f5f8fc;
 }
 
 .legacy-btn:disabled {
@@ -228,6 +237,13 @@ body {
   padding: 1px 6px;
 }
 
+.legacy-pill-env {
+  background: #f0e3bf;
+  border-color: #9d7f44;
+  color: #4f3815;
+  font-weight: 700;
+}
+
 .legacy-alert-list {
   display: flex;
   flex-wrap: wrap;
@@ -240,6 +256,16 @@ body {
   color: #4c3716;
   font-size: 10px;
   padding: 1px 5px;
+}
+
+.legacy-alert-background {
+  margin-top: 4px;
+}
+
+.legacy-alert-bg-item {
+  border-color: #877f66;
+  background: #e7e2d1;
+  color: #433f32;
 }
 
 .legacy-small {
@@ -384,6 +410,7 @@ body {
 .legacy-grid th {
   background: var(--legacy-grid-head);
   font-weight: 700;
+  color: #3e3524;
 }
 
 .legacy-grid tbody tr:nth-child(odd) {
@@ -392,6 +419,10 @@ body {
 
 .legacy-grid tbody tr:nth-child(even) {
   background: var(--legacy-grid-row-alt);
+}
+
+.legacy-grid tbody tr.legacy-row-selected td {
+  background: #f3e8ba;
 }
 
 .legacy-window[data-grid-style="dense"] .legacy-grid th,
@@ -434,8 +465,9 @@ body {
   border: 1px solid #808a96;
   border-radius: 1px;
   padding: 3px 4px;
-  background: #fcfdff;
+  background: #f8f8f2;
   font-size: 11px;
+  box-shadow: inset 1px 1px 2px rgba(80, 88, 94, 0.28);
 }
 
 .legacy-tabs {

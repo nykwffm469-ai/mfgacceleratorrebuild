@@ -3,7 +3,7 @@
 ## Last Updated
 
 - Date: 2026-06-05
-- Update: UI tune applied to AP Statement Reconciliation 2008 with dense enterprise finance operations behaviors, modal workflows, retry console simulation, report/export flows, and live status monitoring.
+- Update: Legacy Enterprise Suite second pass completed for Apps 3-8 with deeper row-level interactions, queue/domain widgets, modal workflow consoles (audit, retry, supervisor approval, print/export), and expanded operations realism. Shared shell/status system updated with environment, workstation, operator, and background alert fidelity.
 
 This repository is a deterministic portfolio of fake but believable legacy enterprise front-end systems.
 
@@ -145,3 +145,23 @@ corepack pnpm build:site
 ## Persistence model
 
 Each app seeds fake data on first run and persists to localStorage per app namespace.
+
+## 2026-06 Legacy Suite Build Notes
+
+Focused second-pass upgrades were applied to the following apps:
+
+- data-warehouse-ops
+- dealer-incentive-settlement
+- dock-appointment-scheduler
+- document-imaging-queue
+- erp-command-center
+- export-compliance-screening
+
+Implemented behaviors in this pass:
+
+- row selection highlight and edit-selected workflow
+- deterministic toggle-sort workflow on queue keys
+- denser operational widgets and domain calculators per app
+- richer side panels describing queue context and RPA candidate flows
+- app-specific modal flows for audit history, retry failures, supervisor review, and print/export preview
+- expanded seeded records for queue lifecycle, exceptions, and approvals
