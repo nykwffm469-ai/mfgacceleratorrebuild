@@ -90,6 +90,71 @@ function getAppProfile(id, title, subtitle) {
   return { area: "Operations", interface: "Legacy Web", displayTitle: title };
 }
 
+function getAppMeta(id) {
+  const families = {
+    SAP: { color: "#0d3b66", bg: "#dbe7f3" },
+    Oracle: { color: "#c74634", bg: "#f8dad4" },
+    IBM: { color: "#1f70c1", bg: "#d9e9f7" },
+    Microsoft: { color: "#0078d4", bg: "#d6ebf9" },
+    SharePoint: { color: "#1f497d", bg: "#dde7f4" },
+    ServiceNow: { color: "#62d84e", bg: "#e0f4dc" },
+    Salesforce: { color: "#0070d2", bg: "#d6ebf9" },
+    Bootstrap: { color: "#563d7c", bg: "#e7e0f0" },
+    Mainframe: { color: "#0a0a0a", bg: "#d6d6d6" },
+    "Custom .NET": { color: "#5a6772", bg: "#e8ebee" },
+    Excel: { color: "#107c41", bg: "#dbeed5" },
+    Other: { color: "#7a4f9c", bg: "#ece1f3" }
+  };
+  const m = {
+    // Modern apps (built post-2018 or modern frameworks)
+    "modern-loan-origination": { era: "Modern", score: 1, family: "Bootstrap" },
+    "modern-vendor-risk": { era: "Modern", score: 1, family: "Bootstrap" },
+    "modern-itsm-now": { era: "Modern", score: 1, family: "ServiceNow" },
+    "modern-salesforce-crm": { era: "Modern", score: 1, family: "Salesforce" },
+    "bot-orchestrator-console": { era: "Modern", score: 1, family: "Bootstrap" },
+    "document-intelligence-studio": { era: "Modern", score: 1, family: "Bootstrap" },
+    "email-intake-bot": { era: "Modern", score: 1, family: "Microsoft" },
+    "rpa-roi-dashboard": { era: "Modern", score: 1, family: "Bootstrap" },
+    "healthcare-prior-auth": { era: "2018", score: 2, family: "Custom .NET" },
+    "bank-wire-ach-ops": { era: "2014", score: 3, family: "Custom .NET" },
+    "identity-governance": { era: "Modern", score: 1, family: "Bootstrap" },
+    "edi-856-monitor": { era: "Modern", score: 2, family: "Bootstrap" },
+    "sharepoint-doc-center": { era: "2010", score: 4, family: "SharePoint" },
+    "excel-macro-lab": { era: "2003", score: 5, family: "Excel" },
+    // Mainframe
+    "mainframe-3270-emulator": { era: "1998", score: 5, family: "Mainframe" },
+    "warehouse-terminal": { era: "1998", score: 5, family: "Mainframe" },
+    "erp-tcode-workbench": { era: "2003", score: 5, family: "SAP" },
+    "erp-command-center": { era: "2010", score: 4, family: "SAP" },
+    // SharePoint-ish
+    "chargeback-response-workbench": { era: "2010", score: 4, family: "SharePoint" },
+    "hr-portal": { era: "2010", score: 4, family: "SharePoint" },
+    "project-tracker": { era: "2010", score: 4, family: "SharePoint" },
+    // Salesforce-ish CRM
+    "crm-classic": { era: "2010", score: 4, family: "Salesforce" },
+    "customer-cloud-hub": { era: "2010", score: 3, family: "Salesforce" },
+    // ServiceNow-style ITSM
+    "service-desk-plus": { era: "2010", score: 4, family: "ServiceNow" },
+    "helpdesk-ops": { era: "2010", score: 4, family: "ServiceNow" },
+    // Oracle Forms style
+    "procurement-pro": { era: "2010", score: 4, family: "Oracle" },
+    "finance-ledger": { era: "2010", score: 4, family: "Oracle" },
+    "claims-desk": { era: "2003", score: 5, family: "Oracle" },
+    "ap-statement-reconciliation": { era: "2010", score: 4, family: "Oracle" },
+    "finance-close-studio": { era: "2014", score: 3, family: "Oracle" },
+    // IBM mainframe-adjacent
+    "loan-servicing-collections": { era: "2003", score: 5, family: "IBM" },
+    "legal-docket": { era: "2010", score: 4, family: "IBM" },
+    // Microsoft Dynamics-ish
+    "field-service-workbench": { era: "2014", score: 3, family: "Microsoft" },
+    "maintenance-cmms": { era: "2014", score: 3, family: "Microsoft" },
+    "fleet-ops": { era: "2014", score: 3, family: "Microsoft" }
+  };
+  const meta = m[id] || { era: "2014", score: 3, family: "Custom .NET" };
+  meta.familyStyle = families[meta.family] || families.Other;
+  return meta;
+}
+
 const appsRoot = join(root, "apps");
 const apps = readdirSync(appsRoot, { withFileTypes: true })
   .filter((entry) => entry.isDirectory() && entry.name !== "samplecode")
@@ -99,6 +164,7 @@ const apps = readdirSync(appsRoot, { withFileTypes: true })
     const title = toTitleCase(id);
     const subtitle = readAppSummary(appRoot);
     const profile = getAppProfile(id, title, subtitle);
+    const meta = getAppMeta(id);
     return {
       id,
       title,
@@ -106,6 +172,10 @@ const apps = readdirSync(appsRoot, { withFileTypes: true })
       subtitle,
       area: profile.area,
       interface: profile.interface,
+      era: meta.era,
+      score: meta.score,
+      family: meta.family,
+      familyStyle: meta.familyStyle,
       distPath: join(appRoot, "dist")
     };
   })
@@ -210,29 +280,37 @@ for (const app of apps) {
 
 const cards = apps
   .map(
-    (app, index) => `
-      <tr class="app-row" data-kind="local" data-area="${app.area}" data-interface="${app.interface}" data-search="${`${app.displayTitle} ${app.title} ${app.subtitle} ${app.id} ${app.area} ${app.interface}`.toLowerCase()}">
+    (app, index) => {
+      const eraColor = app.era === "Modern" ? "#00a878" : app.era === "2018" ? "#5b9bd5" : app.era === "2014" ? "#a4a4a4" : app.era === "2010" ? "#d4a93c" : app.era === "2003" ? "#c66833" : "#8b1a1a";
+      const scoreColor = app.score === 1 ? "#0a8a2c" : app.score === 2 ? "#5cb85c" : app.score === 3 ? "#cc6600" : app.score === 4 ? "#d9534f" : "#8b1a1a";
+      return `
+      <tr class="app-row" data-kind="local" data-area="${app.area}" data-interface="${app.interface}" data-era="${app.era}" data-family="${app.family}" data-score="${app.score}" data-search="${`${app.displayTitle} ${app.title} ${app.subtitle} ${app.id} ${app.area} ${app.interface} ${app.family} ${app.era}`.toLowerCase()}">
         <td>${index + 1}</td>
         <td><a href="./${app.id}/">${app.displayTitle}</a></td>
         <td>${app.subtitle}</td>
         <td>${app.area}</td>
         <td>${app.interface}</td>
-        <td>Local</td>
+        <td><span style="background:${app.familyStyle.bg};color:${app.familyStyle.color};border:1px solid ${app.familyStyle.color};padding:1px 6px;font-weight:600;font-size:10px;border-radius:2px;">${app.family}</span></td>
+        <td><span style="background:${eraColor};color:#fff;padding:1px 6px;font-weight:700;font-size:10px;border-radius:2px;">${app.era}</span></td>
+        <td><span title="${app.score === 1 ? "Already modernized" : app.score === 5 ? "Highest RPA / replacement opportunity" : "Mid-tier modernization candidate"}" style="background:${scoreColor};color:#fff;padding:1px 6px;font-weight:700;font-size:10px;border-radius:2px;">${"&#9733;".repeat(app.score)}</span></td>
         <td><code>/${app.id}/</code></td>
-      </tr>`
+      </tr>`;
+    }
   )
   .join("");
 
 const hostedCards = hostedApps
   .map(
     (app, index) => `
-      <tr class="app-row" data-kind="hosted" data-area="${app.area}" data-interface="${app.interface}" data-search="${`${app.title} ${app.subtitle} ${app.url} ${app.area} ${app.interface}`.toLowerCase()}">
+      <tr class="app-row" data-kind="hosted" data-area="${app.area}" data-interface="${app.interface}" data-era="Modern" data-family="External" data-score="0" data-search="${`${app.title} ${app.subtitle} ${app.url} ${app.area} ${app.interface}`.toLowerCase()}">
         <td>${apps.length + index + 1}</td>
         <td><a href="${app.url}" target="_blank" rel="noreferrer">${app.title}</a></td>
         <td>${app.subtitle}</td>
         <td>${app.area}</td>
         <td>${app.interface}</td>
-        <td>Hosted</td>
+        <td><span style="background:#e8ebee;color:#5a6772;border:1px solid #5a6772;padding:1px 6px;font-weight:600;font-size:10px;border-radius:2px;">External</span></td>
+        <td><span style="background:#00a878;color:#fff;padding:1px 6px;font-weight:700;font-size:10px;border-radius:2px;">Hosted</span></td>
+        <td>-</td>
         <td><code>${app.url}</code></td>
       </tr>`
   )
@@ -409,12 +487,72 @@ const html = `<!doctype html>
           <option value="local">Local only</option>
           <option value="hosted">Hosted only</option>
         </select>
+        <select id="era-filter" aria-label="Filter by era">
+          <option value="">All Eras</option>
+          <option value="Modern">Modern</option>
+          <option value="2018">2018</option>
+          <option value="2014">2014</option>
+          <option value="2010">2010</option>
+          <option value="2003">2003</option>
+          <option value="1998">1998</option>
+        </select>
+        <select id="family-filter" aria-label="Filter by vendor family">
+          <option value="">All Families</option>
+          <option value="SAP">SAP</option>
+          <option value="Oracle">Oracle</option>
+          <option value="IBM">IBM</option>
+          <option value="Microsoft">Microsoft</option>
+          <option value="SharePoint">SharePoint</option>
+          <option value="ServiceNow">ServiceNow</option>
+          <option value="Salesforce">Salesforce</option>
+          <option value="Bootstrap">Modern Web (Bootstrap)</option>
+          <option value="Mainframe">Mainframe</option>
+          <option value="Excel">Excel</option>
+          <option value="Custom .NET">Custom .NET</option>
+        </select>
       </div>
       <div class="content">
+        <div class="panel" style="border-left:4px solid #1f497d;">
+          <h2 style="background:linear-gradient(to bottom,#dde7f4 0%,#9bb8d8 100%);">Connected RPA Stories - Click any step to see how the platform connects</h2>
+          <div class="body">
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+              <div style="background:#f0f7ff;border:1px solid #b3c4d8;padding:8px;border-radius:4px;">
+                <div style="font-weight:700;color:#1f497d;margin-bottom:4px;">&#129534; Vendor Onboarding to ERP-Eligible</div>
+                <ol style="margin:0;padding-left:18px;font-size:11px;line-height:1.6;">
+                  <li><a href="./vendor-onboarding-desk/">Vendor Onboarding Desk</a> (intake W9 + bank)</li>
+                  <li><a href="./email-intake-bot/">AP/AR Email Bot</a> (parses incoming COI)</li>
+                  <li><a href="./modern-vendor-risk/">VendorPulse Risk Cockpit</a> (RPA validates W9/OFAC/COI)</li>
+                  <li><a href="./bot-orchestrator-console/">Orchestrator</a> (pushes to ERP master)</li>
+                  <li><a href="./erp-command-center/">ERP Command Center</a> (vendor now AP-eligible)</li>
+                </ol>
+              </div>
+              <div style="background:#f0f7ff;border:1px solid #b3c4d8;padding:8px;border-radius:4px;">
+                <div style="font-weight:700;color:#1f497d;margin-bottom:4px;">&#129534; Invoice-to-Pay Straight-Through</div>
+                <ol style="margin:0;padding-left:18px;font-size:11px;line-height:1.6;">
+                  <li><a href="./email-intake-bot/">Email Bot</a> (receives invoice PDF)</li>
+                  <li><a href="./document-intelligence-studio/">IDP Studio</a> (OCR + extract fields)</li>
+                  <li><a href="./payable-batch-uploader/">Payable Batch Uploader</a> (3-way match)</li>
+                  <li><a href="./ap-statement-reconciliation/">AP Recon</a> (reconcile + post)</li>
+                  <li><a href="./bank-wire-ach-ops/">Wire/ACH Ops</a> (payment runs)</li>
+                </ol>
+              </div>
+              <div style="background:#f0f7ff;border:1px solid #b3c4d8;padding:8px;border-radius:4px;">
+                <div style="font-weight:700;color:#1f497d;margin-bottom:4px;">&#129534; Loan Origination End-to-End</div>
+                <ol style="margin:0;padding-left:18px;font-size:11px;line-height:1.6;">
+                  <li><a href="./modern-loan-origination/">NorthBank Origination</a> (intake + decision)</li>
+                  <li><a href="./document-intelligence-studio/">IDP Studio</a> (parse W2 + paystubs)</li>
+                  <li><a href="./loan-servicing-collections/">Loan Servicing</a> (booked + serviced)</li>
+                  <li><a href="./bot-orchestrator-console/">Orchestrator</a> (servicing exceptions)</li>
+                  <li><a href="./rpa-roi-dashboard/">ROI Dashboard</a> (savings tracking)</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="panel">
           <h2>Purpose</h2>
           <div class="body">
-            This site hosts ${apps.length} fake but believable legacy enterprise front-end simulations plus ${hostedApps.length} related hosted apps in the same Azure/GitHub environment. All local portfolio data is seeded and stored in browser localStorage only.
+            This site hosts ${apps.length} fake but believable legacy enterprise front-end simulations plus ${hostedApps.length} related hosted apps in the same Azure/GitHub environment. Every app shows a real-world workflow that RPA, IDP, or modern SaaS can transform. The launcher tags each app with its <strong>era</strong>, <strong>vendor family</strong>, and a <strong>modernization-candidate score (1-5 stars)</strong> - higher stars indicate higher RPA / replacement opportunity. All local portfolio data is seeded and stored in browser localStorage only.
           </div>
         </div>
         <div class="panel">
@@ -437,7 +575,9 @@ const html = `<!doctype html>
                   <th>Description</th>
                   <th>Area</th>
                   <th>Interface</th>
-                  <th>Type</th>
+                  <th title="Vendor family the UI imitates">Family</th>
+                  <th title="Era the app represents">Era</th>
+                  <th title="Modernization / RPA candidate score: 1=already modernized, 5=highest opportunity">RPA Score</th>
                   <th>Path</th>
                 </tr>
               </thead>
@@ -454,6 +594,8 @@ const html = `<!doctype html>
         const interfaceFilter = document.getElementById("interface-filter");
         const consoleFilter = document.getElementById("console-filter");
         const kindFilter = document.getElementById("kind-filter");
+        const eraFilter = document.getElementById("era-filter");
+        const familyFilter = document.getElementById("family-filter");
         const rows = Array.from(document.querySelectorAll(".app-row"));
         const countLabel = document.getElementById("app-count-label");
         const total = rows.length;
@@ -463,6 +605,8 @@ const html = `<!doctype html>
           const areaValue = areaFilter.value;
           const interfaceValue = interfaceFilter.value;
           const kindValue = kindFilter.value;
+          const eraValue = eraFilter.value;
+          const familyValue = familyFilter.value;
           const isConsoleOnly = consoleFilter.checked;
           let visible = 0;
 
@@ -471,12 +615,16 @@ const html = `<!doctype html>
             const rowArea = row.getAttribute("data-area") || "";
             const rowInterface = row.getAttribute("data-interface") || "";
             const rowKind = row.getAttribute("data-kind") || "";
+            const rowEra = row.getAttribute("data-era") || "";
+            const rowFamily = row.getAttribute("data-family") || "";
             const queryMatch = !query || haystack.includes(query);
             const areaMatch = !areaValue || rowArea === areaValue;
             const interfaceMatch = !interfaceValue || rowInterface === interfaceValue;
             const kindMatch = !kindValue || rowKind === kindValue;
+            const eraMatch = !eraValue || rowEra === eraValue;
+            const familyMatch = !familyValue || rowFamily === familyValue;
             const consoleMatch = !isConsoleOnly || rowInterface === "Console/Terminal";
-            const match = queryMatch && areaMatch && interfaceMatch && kindMatch && consoleMatch;
+            const match = queryMatch && areaMatch && interfaceMatch && kindMatch && consoleMatch && eraMatch && familyMatch;
             row.style.display = match ? "" : "none";
             if (match) visible += 1;
           });
@@ -489,6 +637,8 @@ const html = `<!doctype html>
         interfaceFilter.addEventListener("change", applyFilter);
         consoleFilter.addEventListener("change", applyFilter);
         kindFilter.addEventListener("change", applyFilter);
+        eraFilter.addEventListener("change", applyFilter);
+        familyFilter.addEventListener("change", applyFilter);
       })();
     </script>
   </body>
