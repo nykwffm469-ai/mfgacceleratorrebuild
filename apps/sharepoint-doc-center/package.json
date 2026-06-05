@@ -1,0 +1,14 @@
+{
+  "name": "@legacy/sharepoint-doc-center",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build --base ./",
+    "test": "node -e \"console.log('sharepoint-doc-center: no tests yet')\""
+  },
+  "devDependencies": {
+    "vite": "^6.0.0"
+  }
+}

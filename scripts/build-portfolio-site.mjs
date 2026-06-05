@@ -48,7 +48,10 @@ const appProfiles = {
   "claims-desk": { area: "Insurance", interface: "Desktop-style Web", displayTitle: "Insurance Claims Desk" },
   "quality-audit": { area: "Manufacturing", interface: "Intranet Grid", displayTitle: "Quality Audit Hub" },
   "order-hold-release": { area: "Distribution", interface: "ERP Workbench", displayTitle: "Order Hold Release" },
-  "erp-tcode-workbench": { area: "ERP Operations", interface: "Console/Terminal", displayTitle: "ERP T-Code Workbench" }
+  "erp-tcode-workbench": { area: "ERP Operations", interface: "Console/Terminal", displayTitle: "ERP T-Code Workbench" },
+  "sharepoint-doc-center": { area: "ECM / Compliance", interface: "SharePoint 2010 Clone", displayTitle: "SharePoint Document Center" },
+  "modern-loan-origination": { area: "Banking & Lending", interface: "Modern Web (Bootstrap)", displayTitle: "NorthBank Loan Origination" },
+  "modern-vendor-risk": { area: "Third-Party Risk", interface: "Modern Web (Bootstrap)", displayTitle: "VendorPulse Risk Cockpit" }
 };
 
 function getAppProfile(id, title, subtitle) {
@@ -165,7 +168,10 @@ const legacyBusinessAreas = [
   "Supply Chain",
   "Insurance",
   "Distribution",
-  "ERP Operations"
+  "ERP Operations",
+  "ECM / Compliance",
+  "Banking & Lending",
+  "Third-Party Risk"
 ];
 
 const areaCounts = legacyBusinessAreas

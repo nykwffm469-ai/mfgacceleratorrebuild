@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SharePoint 2010 - Document Center</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: "Segoe UI", Tahoma, Verdana, Arial, sans-serif;
+        font-size: 12px;
+        color: #1c1c1c;
+        background: #ffffff;
+      }
+      .sp-boot {
+        max-width: 760px;
+        margin: 42px auto;
+        border: 1px solid #b3c4d8;
+        background: #f4f8fc;
+        padding: 14px;
+        font-size: 12px;
+      }
+      .sp-boot h1 {
+        font-size: 14px;
+        margin: 0 0 8px;
+        color: #1f497d;
+      }
+      .sp-boot .row {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-top: 6px;
+      }
+      .sp-boot button {
+        border: 1px solid #6b7e95;
+        background: linear-gradient(to bottom, #fdfeff 0%, #d6e2f1 100%);
+        padding: 3px 10px;
+        font-family: inherit;
+        font-size: 12px;
+        color: #1f497d;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <section class="sp-boot" id="sp-boot-panel">
+        <h1>Loading Contoso Document Center...</h1>
+        <p>Connecting to SharePoint farm...</p>
+      </section>
+    </div>
+    <script>
+      (function () {
+        var bootPanel = document.getElementById("sp-boot-panel");
+        var appHost = document.getElementById("app");
+
+        window.setTimeout(function () {
+          if (!appHost) return;
+          if (appHost.querySelector(".sp-shell")) return;
+          appHost.innerHTML =
+            '<section class="sp-boot">' +
+            '<h1>SharePoint 2010 - Recovery Mode</h1>' +
+            '<p>The site collection failed to mount. Try a hard reload or reset cached site data.</p>' +
+            '<div class="row">' +
+            '<button type="button" id="sp-hard-reload">Hard Reload</button>' +
+            '<button type="button" id="sp-reset">Reset Site Cache + Reload</button>' +
+            '</div>' +
+            '</section>';
+          document.getElementById("sp-hard-reload").onclick = function () { location.reload(); };
+          document.getElementById("sp-reset").onclick = function () {
+            try { localStorage.removeItem("sp-doc-center"); } catch (e) {}
+            location.reload();
+          };
+        }, 2800);
+      })();
+    </script>
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>
