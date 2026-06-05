@@ -1018,7 +1018,7 @@ export function appShell({ title, modules, activeModule, toolbarButtons, statusT
     { id: "open-window", label: "Open Window" },
     { id: "global-edit-selected", label: "Edit Selected" },
     { id: "global-toggle-sort", label: "Toggle Sort" },
-    { id: "supervisor-review", label: "Supervisor Review" },
+    { id: "supervisor-review", label: "Sup Review" },
     { id: "export-excel", label: "Export Excel" },
     { id: "print-preview", label: "Print Preview" },
     { id: "generate-pdf", label: "Generate PDF" },
