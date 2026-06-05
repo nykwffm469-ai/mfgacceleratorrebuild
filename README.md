@@ -1,5 +1,10 @@
 # Legacy Enterprise App Portfolio (2010-2012 Simulations)
 
+## Last Updated
+
+- Date: 2026-06-05
+- Update: UI tune applied to AP Statement Reconciliation 2008 with dense enterprise finance operations behaviors, modal workflows, retry console simulation, report/export flows, and live status monitoring.
+
 This repository is a deterministic portfolio of fake but believable legacy enterprise front-end systems.
 
 GitHub repository: https://github.com/nykwffm469-ai/mfgacceleratorrebuild
