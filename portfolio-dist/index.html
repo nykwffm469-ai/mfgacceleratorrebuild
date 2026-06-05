@@ -1,0 +1,903 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Legacy Enterprise Portfolio</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+        font-size: 12px;
+        color: #1a1f26;
+        background: #d9dde2;
+      }
+      .window {
+        margin: 10px;
+        border: 1px solid #6d7885;
+        background: #f1f3f5;
+      }
+      .titlebar {
+        padding: 7px 9px;
+        font-weight: 700;
+        background: linear-gradient(to bottom, #e9eef4 0%, #b8c5d4 100%);
+        border-bottom: 1px solid #7d8893;
+      }
+      .toolbar {
+        padding: 4px;
+        border-bottom: 1px solid #7d8893;
+        background: linear-gradient(to bottom, #fff 0%, #c2ccd7 100%);
+      }
+      .toolbar span {
+        display: inline-block;
+        margin-right: 8px;
+        border: 1px solid #6f7b87;
+        padding: 3px 8px;
+        background: linear-gradient(to bottom, #fff 0%, #c0cad5 100%);
+      }
+      .toolbar input {
+        border: 1px solid #6f7b87;
+        padding: 3px 6px;
+        font-size: 11px;
+        width: 260px;
+        background: #fcfdff;
+      }
+      .toolbar a {
+        color: #123d6b;
+        text-decoration: none;
+        font-weight: 700;
+      }
+      .toolbar select, .toolbar label {
+        border: 1px solid #6f7b87;
+        padding: 3px 6px;
+        font-size: 11px;
+        background: linear-gradient(to bottom, #fff 0%, #d4dde7 100%);
+      }
+      .filterbar {
+        padding: 5px 6px;
+        border-top: 1px solid #e2e7ed;
+        border-bottom: 1px solid #7d8893;
+        background: linear-gradient(to bottom, #f7f9fb 0%, #d7e0ea 100%);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+      .filterbar .filter-label {
+        font-weight: 700;
+        margin-right: 2px;
+      }
+      .filterbar input {
+        border: 1px solid #6f7b87;
+        padding: 3px 6px;
+        font-size: 11px;
+        width: 320px;
+        background: #fcfdff;
+      }
+      .filterbar select, .filterbar label {
+        border: 1px solid #6f7b87;
+        padding: 3px 6px;
+        font-size: 11px;
+        background: linear-gradient(to bottom, #fff 0%, #d4dde7 100%);
+        margin-right: 6px;
+        display: inline-flex;
+        align-items: center;
+      }
+      .filterbar label input {
+        margin-right: 4px;
+      }
+      .filterbar .filter-compact {
+        padding: 3px 5px;
+        margin-right: 0;
+      }
+      .content {
+        padding: 10px;
+      }
+      .panel {
+        border: 1px solid #7e8894;
+        background: #f6f8fa;
+        margin-bottom: 10px;
+      }
+      .panel h2 {
+        margin: 0;
+        padding: 6px 8px;
+        font-size: 12px;
+        background: linear-gradient(to bottom, #e7edf3 0%, #c2ceda 100%);
+        border-bottom: 1px solid #7e8995;
+      }
+      .panel .body {
+        padding: 8px;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      th, td {
+        border: 1px solid #8a94a1;
+        padding: 5px 6px;
+        text-align: left;
+      }
+      th {
+        background: #d2dae3;
+      }
+      tr:nth-child(odd) td {
+        background: #f6f8fa;
+      }
+      tr:nth-child(even) td {
+        background: #edf1f5;
+      }
+      code { background: #e9edf2; padding: 1px 4px; }
+      a { color: #123d6b; text-decoration: none; }
+      .muted { color: #4e5a66; font-size: 11px; }
+      .area-strip {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+      }
+      .area-pill {
+        border: 1px solid #6f7b87;
+        background: linear-gradient(to bottom, #f5f8fb 0%, #ccd7e2 100%);
+        padding: 2px 8px;
+        white-space: nowrap;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="window">
+      <div class="titlebar">Legacy Enterprise Application Portfolio</div>
+      <div class="toolbar">
+        <span>Environment: Demo</span>
+        <span>Hosting: Azure Static Web Apps</span>
+        <span>Mode: Read/Write localStorage</span>
+        <span>Total Apps: 72</span>
+        <span>Source: <a href="https://github.com/nykwffm469-ai/mfgacceleratorrebuild" target="_blank" rel="noreferrer">GitHub Repo</a></span>
+      </div>
+      <div class="filterbar">
+        <span class="filter-label">Search & Filters:</span>
+        <input id="app-search" type="search" placeholder="Search apps, workflow, or URL..." aria-label="Search applications" />
+        <select id="area-filter" aria-label="Filter by business area">
+          <option value="">All Areas</option>
+          <option value="Sales">Sales (1)</option><option value="Human Resources">Human Resources (1)</option><option value="IT Operations">IT Operations (2)</option><option value="Procurement">Procurement (1)</option><option value="Finance">Finance (7)</option><option value="Logistics">Logistics (4)</option><option value="Field Service">Field Service (1)</option><option value="Legal">Legal (1)</option><option value="Public Sector">Public Sector (1)</option><option value="Manufacturing">Manufacturing (2)</option><option value="PMO">PMO (1)</option><option value="Transportation">Transportation (1)</option><option value="Supply Chain">Supply Chain (1)</option><option value="Insurance">Insurance (1)</option><option value="Distribution">Distribution (1)</option><option value="ERP Operations">ERP Operations (1)</option>
+        </select>
+        <select id="interface-filter" aria-label="Filter by interface style">
+          <option value="">All Interfaces</option>
+          <option value="Admin Portal">Admin Portal</option><option value="Audit Web">Audit Web</option><option value="Collections Console">Collections Console</option><option value="Console/Terminal">Console/Terminal</option><option value="Desktop-style Web">Desktop-style Web</option><option value="Dispatch Board">Dispatch Board</option><option value="ERP Web">ERP Web</option><option value="ERP Workbench">ERP Workbench</option><option value="Excel-heavy Portal">Excel-heavy Portal</option><option value="Government Web">Government Web</option><option value="Industrial CMMS">Industrial CMMS</option><option value="Intranet Forms">Intranet Forms</option><option value="Intranet Grid">Intranet Grid</option><option value="Legacy Web">Legacy Web</option><option value="Modern Sample">Modern Sample</option><option value="Operational Grid">Operational Grid</option><option value="Oracle Forms Hybrid">Oracle Forms Hybrid</option><option value="Portal">Portal</option><option value="Scheduler Console">Scheduler Console</option><option value="SharePoint Portal">SharePoint Portal</option><option value="SharePoint/Excel">SharePoint/Excel</option><option value="Vendor Web">Vendor Web</option><option value="Workbench">Workbench</option>
+        </select>
+        <label class="filter-compact"><input id="console-filter" type="checkbox" />Terminal only</label>
+        <select id="kind-filter" aria-label="Filter by app hosting kind">
+          <option value="">Local + Hosted</option>
+          <option value="local">Local only</option>
+          <option value="hosted">Hosted only</option>
+        </select>
+      </div>
+      <div class="content">
+        <div class="panel">
+          <h2>Purpose</h2>
+          <div class="body">
+            This site hosts 65 fake but believable legacy enterprise front-end simulations plus 7 related hosted apps in the same Azure/GitHub environment. All local portfolio data is seeded and stored in browser localStorage only.
+          </div>
+        </div>
+        <div class="panel">
+          <h2>Business Areas</h2>
+          <div class="body">
+            <div class="area-strip">
+              <span class="area-pill">Sales: 1</span><span class="area-pill">Human Resources: 1</span><span class="area-pill">IT Operations: 2</span><span class="area-pill">Procurement: 1</span><span class="area-pill">Finance: 7</span><span class="area-pill">Logistics: 4</span><span class="area-pill">Field Service: 1</span><span class="area-pill">Legal: 1</span><span class="area-pill">Public Sector: 1</span><span class="area-pill">Manufacturing: 2</span><span class="area-pill">PMO: 1</span><span class="area-pill">Transportation: 1</span><span class="area-pill">Supply Chain: 1</span><span class="area-pill">Insurance: 1</span><span class="area-pill">Distribution: 1</span><span class="area-pill">ERP Operations: 1</span>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <h2>Applications</h2>
+          <div class="body">
+            <div class="muted" id="app-count-label">Showing 72 of 72 apps</div>
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Application</th>
+                  <th>Description</th>
+                  <th>Area</th>
+                  <th>Interface</th>
+                  <th>Type</th>
+                  <th>Path</th>
+                </tr>
+              </thead>
+              <tbody>
+      <tr class="app-row" data-kind="local" data-area="Finance" data-interface="Workbench" data-search="ap recon workbench ap statement reconciliation vendor statement ingestion, open-item matching, and discrepancy case handling. ap-statement-reconciliation finance workbench">
+        <td>1</td>
+        <td><a href="./ap-statement-reconciliation/">AP Recon Workbench</a></td>
+        <td>Vendor statement ingestion, open-item matching, and discrepancy case handling.</td>
+        <td>Finance</td>
+        <td>Workbench</td>
+        <td>Local</td>
+        <td><code>/ap-statement-reconciliation/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Finance" data-interface="Collections Console" data-search="billing collections billing collections invoice batches, dunning steps, collection notes and dispute queues. billing-collections finance collections console">
+        <td>2</td>
+        <td><a href="./billing-collections/">Billing Collections</a></td>
+        <td>Invoice batches, dunning steps, collection notes and dispute queues.</td>
+        <td>Finance</td>
+        <td>Collections Console</td>
+        <td>Local</td>
+        <td><code>/billing-collections/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Operations" data-interface="SharePoint Portal" data-search="chargeback response workbench chargeback response workbench dispute evidence assembly, submission deadlines, and acquirer portal updates. chargeback-response-workbench operations sharepoint portal">
+        <td>3</td>
+        <td><a href="./chargeback-response-workbench/">Chargeback Response Workbench</a></td>
+        <td>Dispute evidence assembly, submission deadlines, and acquirer portal updates.</td>
+        <td>Operations</td>
+        <td>SharePoint Portal</td>
+        <td>Local</td>
+        <td><code>/chargeback-response-workbench/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Insurance" data-interface="Desktop-style Web" data-search="insurance claims desk claims desk claims intake, adjuster assignment, reserve updates and payout queue. claims-desk insurance desktop-style web">
+        <td>4</td>
+        <td><a href="./claims-desk/">Insurance Claims Desk</a></td>
+        <td>Claims intake, adjuster assignment, reserve updates and payout queue.</td>
+        <td>Insurance</td>
+        <td>Desktop-style Web</td>
+        <td>Local</td>
+        <td><code>/claims-desk/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Operations" data-interface="Legacy Web" data-search="coi monitor coi monitor certificate expiry tracking, collection reminders, and vendor compliance locks. coi-monitor operations legacy web">
+        <td>5</td>
+        <td><a href="./coi-monitor/">Coi Monitor</a></td>
+        <td>Certificate expiry tracking, collection reminders, and vendor compliance locks.</td>
+        <td>Operations</td>
+        <td>Legacy Web</td>
+        <td>Local</td>
+        <td><code>/coi-monitor/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Operations" data-interface="Legacy Web" data-search="collections ptp monitor collections ptp monitor promise-to-pay schedules, follow-ups, status letters, and default escalation triggers. collections-ptp-monitor operations legacy web">
+        <td>6</td>
+        <td><a href="./collections-ptp-monitor/">Collections Ptp Monitor</a></td>
+        <td>Promise-to-pay schedules, follow-ups, status letters, and default escalation triggers.</td>
+        <td>Operations</td>
+        <td>Legacy Web</td>
+        <td>Local</td>
+        <td><code>/collections-ptp-monitor/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Operations" data-interface="Legacy Web" data-search="compliance automation center compliance automation center control testing schedules, evidence capture, issue triage, and audit response workflow. compliance-automation-center operations legacy web">
+        <td>7</td>
+        <td><a href="./compliance-automation-center/">Compliance Automation Center</a></td>
+        <td>Control testing schedules, evidence capture, issue triage, and audit response workflow.</td>
+        <td>Operations</td>
+        <td>Legacy Web</td>
+        <td>Local</td>
+        <td><code>/compliance-automation-center/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Operations" data-interface="Legacy Web" data-search="compliance register compliance register control catalog, findings, remediation plans and attestations. compliance-register operations legacy web">
+        <td>8</td>
+        <td><a href="./compliance-register/">Compliance Register</a></td>
+        <td>Control catalog, findings, remediation plans and attestations.</td>
+        <td>Operations</td>
+        <td>Legacy Web</td>
+        <td>Local</td>
+        <td><code>/compliance-register/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Operations" data-interface="Legacy Web" data-search="contract labor compliance contract labor compliance contractor onboarding, policy attestations, badge/vpn approvals, and compliance exception handling. contract-labor-compliance operations legacy web">
+        <td>9</td>
+        <td><a href="./contract-labor-compliance/">Contract Labor Compliance</a></td>
+        <td>Contractor onboarding, policy attestations, badge/VPN approvals, and compliance exception handling.</td>
+        <td>Operations</td>
+        <td>Legacy Web</td>
+        <td>Local</td>
+        <td><code>/contract-labor-compliance/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Operations" data-interface="Legacy Web" data-search="contract renewal tracker contract renewal tracker renewal deadlines, clause review packets, approval routing, and reminder workflows. contract-renewal-tracker operations legacy web">
+        <td>10</td>
+        <td><a href="./contract-renewal-tracker/">Contract Renewal Tracker</a></td>
+        <td>Renewal deadlines, clause review packets, approval routing, and reminder workflows.</td>
+        <td>Operations</td>
+        <td>Legacy Web</td>
+        <td>Local</td>
+        <td><code>/contract-renewal-tracker/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Operations" data-interface="Legacy Web" data-search="credit memo routing credit memo routing credit memo request queues, validation exceptions, manager approvals, and erp posting handoff. credit-memo-routing operations legacy web">
+        <td>11</td>
+        <td><a href="./credit-memo-routing/">Credit Memo Routing</a></td>
+        <td>Credit memo request queues, validation exceptions, manager approvals, and ERP posting handoff.</td>
+        <td>Operations</td>
+        <td>Legacy Web</td>
+        <td>Local</td>
+        <td><code>/credit-memo-routing/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Sales" data-interface="Vendor Web" data-search="crm classic crm classic legacy crm simulation inspired by 2008-2011 enterprise crm interfaces. crm-classic sales vendor web">
+        <td>12</td>
+        <td><a href="./crm-classic/">CRM Classic</a></td>
+        <td>Legacy CRM simulation inspired by 2008-2011 enterprise CRM interfaces.</td>
+        <td>Sales</td>
+        <td>Vendor Web</td>
+        <td>Local</td>
+        <td><code>/crm-classic/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Operations" data-interface="Legacy Web" data-search="customer cloud hub customer cloud hub crm-style pipeline, account, opportunity, and activity execution workspace. customer-cloud-hub operations legacy web">
+        <td>13</td>
+        <td><a href="./customer-cloud-hub/">Customer Cloud Hub</a></td>
+        <td>CRM-style pipeline, account, opportunity, and activity execution workspace.</td>
+        <td>Operations</td>
+        <td>Legacy Web</td>
+        <td>Local</td>
+        <td><code>/customer-cloud-hub/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Operations" data-interface="Legacy Web" data-search="customer refund processing customer refund processing refund eligibility checks, payment reversals, gl adjustments, and customer notices. customer-refund-processing operations legacy web">
+        <td>14</td>
+        <td><a href="./customer-refund-processing/">Customer Refund Processing</a></td>
+        <td>Refund eligibility checks, payment reversals, GL adjustments, and customer notices.</td>
+        <td>Operations</td>
+        <td>Legacy Web</td>
+        <td>Local</td>
+        <td><code>/customer-refund-processing/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Logistics" data-interface="Operational Grid" data-search="data warehouse ops data warehouse ops warehouse jobs, virtual compute pools, and query history monitoring console. data-warehouse-ops logistics operational grid">
+        <td>15</td>
+        <td><a href="./data-warehouse-ops/">Data Warehouse Ops</a></td>
+        <td>Warehouse jobs, virtual compute pools, and query history monitoring console.</td>
+        <td>Logistics</td>
+        <td>Operational Grid</td>
+        <td>Local</td>
+        <td><code>/data-warehouse-ops/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Operations" data-interface="Legacy Web" data-search="dealer incentive settlement dealer incentive settlement dealer claim imports, rebate validation, approval routing, and settlement batch processing. dealer-incentive-settlement operations legacy web">
+        <td>16</td>
+        <td><a href="./dealer-incentive-settlement/">Dealer Incentive Settlement</a></td>
+        <td>Dealer claim imports, rebate validation, approval routing, and settlement batch processing.</td>
+        <td>Operations</td>
+        <td>Legacy Web</td>
+        <td>Local</td>
+        <td><code>/dealer-incentive-settlement/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Operations" data-interface="Legacy Web" data-search="dock appointment scheduler dock appointment scheduler dock scheduling board, carrier check-ins, trailer assignments, and gate queue triage. dock-appointment-scheduler operations legacy web">
+        <td>17</td>
+        <td><a href="./dock-appointment-scheduler/">Dock Appointment Scheduler</a></td>
+        <td>Dock scheduling board, carrier check-ins, trailer assignments, and gate queue triage.</td>
+        <td>Operations</td>
+        <td>Legacy Web</td>
+        <td>Local</td>
+        <td><code>/dock-appointment-scheduler/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Operations" data-interface="Legacy Web" data-search="document imaging queue document imaging queue scan intake, ocr validation, indexing exceptions, and workflow reprocessing operations. document-imaging-queue operations legacy web">
+        <td>18</td>
+        <td><a href="./document-imaging-queue/">Document Imaging Queue</a></td>
+        <td>Scan intake, OCR validation, indexing exceptions, and workflow reprocessing operations.</td>
+        <td>Operations</td>
+        <td>Legacy Web</td>
+        <td>Local</td>
+        <td><code>/document-imaging-queue/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Operations" data-interface="Console/Terminal" data-search="erp command center erp command center sap/oracle-style cross-functional operations cockpit for order-to-cash and procure-to-pay. erp-command-center operations console/terminal">
+        <td>19</td>
+        <td><a href="./erp-command-center/">Erp Command Center</a></td>
+        <td>SAP/Oracle-style cross-functional operations cockpit for order-to-cash and procure-to-pay.</td>
+        <td>Operations</td>
+        <td>Console/Terminal</td>
+        <td>Local</td>
+        <td><code>/erp-command-center/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="ERP Operations" data-interface="Console/Terminal" data-search="erp t-code workbench erp tcode workbench legacy erp command-driven workstation with transaction codes, authorization checks, and queue-heavy operations. erp-tcode-workbench erp operations console/terminal">
+        <td>20</td>
+        <td><a href="./erp-tcode-workbench/">ERP T-Code Workbench</a></td>
+        <td>Legacy ERP command-driven workstation with transaction codes, authorization checks, and queue-heavy operations.</td>
+        <td>ERP Operations</td>
+        <td>Console/Terminal</td>
+        <td>Local</td>
+        <td><code>/erp-tcode-workbench/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Logistics" data-interface="Operational Grid" data-search="export compliance screening export compliance screening denied-party checks, shipment holds, release approvals, and screening retry workflows. export-compliance-screening logistics operational grid">
+        <td>21</td>
+        <td><a href="./export-compliance-screening/">Export Compliance Screening</a></td>
+        <td>Denied-party checks, shipment holds, release approvals, and screening retry workflows.</td>
+        <td>Logistics</td>
+        <td>Operational Grid</td>
+        <td>Local</td>
+        <td><code>/export-compliance-screening/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Field Service" data-interface="Dispatch Board" data-search="field dispatch field dispatch service board, route assignments, technician check-ins and call completion logs. field-dispatch field service dispatch board">
+        <td>22</td>
+        <td><a href="./field-dispatch/">Field Dispatch</a></td>
+        <td>Service board, route assignments, technician check-ins and call completion logs.</td>
+        <td>Field Service</td>
+        <td>Dispatch Board</td>
+        <td>Local</td>
+        <td><code>/field-dispatch/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Operations" data-interface="Scheduler Console" data-search="field service workbench field service workbench work order dispatch, route balancing, parts checks, and service closure handling. field-service-workbench operations scheduler console">
+        <td>23</td>
+        <td><a href="./field-service-workbench/">Field Service Workbench</a></td>
+        <td>Work order dispatch, route balancing, parts checks, and service closure handling.</td>
+        <td>Operations</td>
+        <td>Scheduler Console</td>
+        <td>Local</td>
+        <td><code>/field-service-workbench/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Finance" data-interface="Workbench" data-search="finance close studio finance close studio period-close orchestration, reconciliations, journal approvals, and sign-off tracking. finance-close-studio finance workbench">
+        <td>24</td>
+        <td><a href="./finance-close-studio/">Finance Close Studio</a></td>
+        <td>Period-close orchestration, reconciliations, journal approvals, and sign-off tracking.</td>
+        <td>Finance</td>
+        <td>Workbench</td>
+        <td>Local</td>
+        <td><code>/finance-close-studio/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Finance" data-interface="ERP Web" data-search="finance ledger finance ledger general ledger posting, journal review, aging and close cycle controls. finance-ledger finance erp web">
+        <td>25</td>
+        <td><a href="./finance-ledger/">Finance Ledger</a></td>
+        <td>General ledger posting, journal review, aging and close cycle controls.</td>
+        <td>Finance</td>
+        <td>ERP Web</td>
+        <td>Local</td>
+        <td><code>/finance-ledger/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Transportation" data-interface="Desktop-style Web" data-search="fleet operations fleet ops vehicle registry, route plans, maintenance windows and fuel logs. fleet-ops transportation desktop-style web">
+        <td>26</td>
+        <td><a href="./fleet-ops/">Fleet Operations</a></td>
+        <td>Vehicle registry, route plans, maintenance windows and fuel logs.</td>
+        <td>Transportation</td>
+        <td>Desktop-style Web</td>
+        <td>Local</td>
+        <td><code>/fleet-ops/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Operations" data-interface="Legacy Web" data-search="freight invoice match freight invoice match po-bol-invoice matching, accessorial validation, and freight dispute initiation. freight-invoice-match operations legacy web">
+        <td>27</td>
+        <td><a href="./freight-invoice-match/">Freight Invoice Match</a></td>
+        <td>PO-BOL-invoice matching, accessorial validation, and freight dispute initiation.</td>
+        <td>Operations</td>
+        <td>Legacy Web</td>
+        <td>Local</td>
+        <td><code>/freight-invoice-match/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Operations" data-interface="Legacy Web" data-search="government benefits intake government benefits intake citizen intake processing, eligibility checks, correspondence queues, and supervisor approvals. government-benefits-intake operations legacy web">
+        <td>28</td>
+        <td><a href="./government-benefits-intake/">Government Benefits Intake</a></td>
+        <td>Citizen intake processing, eligibility checks, correspondence queues, and supervisor approvals.</td>
+        <td>Operations</td>
+        <td>Legacy Web</td>
+        <td>Local</td>
+        <td><code>/government-benefits-intake/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="IT Operations" data-interface="Vendor Web" data-search="helpdesk ops helpdesk ops legacy it help desk and service operations simulation. helpdesk-ops it operations vendor web">
+        <td>29</td>
+        <td><a href="./helpdesk-ops/">Helpdesk Ops</a></td>
+        <td>Legacy IT help desk and service operations simulation.</td>
+        <td>IT Operations</td>
+        <td>Vendor Web</td>
+        <td>Local</td>
+        <td><code>/helpdesk-ops/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Public Sector" data-interface="Intranet Forms" data-search="government case manager hr case lifecycle employee hr case intake, routing, approvals, and policy compliance history. hr-case-lifecycle public sector intranet forms">
+        <td>30</td>
+        <td><a href="./hr-case-lifecycle/">Government Case Manager</a></td>
+        <td>Employee HR case intake, routing, approvals, and policy compliance history.</td>
+        <td>Public Sector</td>
+        <td>Intranet Forms</td>
+        <td>Local</td>
+        <td><code>/hr-case-lifecycle/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Human Resources" data-interface="SharePoint Portal" data-search="hr portal hr portal legacy intranet hr portal simulation with onboarding and approval workflows. hr-portal human resources sharepoint portal">
+        <td>31</td>
+        <td><a href="./hr-portal/">HR Portal</a></td>
+        <td>Legacy intranet HR portal simulation with onboarding and approval workflows.</td>
+        <td>Human Resources</td>
+        <td>SharePoint Portal</td>
+        <td>Local</td>
+        <td><code>/hr-portal/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Operations" data-interface="Scheduler Console" data-search="integration gateway manager integration gateway manager api route maps, queue monitoring, transform rules, and replay operations. integration-gateway-manager operations scheduler console">
+        <td>32</td>
+        <td><a href="./integration-gateway-manager/">Integration Gateway Manager</a></td>
+        <td>API route maps, queue monitoring, transform rules, and replay operations.</td>
+        <td>Operations</td>
+        <td>Scheduler Console</td>
+        <td>Local</td>
+        <td><code>/integration-gateway-manager/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Logistics" data-interface="Operational Grid" data-search="inventory cyclecount console inventory cyclecount console cycle count task waves, handheld count uploads, variance approvals, and recount operations. inventory-cyclecount-console logistics operational grid">
+        <td>33</td>
+        <td><a href="./inventory-cyclecount-console/">Inventory Cyclecount Console</a></td>
+        <td>Cycle count task waves, handheld count uploads, variance approvals, and recount operations.</td>
+        <td>Logistics</td>
+        <td>Operational Grid</td>
+        <td>Local</td>
+        <td><code>/inventory-cyclecount-console/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Legal" data-interface="Government Web" data-search="legal docket legal docket case files, hearing dates, counsel assignments and evidence register. legal-docket legal government web">
+        <td>34</td>
+        <td><a href="./legal-docket/">Legal Docket</a></td>
+        <td>Case files, hearing dates, counsel assignments and evidence register.</td>
+        <td>Legal</td>
+        <td>Government Web</td>
+        <td>Local</td>
+        <td><code>/legal-docket/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Operations" data-interface="Legacy Web" data-search="license permit renewal license permit renewal jurisdictional filing calendars, package preparation, and renewal submission tracking. license-permit-renewal operations legacy web">
+        <td>35</td>
+        <td><a href="./license-permit-renewal/">License Permit Renewal</a></td>
+        <td>Jurisdictional filing calendars, package preparation, and renewal submission tracking.</td>
+        <td>Operations</td>
+        <td>Legacy Web</td>
+        <td>Local</td>
+        <td><code>/license-permit-renewal/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Operations" data-interface="Legacy Web" data-search="loan servicing collections loan servicing collections delinquency queues, promise-to-pay tracking, legal escalations, and collector performance views. loan-servicing-collections operations legacy web">
+        <td>36</td>
+        <td><a href="./loan-servicing-collections/">Loan Servicing Collections</a></td>
+        <td>Delinquency queues, promise-to-pay tracking, legal escalations, and collector performance views.</td>
+        <td>Operations</td>
+        <td>Legacy Web</td>
+        <td>Local</td>
+        <td><code>/loan-servicing-collections/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Operations" data-interface="Legacy Web" data-search="lowcode flow studio lowcode flow studio flow registry, trigger mappings, connector configs, and run history dashboard. lowcode-flow-studio operations legacy web">
+        <td>37</td>
+        <td><a href="./lowcode-flow-studio/">Lowcode Flow Studio</a></td>
+        <td>Flow registry, trigger mappings, connector configs, and run history dashboard.</td>
+        <td>Operations</td>
+        <td>Legacy Web</td>
+        <td>Local</td>
+        <td><code>/lowcode-flow-studio/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Manufacturing" data-interface="Industrial CMMS" data-search="maintenance cmms maintenance cmms work orders, preventive maintenance routes, parts bins and downtime logs. maintenance-cmms manufacturing industrial cmms">
+        <td>38</td>
+        <td><a href="./maintenance-cmms/">Maintenance CMMS</a></td>
+        <td>Work orders, preventive maintenance routes, parts bins and downtime logs.</td>
+        <td>Manufacturing</td>
+        <td>Industrial CMMS</td>
+        <td>Local</td>
+        <td><code>/maintenance-cmms/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Operations" data-interface="Legacy Web" data-search="master data governor master data governor golden record stewardship, duplicate resolution, survivorship rules, and publishing. master-data-governor operations legacy web">
+        <td>39</td>
+        <td><a href="./master-data-governor/">Master Data Governor</a></td>
+        <td>Golden record stewardship, duplicate resolution, survivorship rules, and publishing.</td>
+        <td>Operations</td>
+        <td>Legacy Web</td>
+        <td>Local</td>
+        <td><code>/master-data-governor/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="IT Operations" data-interface="Admin Portal" data-search="new hire provisioning new hire provisioning identity setup, access tickets, hardware checklists, and onboarding completion. new-hire-provisioning it operations admin portal">
+        <td>40</td>
+        <td><a href="./new-hire-provisioning/">New Hire Provisioning</a></td>
+        <td>Identity setup, access tickets, hardware checklists, and onboarding completion.</td>
+        <td>IT Operations</td>
+        <td>Admin Portal</td>
+        <td>Local</td>
+        <td><code>/new-hire-provisioning/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Distribution" data-interface="ERP Workbench" data-search="order hold release order hold release credit holds, fraud review handoffs, release approvals, and erp hold updates. order-hold-release distribution erp workbench">
+        <td>41</td>
+        <td><a href="./order-hold-release/">Order Hold Release</a></td>
+        <td>Credit holds, fraud review handoffs, release approvals, and ERP hold updates.</td>
+        <td>Distribution</td>
+        <td>ERP Workbench</td>
+        <td>Local</td>
+        <td><code>/order-hold-release/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Finance" data-interface="Workbench" data-search="payable batch uploader payable batch uploader ap invoice batch imports, validation failures, reprocessing queue, and posting oversight. payable-batch-uploader finance workbench">
+        <td>42</td>
+        <td><a href="./payable-batch-uploader/">Payable Batch Uploader</a></td>
+        <td>AP invoice batch imports, validation failures, reprocessing queue, and posting oversight.</td>
+        <td>Finance</td>
+        <td>Workbench</td>
+        <td>Local</td>
+        <td><code>/payable-batch-uploader/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Operations" data-interface="Legacy Web" data-search="plant safety observation log plant safety observation log safety observations, corrective action routing, supervisor verification, and closeout history. plant-safety-observation-log operations legacy web">
+        <td>43</td>
+        <td><a href="./plant-safety-observation-log/">Plant Safety Observation Log</a></td>
+        <td>Safety observations, corrective action routing, supervisor verification, and closeout history.</td>
+        <td>Operations</td>
+        <td>Legacy Web</td>
+        <td>Local</td>
+        <td><code>/plant-safety-observation-log/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Operations" data-interface="Legacy Web" data-search="portfolio work boards portfolio work boards smartsheet-like project rows, dependencies, approvals, and portfolio rollups. portfolio-work-boards operations legacy web">
+        <td>44</td>
+        <td><a href="./portfolio-work-boards/">Portfolio Work Boards</a></td>
+        <td>Smartsheet-like project rows, dependencies, approvals, and portfolio rollups.</td>
+        <td>Operations</td>
+        <td>Legacy Web</td>
+        <td>Local</td>
+        <td><code>/portfolio-work-boards/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Operations" data-interface="Legacy Web" data-search="process mining lab process mining lab event log ingestion, process variant maps, bottleneck detection, and action backlog. process-mining-lab operations legacy web">
+        <td>45</td>
+        <td><a href="./process-mining-lab/">Process Mining Lab</a></td>
+        <td>Event log ingestion, process variant maps, bottleneck detection, and action backlog.</td>
+        <td>Operations</td>
+        <td>Legacy Web</td>
+        <td>Local</td>
+        <td><code>/process-mining-lab/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Operations" data-interface="Legacy Web" data-search="procurement invoice holdboard procurement invoice holdboard invoice hold queues, discrepancy review, buyer escalations, and release posting workflows. procurement-invoice-holdboard operations legacy web">
+        <td>46</td>
+        <td><a href="./procurement-invoice-holdboard/">Procurement Invoice Holdboard</a></td>
+        <td>Invoice hold queues, discrepancy review, buyer escalations, and release posting workflows.</td>
+        <td>Operations</td>
+        <td>Legacy Web</td>
+        <td>Local</td>
+        <td><code>/procurement-invoice-holdboard/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Procurement" data-interface="Oracle Forms Hybrid" data-search="procurement pro procurement pro legacy procurement and purchasing simulation. procurement-pro procurement oracle forms hybrid">
+        <td>47</td>
+        <td><a href="./procurement-pro/">Procurement Pro</a></td>
+        <td>Legacy procurement and purchasing simulation.</td>
+        <td>Procurement</td>
+        <td>Oracle Forms Hybrid</td>
+        <td>Local</td>
+        <td><code>/procurement-pro/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Operations" data-interface="Legacy Web" data-search="procurement sourcing suite procurement sourcing suite sourcing events, bid evaluation, supplier awards, and contract handoff management. procurement-sourcing-suite operations legacy web">
+        <td>48</td>
+        <td><a href="./procurement-sourcing-suite/">Procurement Sourcing Suite</a></td>
+        <td>Sourcing events, bid evaluation, supplier awards, and contract handoff management.</td>
+        <td>Operations</td>
+        <td>Legacy Web</td>
+        <td>Local</td>
+        <td><code>/procurement-sourcing-suite/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Operations" data-interface="Legacy Web" data-search="product data syndication product data syndication catalog normalization, channel mapping, batch exports, and upload retry management. product-data-syndication operations legacy web">
+        <td>49</td>
+        <td><a href="./product-data-syndication/">Product Data Syndication</a></td>
+        <td>Catalog normalization, channel mapping, batch exports, and upload retry management.</td>
+        <td>Operations</td>
+        <td>Legacy Web</td>
+        <td>Local</td>
+        <td><code>/product-data-syndication/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="PMO" data-interface="SharePoint/Excel" data-search="project tracker project tracker portfolio milestones, raid logs, dependencies and pmo action tracking. project-tracker pmo sharepoint/excel">
+        <td>50</td>
+        <td><a href="./project-tracker/">Project Tracker</a></td>
+        <td>Portfolio milestones, RAID logs, dependencies and PMO action tracking.</td>
+        <td>PMO</td>
+        <td>SharePoint/Excel</td>
+        <td>Local</td>
+        <td><code>/project-tracker/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Manufacturing" data-interface="Intranet Grid" data-search="quality audit hub quality audit inspection lots, non-conformance records, capa tasks and release gates. quality-audit manufacturing intranet grid">
+        <td>51</td>
+        <td><a href="./quality-audit/">Quality Audit Hub</a></td>
+        <td>Inspection lots, non-conformance records, CAPA tasks and release gates.</td>
+        <td>Manufacturing</td>
+        <td>Intranet Grid</td>
+        <td>Local</td>
+        <td><code>/quality-audit/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Operations" data-interface="Legacy Web" data-search="quality release gate quality release gate inspection results, non-conformance review, release approvals, and capa follow-up tracking. quality-release-gate operations legacy web">
+        <td>52</td>
+        <td><a href="./quality-release-gate/">Quality Release Gate</a></td>
+        <td>Inspection results, non-conformance review, release approvals, and CAPA follow-up tracking.</td>
+        <td>Operations</td>
+        <td>Legacy Web</td>
+        <td>Local</td>
+        <td><code>/quality-release-gate/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Operations" data-interface="Legacy Web" data-search="returns disposition center returns disposition center return intake, inspection workflows, disposition approvals, and refund/export handoff. returns-disposition-center operations legacy web">
+        <td>53</td>
+        <td><a href="./returns-disposition-center/">Returns Disposition Center</a></td>
+        <td>Return intake, inspection workflows, disposition approvals, and refund/export handoff.</td>
+        <td>Operations</td>
+        <td>Legacy Web</td>
+        <td>Local</td>
+        <td><code>/returns-disposition-center/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Operations" data-interface="Legacy Web" data-search="rpa challenge rpa challenge rpa challenge app with stable field set that scrambles order after every submit for resilience and self-healing automation tests. rpa-challenge operations legacy web">
+        <td>54</td>
+        <td><a href="./rpa-challenge/">Rpa Challenge</a></td>
+        <td>RPA challenge app with stable field set that scrambles order after every submit for resilience and self-healing automation tests.</td>
+        <td>Operations</td>
+        <td>Legacy Web</td>
+        <td>Local</td>
+        <td><code>/rpa-challenge/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Operations" data-interface="Legacy Web" data-search="service desk plus service desk plus itsm-inspired incident, change, and request fulfillment operations board. service-desk-plus operations legacy web">
+        <td>55</td>
+        <td><a href="./service-desk-plus/">Service Desk Plus</a></td>
+        <td>ITSM-inspired incident, change, and request fulfillment operations board.</td>
+        <td>Operations</td>
+        <td>Legacy Web</td>
+        <td>Local</td>
+        <td><code>/service-desk-plus/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Finance" data-interface="Workbench" data-search="subscription revenue studio subscription revenue studio subscription lifecycle, usage billing, revenue schedules, and churn intervention workflows. subscription-revenue-studio finance workbench">
+        <td>56</td>
+        <td><a href="./subscription-revenue-studio/">Subscription Revenue Studio</a></td>
+        <td>Subscription lifecycle, usage billing, revenue schedules, and churn intervention workflows.</td>
+        <td>Finance</td>
+        <td>Workbench</td>
+        <td>Local</td>
+        <td><code>/subscription-revenue-studio/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Supply Chain" data-interface="Excel-heavy Portal" data-search="supplier scorecard supplier scorecard consolidator kpi file intake, normalization rules, score generation, and monthly distribution. supplier-scorecard-consolidator supply chain excel-heavy portal">
+        <td>57</td>
+        <td><a href="./supplier-scorecard-consolidator/">Supplier Scorecard</a></td>
+        <td>KPI file intake, normalization rules, score generation, and monthly distribution.</td>
+        <td>Supply Chain</td>
+        <td>Excel-heavy Portal</td>
+        <td>Local</td>
+        <td><code>/supplier-scorecard-consolidator/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Operations" data-interface="Legacy Web" data-search="timesheet exception resolver timesheet exception resolver missing punches, overtime rules, manager follow-ups, and payroll correction workflows. timesheet-exception-resolver operations legacy web">
+        <td>58</td>
+        <td><a href="./timesheet-exception-resolver/">Timesheet Exception Resolver</a></td>
+        <td>Missing punches, overtime rules, manager follow-ups, and payroll correction workflows.</td>
+        <td>Operations</td>
+        <td>Legacy Web</td>
+        <td>Local</td>
+        <td><code>/timesheet-exception-resolver/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Operations" data-interface="Legacy Web" data-search="training attestation hub training attestation hub training completion attestations, overdue reminders, and exception approvals. training-attestation-hub operations legacy web">
+        <td>59</td>
+        <td><a href="./training-attestation-hub/">Training Attestation Hub</a></td>
+        <td>Training completion attestations, overdue reminders, and exception approvals.</td>
+        <td>Operations</td>
+        <td>Legacy Web</td>
+        <td>Local</td>
+        <td><code>/training-attestation-hub/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Finance" data-interface="Audit Web" data-search="travel expense audit travel expense audit receipt matching, policy flags, per diem checks, and escalation queue handling. travel-expense-audit finance audit web">
+        <td>60</td>
+        <td><a href="./travel-expense-audit/">Travel Expense Audit</a></td>
+        <td>Receipt matching, policy flags, per diem checks, and escalation queue handling.</td>
+        <td>Finance</td>
+        <td>Audit Web</td>
+        <td>Local</td>
+        <td><code>/travel-expense-audit/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Operations" data-interface="Legacy Web" data-search="utility bill reconciliation utility bill reconciliation invoice extraction, meter usage checks, variance matching, and payment batch preparation. utility-bill-reconciliation operations legacy web">
+        <td>61</td>
+        <td><a href="./utility-bill-reconciliation/">Utility Bill Reconciliation</a></td>
+        <td>Invoice extraction, meter usage checks, variance matching, and payment batch preparation.</td>
+        <td>Operations</td>
+        <td>Legacy Web</td>
+        <td>Local</td>
+        <td><code>/utility-bill-reconciliation/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Operations" data-interface="Scheduler Console" data-search="utility outage switchboard utility outage switchboard outage intake, crew dispatch, restoration status updates, and customer notification tracking. utility-outage-switchboard operations scheduler console">
+        <td>62</td>
+        <td><a href="./utility-outage-switchboard/">Utility Outage Switchboard</a></td>
+        <td>Outage intake, crew dispatch, restoration status updates, and customer notification tracking.</td>
+        <td>Operations</td>
+        <td>Scheduler Console</td>
+        <td>Local</td>
+        <td><code>/utility-outage-switchboard/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Operations" data-interface="Legacy Web" data-search="vendor onboarding desk vendor onboarding desk w-9 intake, tax validation, bank setup checks, and erp vendor master onboarding. vendor-onboarding-desk operations legacy web">
+        <td>63</td>
+        <td><a href="./vendor-onboarding-desk/">Vendor Onboarding Desk</a></td>
+        <td>W-9 intake, tax validation, bank setup checks, and ERP vendor master onboarding.</td>
+        <td>Operations</td>
+        <td>Legacy Web</td>
+        <td>Local</td>
+        <td><code>/vendor-onboarding-desk/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Logistics" data-interface="Console/Terminal" data-search="warehouse rf system warehouse terminal legacy warehouse/terminal-style simulation inspired by keyboard-driven operations screens. warehouse-terminal logistics console/terminal">
+        <td>64</td>
+        <td><a href="./warehouse-terminal/">Warehouse RF System</a></td>
+        <td>Legacy warehouse/terminal-style simulation inspired by keyboard-driven operations screens.</td>
+        <td>Logistics</td>
+        <td>Console/Terminal</td>
+        <td>Local</td>
+        <td><code>/warehouse-terminal/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="local" data-area="Operations" data-interface="Legacy Web" data-search="warranty claim triage warranty claim triage claim intake validation, serial entitlement checks, and service assignment routing. warranty-claim-triage operations legacy web">
+        <td>65</td>
+        <td><a href="./warranty-claim-triage/">Warranty Claim Triage</a></td>
+        <td>Claim intake validation, serial entitlement checks, and service assignment routing.</td>
+        <td>Operations</td>
+        <td>Legacy Web</td>
+        <td>Local</td>
+        <td><code>/warranty-claim-triage/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="hosted" data-area="External" data-interface="Console/Terminal" data-search="consoleapp companion static app hosted in the same azure resource group. https://thankful-meadow-04346941e.7.azurestaticapps.net/ external console/terminal">
+        <td>66</td>
+        <td><a href="https://thankful-meadow-04346941e.7.azurestaticapps.net/" target="_blank" rel="noreferrer">ConsoleApp</a></td>
+        <td>Companion static app hosted in the same Azure resource group.</td>
+        <td>External</td>
+        <td>Console/Terminal</td>
+        <td>Hosted</td>
+        <td><code>https://thankful-meadow-04346941e.7.azurestaticapps.net/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="hosted" data-area="External" data-interface="Vendor Web" data-search="legacycrm legacy crm deployment in the shared azure/github environment. https://blue-mushroom-0b3ccdf1e.7.azurestaticapps.net/ external vendor web">
+        <td>67</td>
+        <td><a href="https://blue-mushroom-0b3ccdf1e.7.azurestaticapps.net/" target="_blank" rel="noreferrer">LegacyCRM</a></td>
+        <td>Legacy CRM deployment in the shared Azure/GitHub environment.</td>
+        <td>External</td>
+        <td>Vendor Web</td>
+        <td>Hosted</td>
+        <td><code>https://blue-mushroom-0b3ccdf1e.7.azurestaticapps.net/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="hosted" data-area="External" data-interface="Modern Sample" data-search="sample-fluent-app sample app deployment in the same static web apps subscription. https://lively-ground-06a5b600f.7.azurestaticapps.net/ external modern sample">
+        <td>68</td>
+        <td><a href="https://lively-ground-06a5b600f.7.azurestaticapps.net/" target="_blank" rel="noreferrer">sample-fluent-app</a></td>
+        <td>Sample app deployment in the same Static Web Apps subscription.</td>
+        <td>External</td>
+        <td>Modern Sample</td>
+        <td>Hosted</td>
+        <td><code>https://lively-ground-06a5b600f.7.azurestaticapps.net/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="hosted" data-area="External" data-interface="Modern Sample" data-search="sample-hello-world sample hello-world static app from the shared repository environment. https://proud-mushroom-075a41d0f.7.azurestaticapps.net/ external modern sample">
+        <td>69</td>
+        <td><a href="https://proud-mushroom-075a41d0f.7.azurestaticapps.net/" target="_blank" rel="noreferrer">sample-hello-world</a></td>
+        <td>Sample hello-world static app from the shared repository environment.</td>
+        <td>External</td>
+        <td>Modern Sample</td>
+        <td>Hosted</td>
+        <td><code>https://proud-mushroom-075a41d0f.7.azurestaticapps.net/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="hosted" data-area="External" data-interface="Modern Sample" data-search="sample-static-asset-tracker sample static asset tracker app hosted in the same azure tenant. https://lively-tree-02acf510f.7.azurestaticapps.net/ external modern sample">
+        <td>70</td>
+        <td><a href="https://lively-tree-02acf510f.7.azurestaticapps.net/" target="_blank" rel="noreferrer">sample-static-asset-tracker</a></td>
+        <td>Sample static asset tracker app hosted in the same Azure tenant.</td>
+        <td>External</td>
+        <td>Modern Sample</td>
+        <td>Hosted</td>
+        <td><code>https://lively-tree-02acf510f.7.azurestaticapps.net/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="hosted" data-area="External" data-interface="Modern Sample" data-search="sample-tanstack-app sample tanstack app deployment available in the shared environment. https://calm-forest-0e41e330f.7.azurestaticapps.net/ external modern sample">
+        <td>71</td>
+        <td><a href="https://calm-forest-0e41e330f.7.azurestaticapps.net/" target="_blank" rel="noreferrer">sample-tanstack-app</a></td>
+        <td>Sample TanStack app deployment available in the shared environment.</td>
+        <td>External</td>
+        <td>Modern Sample</td>
+        <td>Hosted</td>
+        <td><code>https://calm-forest-0e41e330f.7.azurestaticapps.net/</code></td>
+      </tr>
+      <tr class="app-row" data-kind="hosted" data-area="External" data-interface="Portal" data-search="supplierportal supplier-facing portal hosted alongside the legacy portfolio apps. https://agreeable-bush-06e58e71e.7.azurestaticapps.net/ external portal">
+        <td>72</td>
+        <td><a href="https://agreeable-bush-06e58e71e.7.azurestaticapps.net/" target="_blank" rel="noreferrer">SupplierPortal</a></td>
+        <td>Supplier-facing portal hosted alongside the legacy portfolio apps.</td>
+        <td>External</td>
+        <td>Portal</td>
+        <td>Hosted</td>
+        <td><code>https://agreeable-bush-06e58e71e.7.azurestaticapps.net/</code></td>
+      </tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      (function () {
+        const input = document.getElementById("app-search");
+        const areaFilter = document.getElementById("area-filter");
+        const interfaceFilter = document.getElementById("interface-filter");
+        const consoleFilter = document.getElementById("console-filter");
+        const kindFilter = document.getElementById("kind-filter");
+        const rows = Array.from(document.querySelectorAll(".app-row"));
+        const countLabel = document.getElementById("app-count-label");
+        const total = rows.length;
+
+        function applyFilter() {
+          const query = (input.value || "").trim().toLowerCase();
+          const areaValue = areaFilter.value;
+          const interfaceValue = interfaceFilter.value;
+          const kindValue = kindFilter.value;
+          const isConsoleOnly = consoleFilter.checked;
+          let visible = 0;
+
+          rows.forEach((row) => {
+            const haystack = row.getAttribute("data-search") || "";
+            const rowArea = row.getAttribute("data-area") || "";
+            const rowInterface = row.getAttribute("data-interface") || "";
+            const rowKind = row.getAttribute("data-kind") || "";
+            const queryMatch = !query || haystack.includes(query);
+            const areaMatch = !areaValue || rowArea === areaValue;
+            const interfaceMatch = !interfaceValue || rowInterface === interfaceValue;
+            const kindMatch = !kindValue || rowKind === kindValue;
+            const consoleMatch = !isConsoleOnly || rowInterface === "Console/Terminal";
+            const match = queryMatch && areaMatch && interfaceMatch && kindMatch && consoleMatch;
+            row.style.display = match ? "" : "none";
+            if (match) visible += 1;
+          });
+
+          countLabel.textContent = "Showing " + visible + " of " + total + " apps";
+        }
+
+        input.addEventListener("input", applyFilter);
+        areaFilter.addEventListener("change", applyFilter);
+        interfaceFilter.addEventListener("change", applyFilter);
+        consoleFilter.addEventListener("change", applyFilter);
+        kindFilter.addEventListener("change", applyFilter);
+      })();
+    </script>
+  </body>
+</html>
