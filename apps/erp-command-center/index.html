@@ -4,9 +4,120 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ERP Command Center 2010</title>
+    <style>
+      body {
+        margin: 0;
+        background: #d9dde2;
+        color: #1a1f26;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+      }
+
+      .erp-boot {
+        max-width: 760px;
+        margin: 42px auto;
+        border: 1px solid #7f8da1;
+        background: #edf2f9;
+        box-shadow: 1px 1px 0 #a4b1c2;
+        padding: 12px;
+        font-size: 12px;
+      }
+
+      .erp-boot h1 {
+        font-size: 13px;
+        margin: 0 0 8px;
+      }
+
+      .erp-boot p {
+        margin: 0 0 8px;
+      }
+
+      .erp-boot .row {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+
+      .erp-boot button {
+        border: 1px solid #6f7d90;
+        background: linear-gradient(to bottom, #ffffff 0%, #d4dfed 100%);
+        padding: 3px 8px;
+        font-family: inherit;
+        font-size: 11px;
+        cursor: pointer;
+      }
+
+      .erp-boot code {
+        background: #f6f9fd;
+        border: 1px solid #c4cfdf;
+        padding: 0 4px;
+      }
+    </style>
   </head>
   <body>
-    <div id="app"></div>
+    <div id="app">
+      <section class="erp-boot" id="erp-boot-panel">
+        <h1>ERP Command Center 2010</h1>
+        <p>Loading cross-functional ERP cockpit...</p>
+      </section>
+    </div>
+    <script>
+      (function () {
+        var bootPanel = document.getElementById("erp-boot-panel");
+        var appHost = document.getElementById("app");
+
+        window.setTimeout(function () {
+          if (!appHost) {
+            return;
+          }
+
+          var mounted = !!appHost.querySelector(".legacy-window");
+          if (mounted) {
+            return;
+          }
+
+          appHost.innerHTML = [
+            '<section class="erp-boot">',
+            "<h1>ERP Command Center 2010 - Recovery Mode</h1>",
+            "<p>The application did not mount correctly in this browser session.</p>",
+            "<p>This is usually caused by cached asset mismatch after deployment.</p>",
+            "<p>Try a reload or reset local ERP seed data.</p>",
+            '<p><code>legacy-demo:erp-command-center</code></p>',
+            '<div class="row">',
+            '<button type="button" id="erp-hard-reload">Hard Reload</button>',
+            '<button type="button" id="erp-reset-seed">Reset ERP Local Data + Reload</button>',
+            "</div>",
+            "</section>"
+          ].join("");
+
+          var hardReload = document.getElementById("erp-hard-reload");
+          if (hardReload) {
+            hardReload.addEventListener("click", function () {
+              window.location.reload();
+            });
+          }
+
+          var resetSeed = document.getElementById("erp-reset-seed");
+          if (resetSeed) {
+            resetSeed.addEventListener("click", function () {
+              try {
+                localStorage.removeItem("legacy-demo:erp-command-center");
+              } catch (error) {
+                console.warn("Unable to reset ERP seed", error);
+              }
+              window.location.reload();
+            });
+          }
+        }, 2800);
+
+        if (bootPanel) {
+          window.setTimeout(function () {
+            if (bootPanel && !appHost.querySelector(".legacy-window")) {
+              bootPanel.querySelector("p").textContent = "Still loading cross-functional ERP cockpit...";
+            }
+          }, 1200);
+        }
+      })();
+    </script>
     <script type="module" src="./src/main.js"></script>
   </body>
 </html>
