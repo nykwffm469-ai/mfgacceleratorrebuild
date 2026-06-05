@@ -26,15 +26,15 @@ const columns = {
 };
 
 const palette = {
-  "--legacy-bg": "#122412",
-  "--legacy-panel": "#183218",
-  "--legacy-nav": "#1a371a",
-  "--legacy-grid-head": "#204920",
-  "--legacy-border": "#386a38",
-  "--legacy-text": "#b2ffb2",
-  "--legacy-muted": "#88d888",
-  "--legacy-button-top": "#1a3d1a",
-  "--legacy-button-bottom": "#143014",
+  "--legacy-bg": "#3d6a3d",
+  "--legacy-panel": "#4f7f4f",
+  "--legacy-nav": "#4a7a4a",
+  "--legacy-grid-head": "#5f9460",
+  "--legacy-border": "#2f5e2f",
+  "--legacy-text": "#f0fff0",
+  "--legacy-muted": "#d7f4d7",
+  "--legacy-button-top": "#5f945f",
+  "--legacy-button-bottom": "#4b7a4b",
   "--legacy-active": "#cbffcb"
 };
 
@@ -173,15 +173,15 @@ function render() {
     `<style>
       .legacy-window {
         font-family: "Lucida Console", "Courier New", monospace;
-        background: radial-gradient(circle at top, #255225 0%, #102010 66%);
+        background: radial-gradient(circle at top, #6ea56e 0%, #3f683f 72%);
       }
       .legacy-titlebar,
       .legacy-menubar,
       .legacy-toolbar,
       .legacy-statusbar {
-        background: linear-gradient(to bottom, #0f2d0f 0%, #081608 100%);
-        color: #ceffce;
-        border-color: #3f703f;
+        background: linear-gradient(to bottom, #5f945f 0%, #4a794a 100%);
+        color: #f5fff5;
+        border-color: #2f5e2f;
       }
       .legacy-panel,
       .legacy-panel-body,
@@ -197,25 +197,25 @@ function render() {
       .legacy-panel-body,
       .legacy-grid,
       .legacy-grid td {
-        background: #153015;
-        color: #ceffce;
-        border-color: #3c6c3c;
+        background: #5a8e5a;
+        color: #f7fff7;
+        border-color: #2f5f2f;
       }
       .legacy-grid th,
       .legacy-panel-head,
       .legacy-pill {
-        background: #214d21;
-        color: #d9ffd9;
-        border-color: #4a804a;
+        background: #6ba36b;
+        color: #fbfffb;
+        border-color: #2f5f2f;
       }
       .legacy-btn,
       .legacy-field {
-        background: #1b3d1b;
-        color: #e2ffe2;
-        border-color: #4f874f;
+        background: #5e935e;
+        color: #ffffff;
+        border-color: #2f5f2f;
       }
       .legacy-btn:hover {
-        background: #275427;
+        background: #487748;
       }
       .legacy-row-selected {
         background: #1f4f1f !important;
