@@ -25,19 +25,6 @@ const columns = {
   audit: ["auditId", "entity", "action", "user", "status"]
 };
 
-const palette = {
-  "--legacy-bg": "#3d6a3d",
-  "--legacy-panel": "#4f7f4f",
-  "--legacy-nav": "#4a7a4a",
-  "--legacy-grid-head": "#5f9460",
-  "--legacy-border": "#2f5e2f",
-  "--legacy-text": "#f0fff0",
-  "--legacy-muted": "#d7f4d7",
-  "--legacy-button-top": "#5f945f",
-  "--legacy-button-bottom": "#4b7a4b",
-  "--legacy-active": "#cbffcb"
-};
-
 let activeModule = modules[0].id;
 let selectedRowIndex = -1;
 let sortAsc = true;
@@ -53,19 +40,6 @@ ensureSeed(namespace, () => ({
   planning: [{ planId: "MRP-88", material: "MAT-771", plant: "P01", exception: "Shortage 120", status: "MRP exception indicator" }],
   audit: [{ auditId: "AUD-776", entity: "SO-8802", action: "Allocation retry", user: "Ops Planner", status: "Logged" }]
 }));
-
-function applyPalette() {
-  const root = document.documentElement;
-  Object.entries(palette).forEach(([name, value]) => root.style.setProperty(name, value));
-}
-
-function applyHostPalette() {
-  const host = document.querySelector(".legacy-window");
-  if (!host) {
-    return;
-  }
-  Object.entries(palette).forEach(([name, value]) => host.style.setProperty(name, value));
-}
 
 function toNumber(value) {
   const parsed = Number.parseFloat(String(value || "0").replace(/[^0-9.]/g, ""));
@@ -162,7 +136,6 @@ function renderModal(data) {
 }
 
 function render() {
-  applyPalette();
   const data = loadSeed(namespace, () => ({}));
   const moduleColumns = columns[activeModule];
   const rows = sortedRows(data, moduleColumns);
@@ -170,58 +143,6 @@ function render() {
   const formFields = moduleColumns.map((field) => `<label>${field}</label><input class="legacy-field" name="${field}" />`).join("");
 
   const contentHtml =
-    `<style>
-      .legacy-window {
-        font-family: "Lucida Console", "Courier New", monospace;
-        background: radial-gradient(circle at top, #6ea56e 0%, #3f683f 72%);
-      }
-      .legacy-titlebar,
-      .legacy-menubar,
-      .legacy-toolbar,
-      .legacy-statusbar {
-        background: linear-gradient(to bottom, #5f945f 0%, #4a794a 100%);
-        color: #f5fff5;
-        border-color: #2f5e2f;
-      }
-      .legacy-panel,
-      .legacy-panel-body,
-      .legacy-grid,
-      .legacy-grid th,
-      .legacy-grid td,
-      .legacy-field,
-      .legacy-btn,
-      .legacy-pill {
-        font-family: "Lucida Console", "Courier New", monospace;
-      }
-      .legacy-panel,
-      .legacy-panel-body,
-      .legacy-grid,
-      .legacy-grid td {
-        background: #5a8e5a;
-        color: #f7fff7;
-        border-color: #2f5f2f;
-      }
-      .legacy-grid th,
-      .legacy-panel-head,
-      .legacy-pill {
-        background: #6ba36b;
-        color: #fbfffb;
-        border-color: #2f5f2f;
-      }
-      .legacy-btn,
-      .legacy-field {
-        background: #5e935e;
-        color: #ffffff;
-        border-color: #2f5f2f;
-      }
-      .legacy-btn:hover {
-        background: #487748;
-      }
-      .legacy-row-selected {
-        background: #1f4f1f !important;
-        color: #d9ffd9 !important;
-      }
-    </style>` +
     panel("ERP Cockpit Summary", renderWidgets(data)) +
     panel("ERP Workspace", grid) +
     panel("Cross-Functional Operations Context", renderDomainPanel()) +
@@ -237,7 +158,6 @@ function render() {
 
   document.getElementById("app").innerHTML = appShell({
     title: "ERP Command Center 2010",
-    identityKey: "erp-command-green-terminal",
     modules,
     activeModule,
     toolbarButtons: [
@@ -251,8 +171,6 @@ function render() {
       "Legacy ERP cockpit simulation spanning order, inventory, procurement, finance, planning, fulfillment, and exception management with audit-heavy controls.",
     contentHtml
   });
-
-  applyHostPalette();
 
   document.querySelectorAll("[data-module]").forEach((button) => {
     button.addEventListener("click", () => {
