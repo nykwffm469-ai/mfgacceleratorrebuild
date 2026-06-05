@@ -57,7 +57,13 @@ const appProfiles = {
   "mainframe-3270-emulator": { area: "Mainframe / Legacy Host", interface: "TN3270 / Green Screen", displayTitle: "Mainframe 3270 Claims Terminal" },
   "email-intake-bot": { area: "Automation Platform", interface: "Modern Web (Outlook-style)", displayTitle: "AP/AR Shared Mailbox Bot" },
   "excel-macro-lab": { area: "Automation Platform", interface: "Excel Macro Workbook", displayTitle: "Excel Macro Replacement Lab" },
-  "rpa-roi-dashboard": { area: "Automation Platform", interface: "Executive Wallboard", displayTitle: "RPA Program ROI Dashboard" }
+  "rpa-roi-dashboard": { area: "Automation Platform", interface: "Executive Wallboard", displayTitle: "RPA Program ROI Dashboard" },
+  "modern-itsm-now": { area: "IT Operations", interface: "Modern Web (ServiceNow-style)", displayTitle: "ServiceCloud Now (Modern ITSM)" },
+  "modern-salesforce-crm": { area: "Sales", interface: "Modern Web (Salesforce Lightning-style)", displayTitle: "NimbusCRM Lightning (Modern CRM)" },
+  "healthcare-prior-auth": { area: "Healthcare", interface: "EHR Worklist", displayTitle: "EHR Prior Authorization Queue" },
+  "bank-wire-ach-ops": { area: "Banking & Treasury", interface: "Treasury Operations", displayTitle: "Wire / ACH Exception Ops" },
+  "identity-governance": { area: "Security & Identity", interface: "Modern Web (Bootstrap)", displayTitle: "SailPilot Identity Governance" },
+  "edi-856-monitor": { area: "Supply Chain", interface: "B2B / EDI Monitor", displayTitle: "EDI Trading Partner Monitor" }
 };
 
 function getAppProfile(id, title, subtitle) {
@@ -177,9 +183,12 @@ const legacyBusinessAreas = [
   "ERP Operations",
   "ECM / Compliance",
   "Banking & Lending",
+  "Banking & Treasury",
   "Third-Party Risk",
   "Automation Platform",
-  "Mainframe / Legacy Host"
+  "Mainframe / Legacy Host",
+  "Healthcare",
+  "Security & Identity"
 ];
 
 const areaCounts = legacyBusinessAreas

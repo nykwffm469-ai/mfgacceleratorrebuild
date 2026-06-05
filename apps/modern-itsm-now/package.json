@@ -1,0 +1,8 @@
+{
+  "name": "@legacy/modern-itsm-now",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": { "dev": "vite", "build": "vite build --base ./", "test": "node -e \"console.log('modern-itsm: no tests yet')\"" },
+  "devDependencies": { "vite": "^6.0.0" }
+}
