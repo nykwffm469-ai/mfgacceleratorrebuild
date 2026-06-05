@@ -26,11 +26,16 @@ const columns = {
 };
 
 const palette = {
-  "--legacy-bg": "#d6ddd6",
-  "--legacy-panel": "#eef4ee",
-  "--legacy-nav": "#c7d3c7",
-  "--legacy-grid-head": "#cedccb",
-  "--legacy-active": "#3c6f3a"
+  "--legacy-bg": "#060b06",
+  "--legacy-panel": "#0b170b",
+  "--legacy-nav": "#0d1f0d",
+  "--legacy-grid-head": "#102910",
+  "--legacy-border": "#2f5a2f",
+  "--legacy-text": "#8dff8d",
+  "--legacy-muted": "#62b862",
+  "--legacy-button-top": "#0d240d",
+  "--legacy-button-bottom": "#081608",
+  "--legacy-active": "#5aff5a"
 };
 
 let activeModule = modules[0].id;
@@ -52,6 +57,14 @@ ensureSeed(namespace, () => ({
 function applyPalette() {
   const root = document.documentElement;
   Object.entries(palette).forEach(([name, value]) => root.style.setProperty(name, value));
+}
+
+function applyHostPalette() {
+  const host = document.querySelector(".legacy-window");
+  if (!host) {
+    return;
+  }
+  Object.entries(palette).forEach(([name, value]) => host.style.setProperty(name, value));
 }
 
 function toNumber(value) {
@@ -157,6 +170,58 @@ function render() {
   const formFields = moduleColumns.map((field) => `<label>${field}</label><input class="legacy-field" name="${field}" />`).join("");
 
   const contentHtml =
+    `<style>
+      .legacy-window {
+        font-family: "Lucida Console", "Courier New", monospace;
+        background: radial-gradient(circle at top, #0d220d 0%, #050805 65%);
+      }
+      .legacy-titlebar,
+      .legacy-menubar,
+      .legacy-toolbar,
+      .legacy-statusbar {
+        background: linear-gradient(to bottom, #0f2d0f 0%, #081608 100%);
+        color: #90ff90;
+        border-color: #2f5a2f;
+      }
+      .legacy-panel,
+      .legacy-panel-body,
+      .legacy-grid,
+      .legacy-grid th,
+      .legacy-grid td,
+      .legacy-field,
+      .legacy-btn,
+      .legacy-pill {
+        font-family: "Lucida Console", "Courier New", monospace;
+      }
+      .legacy-panel,
+      .legacy-panel-body,
+      .legacy-grid,
+      .legacy-grid td {
+        background: #081208;
+        color: #8dff8d;
+        border-color: #2f5a2f;
+      }
+      .legacy-grid th,
+      .legacy-panel-head,
+      .legacy-pill {
+        background: #123412;
+        color: #a7ffa7;
+        border-color: #3a6d3a;
+      }
+      .legacy-btn,
+      .legacy-field {
+        background: #0b1e0b;
+        color: #9cff9c;
+        border-color: #3d6d3d;
+      }
+      .legacy-btn:hover {
+        background: #163116;
+      }
+      .legacy-row-selected {
+        background: #1f4f1f !important;
+        color: #d9ffd9 !important;
+      }
+    </style>` +
     panel("ERP Cockpit Summary", renderWidgets(data)) +
     panel("ERP Workspace", grid) +
     panel("Cross-Functional Operations Context", renderDomainPanel()) +
@@ -172,6 +237,7 @@ function render() {
 
   document.getElementById("app").innerHTML = appShell({
     title: "ERP Command Center 2010",
+    identityKey: "erp-command-green-terminal",
     modules,
     activeModule,
     toolbarButtons: [
@@ -184,6 +250,8 @@ function render() {
       "Legacy ERP cockpit simulation spanning order, inventory, procurement, finance, planning, fulfillment, and exception management with audit-heavy controls.",
     contentHtml
   });
+
+  applyHostPalette();
 
   document.querySelectorAll("[data-module]").forEach((button) => {
     button.addEventListener("click", () => {

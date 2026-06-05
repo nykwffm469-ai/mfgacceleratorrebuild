@@ -3,6 +3,17 @@ import { ensureSeed, loadSeed, saveSeed } from "@legacy/shared-mock-data";
 import { panel } from "@legacy/shared-ui";
 
 const namespace = "warehouse-terminal";
+const APP_DESCRIPTION = `LEGACY APP DESCRIPTION - Warehouse Terminal Control 2010
+
+Warehouse Terminal Control 2010 is a keyboard-driven operations interface used by distribution
+teams for inventory lookup, shipment staging, receiving-dock processing, and terminal status review.
+
+The interface mimics legacy RF/green-screen operational behavior with:
+- function-key navigation
+- high-density text grids
+- process/confirm workflows
+- status-line operator feedback
+- dock and shipment queue management`;
 const screens = ["lookup", "shipments", "receiving", "status"];
 let activeScreen = "lookup";
 let statusMessage = "F2 Lookup | F4 Shipments | F6 Receiving | F8 Status";
@@ -59,15 +70,105 @@ function linesForScreen(data) {
   ];
 }
 
+function openDescriptionModal(host) {
+  const existing = host.querySelector(".legacy-command-modal");
+  if (existing) {
+    existing.remove();
+    return;
+  }
+
+  const modal = document.createElement("div");
+  modal.className = "legacy-command-modal";
+  modal.innerHTML = `
+    <div class="legacy-command-dialog legacy-description-dialog">
+      <div class="legacy-command-head">Warehouse Terminal Control 2010</div>
+      <div class="legacy-command-sub">Demo overview for this application</div>
+      <div class="legacy-description-body">
+        <pre class="legacy-description-text">${APP_DESCRIPTION}</pre>
+      </div>
+      <div class="legacy-command-footer">
+        <button class="legacy-btn" type="button" data-close-desc="1">Close</button>
+      </div>
+    </div>
+  `;
+
+  host.appendChild(modal);
+  modal.querySelector("[data-close-desc]")?.addEventListener("click", () => modal.remove());
+  modal.addEventListener("click", (event) => {
+    if (event.target === modal) {
+      modal.remove();
+    }
+  });
+}
+
 function render() {
   const data = loadSeed(namespace, () => ({}));
   const terminalLines = linesForScreen(data).map((line) => `<div class="line">${line}</div>`).join("");
 
   document.getElementById("app").innerHTML = `
+    <style>
+      .legacy-window {
+        border-color: #2e5d2e;
+        background: radial-gradient(circle at top, #0f230f 0%, #060906 70%);
+        color: #8eff8e;
+        font-family: "Lucida Console", "Courier New", monospace;
+      }
+      .legacy-titlebar,
+      .legacy-toolbar,
+      .legacy-statusbar {
+        background: linear-gradient(to bottom, #143314 0%, #081408 100%);
+        color: #90ff90;
+        border-color: #2f5f2f;
+      }
+      .legacy-window .legacy-btn,
+      .legacy-window .legacy-help-icon,
+      .legacy-window .legacy-backlink {
+        font-family: "Lucida Console", "Courier New", monospace;
+        background: #0d220d;
+        color: #9dff9d;
+        border-color: #3a6f3a;
+      }
+      .legacy-window .legacy-btn:hover,
+      .legacy-window .legacy-help-icon:hover {
+        background: #173617;
+      }
+      .legacy-window .legacy-panel,
+      .legacy-window .legacy-panel-head,
+      .legacy-window .legacy-panel-body {
+        border-color: #2f5f2f;
+      }
+      .legacy-window .legacy-panel-head {
+        background: #123412;
+        color: #adffad;
+      }
+      .legacy-window .legacy-panel-body {
+        background: #081008;
+      }
+      .legacy-terminal {
+        background: #020602;
+        color: #8fff8f;
+        border: 1px solid #2f5f2f;
+        padding: 8px;
+        line-height: 1.22;
+        text-shadow: 0 0 5px rgba(100, 255, 100, 0.32);
+        box-shadow: inset 0 0 24px rgba(38, 160, 38, 0.16);
+        min-height: 320px;
+      }
+      .legacy-terminal .line {
+        font-family: "Lucida Console", "Courier New", monospace;
+        white-space: pre;
+      }
+      .legacy-window .legacy-statusbar {
+        text-shadow: 0 0 5px rgba(100, 255, 100, 0.35);
+      }
+    </style>
     <div class="legacy-window">
       <div class="legacy-titlebar">
         <span>Warehouse Terminal Control 2010</span>
-        <a class="legacy-backlink" href="../" aria-label="Back to main page">Main</a>
+        <div style="display:inline-flex; align-items:center; gap:6px;">
+          <button class="legacy-help-icon" type="button" data-action="legacy-app-help" aria-label="Open app description" title="App context">?</button>
+          <a class="legacy-backlink" href="../" aria-label="Back to main page">Main</a>
+        </div>
       </div>
       <div class="legacy-toolbar">
         <button class="legacy-btn" data-screen="lookup">F2 Lookup</button>
@@ -100,6 +201,10 @@ function render() {
     saveSeed(namespace, data);
     statusMessage = `Processed screen ${activeScreen.toUpperCase()} at ${new Date().toLocaleTimeString()}`;
     render();
+  });
+
+  document.querySelector("[data-action='legacy-app-help']")?.addEventListener("click", () => {
+    openDescriptionModal(document.getElementById("app"));
   });
 }
 

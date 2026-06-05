@@ -3,6 +3,25 @@ import { ensureSeed, loadSeed, saveSeed, makeId } from "@legacy/shared-mock-data
 
 const namespace = "erp-tcode-workbench";
 
+const APP_DESCRIPTION = `LEGACY APP DESCRIPTION - ERP T-Code Workbench 2009
+
+ERP T-Code Workbench 2009 is a transaction-console style operations front end for finance,
+procurement, warehouse, help desk, HR, legal, and PMO support teams.
+
+The workspace simulates command-driven SAP/ERP interaction patterns from the late-2000s era:
+- typed transaction codes
+- role and authorization checks
+- queue-routing actions
+- report execution and background jobs
+- master/entry/report/admin transaction forms
+
+INTEGRATION SURFACE
+- ERP posting and reconciliation flows
+- batch scheduler and workflow routing
+- queue escalation handling
+- cross-functional operations transaction entry
+- legacy keyboard hotkeys and terminal-style interaction`;
+
 const txCatalog = [
   { code: "FB60", title: "Vendor Invoice Entry", module: "Finance", type: "entry", auth: "ap-clerk" },
   { code: "FB65", title: "Credit Memo Processing", module: "Finance", type: "entry", auth: "ap-clerk" },
@@ -381,23 +400,64 @@ function renderSidebarList(title, key, items) {
   return `<section class="legacy-panel"><div class="legacy-panel-head">${title}</div><div class="legacy-panel-body">${rows || "<div>No entries</div>"}</div></section>`;
 }
 
+function openDescriptionModal(host) {
+  const existing = host.querySelector(".legacy-command-modal");
+  if (existing) {
+    existing.remove();
+    return;
+  }
+
+  const modal = document.createElement("div");
+  modal.className = "legacy-command-modal";
+  modal.innerHTML = `
+    <div class="legacy-command-dialog legacy-description-dialog">
+      <div class="legacy-command-head">ERP T-Code Workbench 2009</div>
+      <div class="legacy-command-sub">Demo overview for this application</div>
+      <div class="legacy-description-body">
+        <pre class="legacy-description-text">${APP_DESCRIPTION}</pre>
+      </div>
+      <div class="legacy-command-footer">
+        <button class="legacy-btn" type="button" data-close-desc="1">Close</button>
+      </div>
+    </div>
+  `;
+
+  host.appendChild(modal);
+  modal.querySelector("[data-close-desc]")?.addEventListener("click", () => modal.remove());
+  modal.addEventListener("click", (event) => {
+    if (event.target === modal) {
+      modal.remove();
+    }
+  });
+}
+
 function render(state) {
   const tx = txByCode[state.session.currentTx] || txCatalog[0];
   const app = document.getElementById("app");
   app.innerHTML = `
     <style>
-      .erp-shell { margin: 6px; border: 1px solid #6f7d8a; background: #edf1f5; font-size: 11px; }
-      .erp-top { display: grid; grid-template-columns: 160px 1fr 360px; gap: 6px; align-items: center; border-bottom: 1px solid #7c8894; background: linear-gradient(to bottom, #e6ecf3 0%, #c4cfdb 100%); padding: 6px; }
-      .erp-logo { font-weight: 700; border: 1px solid #768390; padding: 4px 6px; background: #d9e1ea; text-align: center; }
+      .erp-shell {
+        margin: 6px;
+        border: 1px solid #2d5f2d;
+        background: radial-gradient(circle at top, #0f230f 0%, #060906 68%);
+        color: #8eff8e;
+        font-size: 11px;
+        font-family: "Lucida Console", "Courier New", monospace;
+      }
+      .erp-title-actions { display: inline-flex; align-items: center; gap: 6px; }
+      .erp-backlink { font-size: 10px; text-decoration: none; color: #8eff8e; }
+      .erp-backlink:hover { text-decoration: underline; }
+      .erp-top { display: grid; grid-template-columns: 160px 1fr 360px; gap: 6px; align-items: center; border-bottom: 1px solid #2f5f2f; background: linear-gradient(to bottom, #163516 0%, #0a150a 100%); padding: 6px; }
+      .erp-logo { font-weight: 700; border: 1px solid #3d7a3d; padding: 4px 6px; background: #123012; text-align: center; color: #a7ffa7; }
       .erp-system { font-weight: 700; }
       .erp-command { display: flex; align-items: center; gap: 4px; justify-content: flex-end; }
       .erp-command label { font-weight: 700; }
       .erp-command input { width: 190px; font-family: Consolas, "Courier New", monospace; }
       .erp-layout { display: grid; grid-template-columns: 340px 1fr; min-height: calc(100vh - 130px); }
-      .erp-left { border-right: 1px solid #808b97; background: #d8e0e9; padding: 6px; overflow: auto; }
-      .erp-main { padding: 6px; background: #f3f5f8; overflow: auto; }
+      .erp-left { border-right: 1px solid #2f5f2f; background: #0a140a; padding: 6px; overflow: auto; }
+      .erp-main { padding: 6px; background: #070e07; overflow: auto; }
       .erp-head-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
-      .erp-breadcrumb { border: 1px solid #81909e; background: #e2e9f1; padding: 3px 6px; margin-bottom: 6px; }
+      .erp-breadcrumb { border: 1px solid #326232; background: #0f220f; padding: 3px 6px; margin-bottom: 6px; color: #9dff9d; }
       .erp-mono { font-family: Consolas, "Courier New", monospace; }
       .erp-tree { margin: 4px 0 8px 16px; padding: 0; list-style: square; }
       .erp-tree li { margin-bottom: 3px; }
@@ -406,10 +466,86 @@ function render(state) {
       .erp-filter { width: 130px; }
       .erp-action-row { display: flex; gap: 5px; margin-top: 7px; flex-wrap: wrap; }
       .erp-split { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-      .erp-status { border-top: 1px solid #7b8794; background: #c5cfda; padding: 4px 8px; display: flex; justify-content: space-between; }
-      .erp-warning { color: #7a2f14; font-weight: 700; }
+      .erp-status { border-top: 1px solid #2f5f2f; background: #0e1f0e; padding: 4px 8px; display: flex; justify-content: space-between; color: #8eff8e; }
+      .erp-warning { color: #d0ffd0; font-weight: 700; }
+
+      .erp-shell .legacy-titlebar,
+      .erp-shell .legacy-menubar,
+      .erp-shell .legacy-panel,
+      .erp-shell .legacy-panel-body,
+      .erp-shell .legacy-panel-head,
+      .erp-shell .legacy-grid,
+      .erp-shell .legacy-grid th,
+      .erp-shell .legacy-grid td,
+      .erp-shell .legacy-btn,
+      .erp-shell .legacy-field,
+      .erp-shell .legacy-nav-item,
+      .erp-shell .legacy-menu-item {
+        font-family: "Lucida Console", "Courier New", monospace;
+      }
+
+      .erp-shell .legacy-titlebar,
+      .erp-shell .legacy-menubar {
+        background: linear-gradient(to bottom, #133113 0%, #081408 100%);
+        color: #8eff8e;
+        border-color: #2f5f2f;
+      }
+
+      .erp-shell .legacy-panel,
+      .erp-shell .legacy-panel-body,
+      .erp-shell .legacy-grid,
+      .erp-shell .legacy-grid td {
+        background: #071007;
+        color: #8eff8e;
+        border-color: #2f5f2f;
+      }
+
+      .erp-shell .legacy-grid th,
+      .erp-shell .legacy-panel-head {
+        background: #123412;
+        color: #adffad;
+        border-color: #3b733b;
+      }
+
+      .erp-shell .legacy-btn,
+      .erp-shell .legacy-field,
+      .erp-shell .legacy-nav-item,
+      .erp-shell .legacy-menu-item,
+      .erp-shell .legacy-help-icon {
+        background: #0d210d;
+        color: #9dff9d;
+        border-color: #396d39;
+      }
+
+      .erp-shell .legacy-btn:hover,
+      .erp-shell .legacy-nav-item:hover,
+      .erp-shell .legacy-menu-item:hover {
+        background: #173517;
+      }
+
+      .erp-shell .legacy-nav-item.active {
+        background: #1f4f1f;
+        color: #dcffdc;
+      }
     </style>
     <div class="erp-shell">
+      <div class="legacy-titlebar">
+        <span>ERP T-Code Workbench 2009</span>
+        <div class="erp-title-actions">
+          <button class="legacy-help-icon" type="button" data-action="legacy-app-help" aria-label="Open app description" title="App context">?</button>
+          <a class="erp-backlink" href="../" aria-label="Back to main page">Main</a>
+        </div>
+      </div>
+      <div class="legacy-menubar">
+        <button class="legacy-menu-item" type="button" data-menu="file">File</button>
+        <button class="legacy-menu-item" type="button" data-menu="edit">Edit</button>
+        <button class="legacy-menu-item" type="button" data-menu="view">View</button>
+        <button class="legacy-menu-item" type="button" data-menu="tools">Tools</button>
+        <button class="legacy-menu-item" type="button" data-menu="admin">Admin</button>
+        <button class="legacy-menu-item" type="button" data-menu="help">Help</button>
+        <button class="legacy-menu-item" type="button" data-menu="dashboard">Dashboard</button>
+        <button class="legacy-menu-item" type="button" data-menu="accounts">Accounts</button>
+      </div>
       <div class="erp-top">
         <div class="erp-logo">NORTHSTAR ERP</div>
         <div class="erp-system">Enterprise Transaction Workbench 2009</div>
@@ -523,6 +659,20 @@ function render(state) {
       } else if (action === "export") {
         setStatus(nextState, "Export list to spreadsheet.");
       }
+      saveState(nextState);
+      render(nextState);
+    });
+  });
+
+  app.querySelector("[data-action='legacy-app-help']")?.addEventListener("click", () => {
+    openDescriptionModal(app);
+  });
+
+  app.querySelectorAll("[data-menu]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const nextState = loadState();
+      const label = button.textContent?.trim() || "Menu";
+      setStatus(nextState, `${label} menu selected.`);
       saveState(nextState);
       render(nextState);
     });
