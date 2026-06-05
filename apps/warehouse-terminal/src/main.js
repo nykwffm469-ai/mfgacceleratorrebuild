@@ -5,15 +5,9 @@ import { panel } from "@legacy/shared-ui";
 const namespace = "warehouse-terminal";
 const APP_DESCRIPTION = `LEGACY APP DESCRIPTION - Warehouse Terminal Control 2010
 
-Warehouse Terminal Control 2010 is a keyboard-driven operations interface used by distribution
-teams for inventory lookup, shipment staging, receiving-dock processing, and terminal status review.
+Warehouse Terminal Control 2010 is a keyboard-first distribution interface for inventory lookup, shipment staging, receiving dock processing, and terminal status checks in fast-paced warehouse operations. Common usage includes function-key navigation between lookup, shipment, receiving, and status screens, plus rapid process/confirm actions for queue turnover during shift operations.
 
-The interface mimics legacy RF/green-screen operational behavior with:
-- function-key navigation
-- high-density text grids
-- process/confirm workflows
-- status-line operator feedback
-- dock and shipment queue management`;
+This experience is similar to legacy RF gun screens, AS400 warehouse consoles, and early WMS terminal sessions that prioritize speed and compact line-oriented data entry. Potential RPA use cases include automated status toggling and confirmations, shipment/receipt exception detection and retry workflows, cycle-count variance capture, and end-of-shift report generation with audit logging.`;
 const screens = ["lookup", "shipments", "receiving", "status"];
 let activeScreen = "lookup";
 let statusMessage = "F2 Lookup | F4 Shipments | F6 Receiving | F8 Status";

@@ -169,40 +169,52 @@ const FAMILY_STYLES = [
   }
 ];
 
-function buildDefaultLegacyDescription(title, modules = []) {
-  const moduleList = modules.map((item) => item.label).join(", ") || "Operations Queue";
+function selectLegacyAnalog(title, modules = []) {
+  const haystack = `${title} ${modules.map((item) => item.label).join(" ")}`.toLowerCase();
+  if (/erp|t-code|procure|finance|inventory|warehouse|order/.test(haystack)) {
+    return "SAP GUI and Oracle E-Business Suite forms";
+  }
+  if (/service|helpdesk|incident|cab|sla|ticket/.test(haystack)) {
+    return "ServiceNow Classic and Salesforce Service Console";
+  }
+  if (/sharepoint|portal|workflow|register|compliance/.test(haystack)) {
+    return "SharePoint 2010 portals and custom ASP.NET intranet apps";
+  }
+  return "legacy line-of-business web consoles from 2009-2012";
+}
+
+function toSentence(value) {
+  const compact = String(value || "").replace(/\s+/g, " ").trim();
+  if (!compact) {
+    return "";
+  }
+  return /[.!?]$/.test(compact) ? compact : `${compact}.`;
+}
+
+function summarizeDescription(appDescription) {
+  const cleaned = String(appDescription || "")
+    .replace(/LEGACY APP DESCRIPTION\s*-\s*/i, "")
+    .replace(/\r/g, "")
+    .split("\n")
+    .map((line) => line.replace(/^[-*]\s*/, "").trim())
+    .filter((line) => line.length > 0);
+
+  const firstLine = cleaned.find((line) => line.length > 20) || cleaned[0] || "";
+  return toSentence(firstLine);
+}
+
+function buildDefaultLegacyDescription(title, modules = [], appDescription = "") {
+  const moduleLabels = modules.map((item) => item.label);
+  const modulePreview = moduleLabels.slice(0, 4).join(", ") || "operations queues";
+  const usagePreview = moduleLabels.slice(0, 3).join(", ") || "daily queue operations";
+  const summary = summarizeDescription(appDescription) || `${title} is a legacy enterprise operations application used by shared-services teams.`;
+  const analog = selectLegacyAnalog(title, modules);
+
   return `LEGACY APP DESCRIPTION - ${title}
 
-${title} is an enterprise operations platform from the 2009-2012 era designed for high-volume back-office processing.
+${summary} Common usage includes analyst and supervisor workflows for ${usagePreview}, exception handling, approval routing, audit tracing, and print/export packet preparation across ${modulePreview}.
 
-Primary module areas:
-- ${moduleList}
-
-Typical legacy integrations:
-- ERP host synchronization (SAP / Oracle / AS400)
-- shared drive document exchange
-- spreadsheet-based reconciliation imports
-- nightly batch processing and retry queues
-
-Workflow characteristics:
-- queue-driven processing
-- supervisor approval gates
-- audit trail requirements
-- exception routing and reprocessing
-- print/export packet generation
-
-Operational users:
-- shared-services analysts
-- operations supervisors
-- quality/compliance reviewers
-- finance and customer operations staff
-
-RPA modernization opportunities:
-- screen automation for repetitive data entry
-- queue monitoring and exception triage
-- OCR/document ingestion and validation handoff
-- approval routing and notification automation
-- report and audit packet generation`;
+This experience is similar to ${analog}, where users process records in dense grids, form-driven screens, and queue-oriented menus. Potential RPA use cases include repetitive data entry automation, cross-system copy/paste and validation checks, exception triage and retry orchestration, document ingestion/OCR handoff, and scheduled audit/report generation.`;
 }
 
 function extractTableRows(table) {
@@ -1014,6 +1026,7 @@ export function appShell({ title, modules, activeModule, toolbarButtons, statusT
   const identity = buildLegacyIdentity({ title, modules, identityKey });
   const identityHash = hashText(identityKey || title);
   const navHtml = renderNav({ modules, activeModule, navPattern: identity.navPattern });
+  const resolvedDescription = buildDefaultLegacyDescription(title, modules, appDescription || "");
   const shellButtons = [
     { id: "open-window", label: "Open Window" },
     { id: "global-edit-selected", label: "Edit Selected" },
@@ -1049,7 +1062,7 @@ export function appShell({ title, modules, activeModule, toolbarButtons, statusT
           <a class=\"legacy-backlink\" href=\"../\" aria-label=\"Back to main page\">Main</a>
         </div>
       </div>
-      <div data-app-description style="display:none;">${escapeHtml(appDescription || buildDefaultLegacyDescription(title, modules))}</div>
+      <div data-app-description style="display:none;">${escapeHtml(resolvedDescription)}</div>
       ${renderMenuBar({ modules, menuVerb: identity.menuVerb })}
       <div class=\"legacy-toolbar\">${toolbarHtml}</div>
       ${identity.navPattern === "top-tabs" ? renderTopTabs({ modules, activeModule }) : ""}

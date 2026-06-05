@@ -5,22 +5,9 @@ const namespace = "erp-tcode-workbench";
 
 const APP_DESCRIPTION = `LEGACY APP DESCRIPTION - ERP T-Code Workbench 2009
 
-ERP T-Code Workbench 2009 is a transaction-console style operations front end for finance,
-procurement, warehouse, help desk, HR, legal, and PMO support teams.
+ERP T-Code Workbench 2009 is a command-driven transaction console used by finance, procurement, warehouse, help desk, HR, legal, and PMO teams to execute daily ERP work with typed T-codes, authorization checks, queue routing, and report/background processing. Common usage includes invoice and credit entry, requisition and approval handling, queue triage, document posting, and review of operational exception dashboards.
 
-The workspace simulates command-driven SAP/ERP interaction patterns from the late-2000s era:
-- typed transaction codes
-- role and authorization checks
-- queue-routing actions
-- report execution and background jobs
-- master/entry/report/admin transaction forms
-
-INTEGRATION SURFACE
-- ERP posting and reconciliation flows
-- batch scheduler and workflow routing
-- queue escalation handling
-- cross-functional operations transaction entry
-- legacy keyboard hotkeys and terminal-style interaction`;
+This workflow closely resembles SAP GUI and Oracle Forms/EBS transaction workstations from the same era, where users navigate dense keyboard-first screens and role-gated functions. Potential RPA use cases include repetitive transaction entry automation, cross-screen data validation and copy/paste elimination, queue retry/escalation bots, posting-period guard checks, and scheduled report extraction with audit trail packaging.`;
 
 const txCatalog = [
   { code: "FB60", title: "Vendor Invoice Entry", module: "Finance", type: "entry", auth: "ap-clerk" },
