@@ -195,6 +195,30 @@ ensureSeed(namespace, () => ({
   ]
 }));
 
+function fallbackSeed() {
+  return {
+    certificates: [],
+    reminders: [],
+    collection: [],
+    compliance: [],
+    exceptions: []
+  };
+}
+
+function normalizeData(raw) {
+  const next = { ...fallbackSeed(), ...(raw && typeof raw === "object" ? raw : {}) };
+  modules.forEach((moduleItem) => {
+    if (!Array.isArray(next[moduleItem.id])) {
+      next[moduleItem.id] = [];
+    }
+  });
+  return next;
+}
+
+function readData() {
+  return normalizeData(loadSeed(namespace, fallbackSeed));
+}
+
 function applyPalette() {
   const root = document.documentElement;
   Object.entries(palette).forEach(([name, value]) => root.style.setProperty(name, value));
@@ -699,7 +723,7 @@ function updateEntryBadges(data) {
 function render() {
   installScopedStyles();
   applyPalette();
-  const data = loadSeed(namespace, () => ({}));
+  const data = readData();
   const contentHtml = renderContent(data);
 
   document.getElementById("app").innerHTML = appShell({
@@ -727,7 +751,7 @@ function render() {
   document.querySelectorAll("[data-action]").forEach((button) => {
     button.addEventListener("click", async (event) => {
       const action = button.getAttribute("data-action");
-      const latest = loadSeed(namespace, () => ({}));
+      const latest = readData();
 
       if (action === "legacy-app-help") {
         return;
@@ -782,7 +806,7 @@ function render() {
     form.addEventListener("submit", (event) => {
       event.preventDefault();
       const formData = new FormData(form);
-      const latest = loadSeed(namespace, () => ({}));
+      const latest = readData();
 
       const vendor = formData.get("vendor")?.toString() || "Unknown Vendor";
       const policyNo = formData.get("policyNo")?.toString() || makeId("POL");
