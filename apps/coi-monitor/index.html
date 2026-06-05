@@ -4,9 +4,119 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>COI Monitor 2011</title>
+    <style>
+      body {
+        margin: 0;
+        background: #d6d1c6;
+        color: #3f372f;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+      }
+
+      .coi-boot {
+        max-width: 720px;
+        margin: 42px auto;
+        border: 1px solid #8f8677;
+        background: #ece5d8;
+        box-shadow: 1px 1px 0 #a39a89;
+        padding: 12px;
+        font-size: 12px;
+      }
+
+      .coi-boot h1 {
+        font-size: 13px;
+        margin: 0 0 8px;
+      }
+
+      .coi-boot p {
+        margin: 0 0 8px;
+      }
+
+      .coi-boot .row {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+
+      .coi-boot button {
+        border: 1px solid #7f7768;
+        background: linear-gradient(to bottom, #fffaf2 0%, #daccb6 100%);
+        padding: 3px 8px;
+        font-family: inherit;
+        font-size: 11px;
+        cursor: pointer;
+      }
+
+      .coi-boot code {
+        background: #f6f1e6;
+        border: 1px solid #ccc1af;
+        padding: 0 4px;
+      }
+    </style>
   </head>
   <body>
-    <div id="app"></div>
+    <div id="app">
+      <section class="coi-boot" id="coi-boot-panel">
+        <h1>COI Monitor 2011</h1>
+        <p>Loading legacy vendor-compliance workspace...</p>
+      </section>
+    </div>
+    <script>
+      (function () {
+        var bootPanel = document.getElementById("coi-boot-panel");
+        var appHost = document.getElementById("app");
+
+        window.setTimeout(function () {
+          if (!appHost) {
+            return;
+          }
+
+          var mounted = !!appHost.querySelector(".legacy-window");
+          if (mounted) {
+            return;
+          }
+
+          appHost.innerHTML = [
+            '<section class="coi-boot">',
+            '<h1>COI Monitor 2011 - Recovery Mode</h1>',
+            '<p>The application did not mount correctly in this browser session.</p>',
+            '<p>This is usually a cached asset mismatch. Use one of the options below.</p>',
+            '<p><code>legacy-demo:coi-monitor</code> can also be reset if needed.</p>',
+            '<div class="row">',
+            '<button type="button" id="coi-hard-reload">Hard Reload</button>',
+            '<button type="button" id="coi-reset-seed">Reset COI Local Data + Reload</button>',
+            "</div>",
+            "</section>"
+          ].join("");
+
+          var hardReload = document.getElementById("coi-hard-reload");
+          if (hardReload) {
+            hardReload.addEventListener("click", function () {
+              window.location.reload();
+            });
+          }
+
+          var resetSeed = document.getElementById("coi-reset-seed");
+          if (resetSeed) {
+            resetSeed.addEventListener("click", function () {
+              try {
+                localStorage.removeItem("legacy-demo:coi-monitor");
+              } catch (error) {
+                console.warn("Unable to reset COI seed", error);
+              }
+              window.location.reload();
+            });
+          }
+        }, 2800);
+
+        if (bootPanel) {
+          window.setTimeout(function () {
+            if (bootPanel && !appHost.querySelector(".legacy-window")) {
+              bootPanel.querySelector("p").textContent = "Still loading legacy vendor-compliance workspace...";
+            }
+          }, 1200);
+        }
+      })();
+    </script>
     <script type="module" src="./src/main.js"></script>
   </body>
 </html>
