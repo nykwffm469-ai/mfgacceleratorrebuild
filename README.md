@@ -1,11 +1,15 @@
-# Legacy Enterprise App Portfolio (2010-2012 Simulations)
+# Legacy Enterprise App Portfolio (2010-2012 Simulations + Modern Comparisons)
 
 ## Last Updated
 
 - Date: 2026-06-05
-- Update: Legacy Enterprise Suite second pass completed for Apps 3-8 with deeper row-level interactions, queue/domain widgets, modal workflow consoles (audit, retry, supervisor approval, print/export), and expanded operations realism. Shared shell/status system updated with environment, workstation, operator, and background alert fidelity.
+- Update: Added three high-quality non-legacy apps to expand the modernization story:
+  - `sharepoint-doc-center` - pixel-faithful SharePoint 2010 Document Center clone (ribbon, quicklaunch, libraries, check-in/out, versioning, workflows)
+  - `modern-loan-origination` - Bootstrap 4 NorthBank Lending Workbench with an interactive 8-step RPA decisioning pipeline (PDF intake -> KYC -> credit pull -> DTI -> fraud scoring -> policy decision)
+  - `modern-vendor-risk` - Bootstrap 4 VendorPulse Risk Cockpit with an 8-step RPA onboarding pipeline (W9 -> bank verify -> OFAC -> COI parse -> SOC 2 -> financial health -> ERP master push)
+  Also: ERP Command Center reverted to standard legacy shell after green-screen experiment, ERP added CRM-style recovery boot panel, suite-wide `?` modal descriptions standardized to 1-2 paragraph format (usage / similar legacy systems / RPA use cases), launcher Terminal filter shortened.
 
-This repository is a deterministic portfolio of fake but believable legacy enterprise front-end systems.
+This repository is a deterministic portfolio of fake but believable legacy enterprise front-end systems plus modern comparison apps that illustrate where RPA fits in.
 
 GitHub repository: https://github.com/nykwffm469-ai/mfgacceleratorrebuild
 Live portfolio: https://ashy-water-06d69bd1e.7.azurestaticapps.net/
@@ -25,9 +29,11 @@ Guardrails:
 
 Current scale:
 
-- 72 total listed apps on the launcher
-- 65 local legacy simulations plus 7 hosted companion apps
-- homepage filtering by business area, interface style, console/terminal-only, and local/hosted type
+- 75 total listed apps on the launcher
+- 68 local apps (65 legacy simulations + SharePoint clone + 2 modern Bootstrap 4 apps) plus 7 hosted companion apps
+- homepage filtering by business area, interface style, terminal-only, and local/hosted type
+- new filter areas added: `ECM / Compliance`, `Banking & Lending`, `Third-Party Risk`
+- new interface styles added: `SharePoint 2010 Clone`, `Modern Web (Bootstrap)`
 
 ## Monorepo layout
 
@@ -102,6 +108,12 @@ scripts/build-portfolio-site.mjs
 
 - rpa-challenge: same field set on every run, with field order scrambled on each submit to test RPA resilience and self-healing selector strategies
 
+### Modern Comparison Apps (3)
+
+- sharepoint-doc-center: pixel-faithful SharePoint 2010 Document Center clone with site Quick Launch, blue ribbon and yellow contextual Library Tools (Documents + Library tabs), document libraries (Contracts, Policies, Month End Workpapers, SOX Evidence), check-in/check-out with major/minor versioning, version history, edit properties, workflows (Standard Approval, SOX Evidence), document permissions, upload + delete + export-to-Excel
+- modern-loan-origination: Bootstrap 4 NorthBank Lending Workbench used by underwriters to triage incoming loan applications across Auto / Personal / Mortgage products. Includes a live, step-by-step RPA decisioning pipeline (PDF intake -> identity verification -> credit pull -> DTI -> fraud scoring -> auto-approve / manual review / decline) with audit trail
+- modern-vendor-risk: Bootstrap 4 VendorPulse Risk Cockpit used by procurement and third-party risk teams to onboard and continuously monitor vendors. Includes a live 8-step RPA onboarding pipeline (W9 / EIN -> bank verification -> OFAC sanctions -> COI parse -> SOC 2 intake -> D&B financial health -> tier classification -> ERP master push) with audit trail
+
 ## Azure Hosting
 
 - Portfolio root: https://ashy-water-06d69bd1e.7.azurestaticapps.net/
@@ -114,6 +126,9 @@ Examples:
 - https://ashy-water-06d69bd1e.7.azurestaticapps.net/order-hold-release/
 - https://ashy-water-06d69bd1e.7.azurestaticapps.net/customer-cloud-hub/
 - https://ashy-water-06d69bd1e.7.azurestaticapps.net/rpa-challenge/
+- https://ashy-water-06d69bd1e.7.azurestaticapps.net/sharepoint-doc-center/
+- https://ashy-water-06d69bd1e.7.azurestaticapps.net/modern-loan-origination/
+- https://ashy-water-06d69bd1e.7.azurestaticapps.net/modern-vendor-risk/
 
 ## Run locally
 
