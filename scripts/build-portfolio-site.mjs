@@ -51,7 +51,13 @@ const appProfiles = {
   "erp-tcode-workbench": { area: "ERP Operations", interface: "Console/Terminal", displayTitle: "ERP T-Code Workbench" },
   "sharepoint-doc-center": { area: "ECM / Compliance", interface: "SharePoint 2010 Clone", displayTitle: "SharePoint Document Center" },
   "modern-loan-origination": { area: "Banking & Lending", interface: "Modern Web (Bootstrap)", displayTitle: "NorthBank Loan Origination" },
-  "modern-vendor-risk": { area: "Third-Party Risk", interface: "Modern Web (Bootstrap)", displayTitle: "VendorPulse Risk Cockpit" }
+  "modern-vendor-risk": { area: "Third-Party Risk", interface: "Modern Web (Bootstrap)", displayTitle: "VendorPulse Risk Cockpit" },
+  "bot-orchestrator-console": { area: "Automation Platform", interface: "Modern Web (Bootstrap)", displayTitle: "Bot Orchestrator Control Room" },
+  "document-intelligence-studio": { area: "Automation Platform", interface: "Modern Web (Bootstrap)", displayTitle: "Document Intelligence Studio (IDP)" },
+  "mainframe-3270-emulator": { area: "Mainframe / Legacy Host", interface: "TN3270 / Green Screen", displayTitle: "Mainframe 3270 Claims Terminal" },
+  "email-intake-bot": { area: "Automation Platform", interface: "Modern Web (Outlook-style)", displayTitle: "AP/AR Shared Mailbox Bot" },
+  "excel-macro-lab": { area: "Automation Platform", interface: "Excel Macro Workbook", displayTitle: "Excel Macro Replacement Lab" },
+  "rpa-roi-dashboard": { area: "Automation Platform", interface: "Executive Wallboard", displayTitle: "RPA Program ROI Dashboard" }
 };
 
 function getAppProfile(id, title, subtitle) {
@@ -171,7 +177,9 @@ const legacyBusinessAreas = [
   "ERP Operations",
   "ECM / Compliance",
   "Banking & Lending",
-  "Third-Party Risk"
+  "Third-Party Risk",
+  "Automation Platform",
+  "Mainframe / Legacy Host"
 ];
 
 const areaCounts = legacyBusinessAreas

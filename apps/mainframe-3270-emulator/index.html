@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>TN3270 - CICS Claims</title>
+<style>
+  html,body{margin:0;padding:0;background:#0a0a0a;color:#7CFC00;font-family:"Lucida Console","Consolas",monospace;font-size:14px;height:100%;}
+  .tn-help{position:fixed;top:8px;right:10px;z-index:99;background:#333;color:#fff;border:1px solid #555;padding:4px 8px;cursor:pointer;font-family:inherit;font-size:11px;}
+  .tn-help:hover{background:#444;}
+  .tn-back{position:fixed;top:8px;right:88px;z-index:99;color:#7CFC00;text-decoration:none;font-size:11px;border:1px solid #2f5f2f;padding:4px 8px;background:#0e1f0e;}
+</style></head>
+<body>
+  <a href="../" class="tn-back">[Main]</a>
+  <button class="tn-help" id="tn-help">App Context (?)</button>
+  <div id="app">
+    <div style="padding:80px;text-align:center;">CONNECTING TO HOST...</div>
+  </div>
+  <script>(function(){var h=document.getElementById("app");window.setTimeout(function(){if(!h||h.querySelector(".tn-shell"))return;h.innerHTML='<div style="padding:80px;text-align:center;">SESSION TIMEOUT - HARD RELOAD REQUIRED <br/><br/><button onclick="location.reload()" style="background:#0e1f0e;color:#7CFC00;border:1px solid #2f5f2f;padding:6px 14px;font-family:inherit;cursor:pointer;">[RECONNECT]</button></div>';},2800);})();</script>
+  <script type="module" src="./src/main.js"></script>
+</body></html>

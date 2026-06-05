@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>MonthEnd Recon - Workbook</title>
+<style>
+  body{margin:0;font-family:Calibri,"Segoe UI",Arial,sans-serif;font-size:12px;background:#e7e7e7;color:#212121;}
+  .xl-shell{display:flex;flex-direction:column;min-height:100vh;}
+  .xl-title{background:#107c41;color:#fff;padding:6px 12px;font-size:13px;font-weight:600;display:flex;justify-content:space-between;align-items:center;}
+  .xl-title-actions{display:flex;align-items:center;gap:10px;}
+  .xl-title-actions button,.xl-title-actions a{background:#0d6839;border:1px solid #0a5430;color:#fff;padding:2px 8px;font-size:11px;cursor:pointer;text-decoration:none;border-radius:2px;}
+  .xl-title-actions button:hover,.xl-title-actions a:hover{background:#0a5430;}
+  .xl-ribbon{background:#f3f2f1;border-bottom:1px solid #d2d0ce;padding:4px 10px;display:flex;gap:6px;flex-wrap:wrap;}
+  .xl-ribbon-grp{display:flex;flex-direction:column;padding:2px 8px;border-right:1px solid #d2d0ce;min-width:100px;}
+  .xl-ribbon-grp-title{font-size:10px;color:#605e5c;text-align:center;order:99;padding-top:2px;}
+  .xl-btn{background:#fff;border:1px solid #c8c6c4;padding:3px 8px;font-size:11px;cursor:pointer;color:#212121;}
+  .xl-btn:hover{background:#f3f2f1;}
+  .xl-btn-action{background:#107c41;color:#fff;border-color:#0d6839;}
+  .xl-btn-action:hover{background:#0d6839;}
+  .xl-btn-rpa{background:#742774;color:#fff;border-color:#5a1d5a;}
+  .xl-btn-rpa:hover{background:#5a1d5a;}
+  .xl-formula{background:#fff;border-bottom:1px solid #d2d0ce;padding:3px 6px;display:flex;gap:6px;align-items:center;font-family:Consolas,monospace;font-size:11px;}
+  .xl-namebox{border:1px solid #c8c6c4;background:#fff;padding:2px 6px;width:80px;}
+  .xl-formulabar{flex:1;border:1px solid #c8c6c4;padding:2px 6px;}
+  .xl-grid{flex:1;overflow:auto;background:#fff;}
+  .xl-grid table{border-collapse:collapse;background:#fff;}
+  .xl-grid th,.xl-grid td{border:1px solid #d2d0ce;padding:2px 6px;min-width:90px;height:18px;font-size:12px;text-align:left;}
+  .xl-grid thead th{background:#f3f2f1;text-align:center;font-weight:normal;color:#605e5c;}
+  .xl-grid tbody th{background:#f3f2f1;text-align:center;font-weight:normal;color:#605e5c;width:36px;min-width:36px;}
+  .xl-err{color:#a01000;background:#fff2f0;}
+  .xl-paste{background:#fff7d6;border:2px dashed #ce9300;}
+  .xl-good{color:#107c41;}
+  .xl-warn{background:#fff7e6;}
+  .xl-tabs{background:#fff;border-top:1px solid #d2d0ce;padding:0;display:flex;}
+  .xl-tab{padding:6px 14px;background:#f3f2f1;border-right:1px solid #d2d0ce;cursor:pointer;font-size:11px;}
+  .xl-tab.active{background:#fff;border-bottom:2px solid #107c41;font-weight:600;}
+  .xl-status{background:#107c41;color:#fff;padding:4px 12px;font-size:11px;display:flex;justify-content:space-between;}
+  .xl-modal{position:fixed;inset:0;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;z-index:99;}
+  .xl-modal-body{background:#fff;border:1px solid #999;padding:0;max-width:520px;width:100%;}
+  .xl-modal-head{background:#107c41;color:#fff;padding:8px 14px;font-weight:600;}
+  .xl-modal-content{padding:14px;}
+  .xl-progress-row{padding:4px 0;border-bottom:1px dotted #ddd;font-family:Consolas,monospace;font-size:11px;}
+  .xl-progress-done{color:#107c41;}
+  .xl-progress-active{color:#cc6600;font-weight:bold;}
+  .xl-progress-pending{color:#999;}
+</style></head>
+<body><div id="app"><div style="padding:60px;text-align:center;color:#666;">Loading workbook...</div></div>
+<script type="module" src="./src/main.js"></script></body></html>
