@@ -82,6 +82,87 @@ const ENV_LABEL = "PROD-FIN-APP03";
 const LOGGED_IN_USER = "FINANCE\\ap.recon01";
 const WORKSTATION = "WS-FIN-044";
 const DB_CONN = "ODBC_AP_ERP_PRD";
+const APP_DESCRIPTION = `LEGACY APP DESCRIPTION - AP Statement Reconciliation 2008
+
+AP Statement Reconciliation 2008 is a finance operations application used by enterprise Accounts Payable teams to reconcile vendor statements against open ERP transactions.
+
+The platform centralizes reconciliation workflows including:
+- vendor statement ingestion
+- invoice matching
+- discrepancy management
+- supervisor approvals
+- ERP export coordination
+- audit tracking
+- reconciliation closures
+
+The application was commonly deployed between 2008-2015 within:
+- manufacturing organizations
+- retail shared-services centers
+- logistics providers
+- healthcare finance teams
+- enterprise accounting departments
+
+The system integrates with multiple legacy platforms including:
+- SAP ECC
+- Oracle Financials
+- JD Edwards
+- Lawson
+- AS400 terminal systems
+- Excel-based reconciliation processes
+- network file-share repositories
+
+Operational workflows are organized around queue-based processing stages such as:
+- imported statements
+- matching review
+- discrepancy resolution
+- supervisor approval
+- ERP export
+- archival closure
+
+The user experience reflects enterprise desktop applications commonly built using:
+- VB.NET WinForms
+- Java Swing
+- PowerBuilder
+- early .NET Framework desktop clients
+
+The application includes:
+- reconciliation dashboards
+- queue monitoring
+- ERP synchronization tracking
+- audit history viewers
+- retry processing tools
+- report generation
+- background batch processing indicators
+
+Typical users include:
+- AP analysts
+- finance operations specialists
+- controllers
+- audit reviewers
+- shared-services reconciliation teams
+
+RPA PROBLEM STATEMENT
+
+Many reconciliation tasks within finance operations still rely on repetitive manual interaction across disconnected systems and legacy interfaces.
+
+Common operational activities include:
+- downloading emailed statements
+- importing reconciliation files
+- entering ERP transaction references
+- validating failed exports
+- navigating terminal-based applications
+- generating reconciliation reports
+- updating spreadsheets
+- routing records for supervisor approval
+
+These repetitive workflows create opportunities for RPA solutions to:
+- automate data entry
+- streamline reconciliation processing
+- reduce manual ERP interaction
+- improve queue management
+- automate audit-document generation
+- accelerate discrepancy resolution
+- support attended and unattended automation scenarios`;
 
 const systemMessages = [
   "Unable to acquire record lock.",
@@ -1231,6 +1312,7 @@ function render() {
     title: "AP Statement Reconciliation 2008",
     modules,
     activeModule,
+    appDescription: APP_DESCRIPTION,
     toolbarButtons: [
       { id: "toggle-first", label: "Toggle First" },
       { id: "delete-last", label: "Delete Last" },

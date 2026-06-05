@@ -169,6 +169,88 @@ const FAMILY_STYLES = [
   }
 ];
 
+const LEGACY_AP_DESCRIPTION = `LEGACY APP DESCRIPTION - AP Statement Reconciliation 2008
+
+AP Statement Reconciliation 2008 is a finance operations application used by enterprise Accounts Payable teams to reconcile vendor statements against open ERP transactions.
+
+The platform centralizes reconciliation workflows including:
+- vendor statement ingestion
+- invoice matching
+- discrepancy management
+- supervisor approvals
+- ERP export coordination
+- audit tracking
+- reconciliation closures
+
+The application was commonly deployed between 2008-2015 within:
+- manufacturing organizations
+- retail shared-services centers
+- logistics providers
+- healthcare finance teams
+- enterprise accounting departments
+
+The system integrates with multiple legacy platforms including:
+- SAP ECC
+- Oracle Financials
+- JD Edwards
+- Lawson
+- AS400 terminal systems
+- Excel-based reconciliation processes
+- network file-share repositories
+
+Operational workflows are organized around queue-based processing stages such as:
+- imported statements
+- matching review
+- discrepancy resolution
+- supervisor approval
+- ERP export
+- archival closure
+
+The user experience reflects enterprise desktop applications commonly built using:
+- VB.NET WinForms
+- Java Swing
+- PowerBuilder
+- early .NET Framework desktop clients
+
+The application includes:
+- reconciliation dashboards
+- queue monitoring
+- ERP synchronization tracking
+- audit history viewers
+- retry processing tools
+- report generation
+- background batch processing indicators
+
+Typical users include:
+- AP analysts
+- finance operations specialists
+- controllers
+- audit reviewers
+- shared-services reconciliation teams
+
+RPA PROBLEM STATEMENT
+
+Many reconciliation tasks within finance operations still rely on repetitive manual interaction across disconnected systems and legacy interfaces.
+
+Common operational activities include:
+- downloading emailed statements
+- importing reconciliation files
+- entering ERP transaction references
+- validating failed exports
+- navigating terminal-based applications
+- generating reconciliation reports
+- updating spreadsheets
+- routing records for supervisor approval
+
+These repetitive workflows create opportunities for RPA solutions to:
+- automate data entry
+- streamline reconciliation processing
+- reduce manual ERP interaction
+- improve queue management
+- automate audit-document generation
+- accelerate discrepancy resolution
+- support attended and unattended automation scenarios`;
+
 function extractTableRows(table) {
   const rows = Array.from(table.querySelectorAll("tr"));
   return rows.map((row) =>
@@ -289,6 +371,45 @@ function showLegacyNotice(message) {
 
 function closeLegacyCommandMenu() {
   document.querySelectorAll(".legacy-command-modal").forEach((node) => node.remove());
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function openLegacyDescriptionModal() {
+  closeLegacyCommandMenu();
+  const windowEl = document.querySelector(".legacy-window");
+  if (!windowEl) {
+    return;
+  }
+
+  const appDescription = windowEl.querySelector("[data-app-description]")?.textContent?.trim() || LEGACY_AP_DESCRIPTION;
+
+  const modal = document.createElement("div");
+  modal.className = "legacy-command-modal legacy-description-modal";
+  modal.innerHTML = `
+    <div class="legacy-command-dialog legacy-description-dialog">
+      <div class="legacy-command-head">Legacy Application Context</div>
+      <div class="legacy-command-sub">Demo overview for this application</div>
+      <div class="legacy-description-body">
+        <pre class="legacy-description-text">${escapeHtml(appDescription)}</pre>
+      </div>
+      <div class="legacy-command-footer">
+        <button class="legacy-btn" data-command-close="1">Close</button>
+      </div>
+    </div>
+  `;
+
+  windowEl.appendChild(modal);
+  modal.querySelector("[data-command-close]")?.addEventListener("click", () => {
+    closeLegacyCommandMenu();
+  });
 }
 
 function openLegacyCommandMenu({ title, subtitle, options = [] }) {
@@ -613,6 +734,7 @@ function installGlobalLegacyActions() {
     "generate-pdf",
     "retry-failed",
     "view-audit",
+    "legacy-app-help",
     "new",
     "toggle-first",
     "delete-last",
@@ -662,6 +784,8 @@ function installGlobalLegacyActions() {
         showLegacyNotice("Retry failed records queued - 7 records scheduled for reprocessing");
       } else if (action === "view-audit") {
         showLegacyNotice("Audit history opened in review mode");
+      } else if (action === "legacy-app-help") {
+        openLegacyDescriptionModal();
       } else if (action === "new") {
         handleNewAction();
       } else {
@@ -832,7 +956,7 @@ function renderOpsStrip(identityHash) {
   `;
 }
 
-export function appShell({ title, modules, activeModule, toolbarButtons, statusText, contentHtml, identityKey }) {
+export function appShell({ title, modules, activeModule, toolbarButtons, statusText, contentHtml, identityKey, appDescription }) {
   const identity = buildLegacyIdentity({ title, modules, identityKey });
   const identityHash = hashText(identityKey || title);
   const navHtml = renderNav({ modules, activeModule, navPattern: identity.navPattern });
@@ -860,8 +984,12 @@ export function appShell({ title, modules, activeModule, toolbarButtons, statusT
     <div class=\"legacy-window legacy-family-${identity.family}\" data-nav-pattern=\"${identity.navPattern}\" data-density=\"${identity.density}\" data-button-style=\"${identity.buttonStyle}\" data-grid-style=\"${identity.gridStyle}\" style=\"${styleVarsToInline(identity.vars)}\">
       <div class=\"legacy-titlebar\">
         <span>${title}</span>
-        <a class=\"legacy-backlink\" href=\"../\" aria-label=\"Back to main page\">Main</a>
+        <div class=\"legacy-title-actions\">
+          <button class=\"legacy-help-icon\" type=\"button\" data-action=\"legacy-app-help\" aria-label=\"Open app description\" title=\"App context\">?</button>
+          <a class=\"legacy-backlink\" href=\"../\" aria-label=\"Back to main page\">Main</a>
+        </div>
       </div>
+      <div data-app-description style=\"display:none;\">${escapeHtml(appDescription || `Legacy application context is not configured for ${title}.`)}</div>
       ${renderMenuBar({ modules, menuVerb: identity.menuVerb })}
       <div class=\"legacy-toolbar\">${toolbarHtml}</div>
       ${identity.navPattern === "top-tabs" ? renderTopTabs({ modules, activeModule }) : ""}

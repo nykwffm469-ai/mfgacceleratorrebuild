@@ -83,6 +83,30 @@ body {
   opacity: 0.8;
 }
 
+.legacy-title-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legacy-help-icon {
+  width: 18px;
+  height: 18px;
+  border: 1px solid #6f7b87;
+  border-radius: 50%;
+  background: linear-gradient(to bottom, #ffffff 0%, #c0cad5 100%);
+  color: #2f3a45;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+}
+
+.legacy-help-icon:hover {
+  background: linear-gradient(to bottom, #fefefe 0%, #aeb9c6 100%);
+}
+
 .legacy-backlink:hover {
   text-decoration: underline;
   opacity: 1;
@@ -303,6 +327,28 @@ body {
   padding: 6px 8px;
   display: flex;
   justify-content: flex-end;
+}
+
+.legacy-description-dialog {
+  width: 760px;
+  max-width: calc(100% - 24px);
+}
+
+.legacy-description-body {
+  padding: 8px;
+  max-height: 68vh;
+  overflow: auto;
+  background: #f5f8fc;
+  border-top: 1px solid #96a3b1;
+  border-bottom: 1px solid #96a3b1;
+}
+
+.legacy-description-text {
+  margin: 0;
+  white-space: pre-wrap;
+  font-family: Tahoma, Verdana, Arial, sans-serif;
+  font-size: 11px;
+  line-height: 1.35;
 }
 
 .legacy-panel {
