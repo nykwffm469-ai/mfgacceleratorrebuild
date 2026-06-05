@@ -184,6 +184,7 @@ function render() {
 
   document.getElementById("app").innerHTML = appShell({
     title: "Service Desk Plus 2012",
+    identityKey: "itsm-blue-shell",
     modules,
     activeModule,
     toolbarButtons: [

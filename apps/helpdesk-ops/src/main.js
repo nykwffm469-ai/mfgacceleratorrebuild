@@ -178,6 +178,7 @@ function render() {
 
   document.getElementById("app").innerHTML = appShell({
     title: "Helpdesk Operations Center 2012",
+    identityKey: "itsm-blue-shell",
     modules,
     activeModule,
     toolbarButtons: [
