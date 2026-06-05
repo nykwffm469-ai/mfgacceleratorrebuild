@@ -1,219 +1,76 @@
 import "@legacy/shared-legacy-styles/legacy.css";
-import { ensureSeed, loadSeed, saveSeed, makeId } from "@legacy/shared-mock-data";
-import { appShell, dataGrid, panel } from "@legacy/shared-ui";
+import { bootLegacyWorkbench } from "@legacy/shared-ui/legacy-workbench.js";
 
-const namespace = "compliance-automation-center";
 const modules = [
-  {
-    "id": "controls",
-    "label": "Controls"
-  },
-  {
-    "id": "tests",
-    "label": "Control Tests"
-  },
-  {
-    "id": "evidence",
-    "label": "Evidence"
-  },
-  {
-    "id": "issues",
-    "label": "Issues"
-  },
-  {
-    "id": "audit",
-    "label": "Audit Response"
-  }
+  { id: "controls", label: "Controls" },
+  { id: "tests", label: "Control Tests" },
+  { id: "evidence", label: "Evidence" },
+  { id: "issues", label: "Issues" },
+  { id: "audit", label: "Audit Response" }
 ];
-const columns = {
-  "controls": [
-    "controlId",
-    "domain",
-    "owner",
-    "frequency",
-    "status"
-  ],
-  "tests": [
-    "testId",
-    "controlId",
-    "tester",
-    "targetDate",
-    "status"
-  ],
-  "evidence": [
-    "evidenceId",
-    "testId",
-    "source",
-    "owner",
-    "status"
-  ],
-  "issues": [
-    "issueId",
-    "controlId",
-    "severity",
-    "assignee",
-    "status"
-  ],
-  "audit": [
-    "responseId",
-    "issueId",
-    "reviewer",
-    "dueDate",
-    "status"
-  ]
-};
-const palette = {
-  "--legacy-bg": "#dadade",
-  "--legacy-panel": "#f2f2f6",
-  "--legacy-nav": "#cecee0",
-  "--legacy-grid-head": "#d6d6e7",
-  "--legacy-active": "#5f4d88"
-};
 
-let activeModule = modules[0].id;
-
-ensureSeed(namespace, () => ({
-  "controls": [
-    {
-      "controlId": "CTL-201",
-      "domain": "Access",
-      "owner": "Security",
-      "frequency": "Quarterly",
-      "status": "Active"
-    }
-  ],
-  "tests": [
-    {
-      "testId": "TST-72",
-      "controlId": "CTL-201",
-      "tester": "Internal Audit",
-      "targetDate": "2012-06-10",
-      "status": "Planned"
-    }
-  ],
-  "evidence": [
-    {
-      "evidenceId": "EVD-9",
-      "testId": "TST-72",
-      "source": "IAM Export",
-      "owner": "Security",
-      "status": "Pending"
-    }
-  ],
-  "issues": [
-    {
-      "issueId": "ISS-13",
-      "controlId": "CTL-201",
-      "severity": "High",
-      "assignee": "Security",
-      "status": "Open"
-    }
-  ],
-  "audit": [
-    {
-      "responseId": "AR-5",
-      "issueId": "ISS-13",
-      "reviewer": "External Audit",
-      "dueDate": "2012-06-22",
-      "status": "Draft"
-    }
-  ]
-}));
-
-function applyPalette() {
-  const root = document.documentElement;
-  Object.entries(palette).forEach(([name, value]) => root.style.setProperty(name, value));
-}
-
-function render() {
-  applyPalette();
-  const data = loadSeed(namespace, () => ({}));
-  const moduleColumns = columns[activeModule];
-  const rows = data[activeModule].map((row) => moduleColumns.map((key) => row[key]));
-  const grid = dataGrid(moduleColumns, rows);
-
-  const formFields = moduleColumns
-    .map((field) => `<label>${field}</label><input class="legacy-field" name="${field}" />`)
-    .join("");
-
-  const contentHtml =
-    panel("Control testing schedules, evidence capture, issue triage, and audit response workflow.", grid) +
-    panel("Entry Form", `<form id="entry-form" data-module="${activeModule}"><div class="legacy-form-grid">${formFields}</div><div style="margin-top:8px; display:flex; gap:4px;"><button class="legacy-btn" type="submit">Save</button></div></form>`);
-
-  document.getElementById("app").innerHTML = appShell({
-    title: "Compliance Automation Center 2012",
-    modules,
-    activeModule,
-    toolbarButtons: [
-      { id: "toggle-first", label: "Toggle First" },
-      { id: "delete-last", label: "Delete Last" },
-      { id: "seed-reset", label: "Reset Seed" }
+bootLegacyWorkbench({
+  namespace: "compliance-automation-center",
+  title: "Compliance Automation Center 2012",
+  environmentName: "GRC-AUTOMATION-PROD12",
+  analyst: "ITAUDIT\\m.nelson",
+  workstationPrefix: "GRC-WS",
+  purpose: "Enterprise governance and audit-control workflow management platform.",
+  modules,
+  columns: {
+    controls: ["controlId", "domain", "owner", "frequency", "evidenceQueue", "status"],
+    tests: ["testId", "controlId", "tester", "targetDate", "result", "status"],
+    evidence: ["evidenceId", "testId", "source", "archiveBucket", "owner", "status"],
+    issues: ["issueId", "controlId", "severity", "assignee", "route", "status"],
+    audit: ["responseId", "issueId", "reviewer", "dueDate", "packet", "status"]
+  },
+  palette: {
+    "--legacy-bg": "#d3d7df",
+    "--legacy-panel": "#ebf0f7",
+    "--legacy-nav": "#c7cfdb",
+    "--legacy-grid-head": "#ced8e7",
+    "--legacy-active": "#3d5574",
+    "--legacy-font": "Tahoma, Verdana, Arial, sans-serif"
+  },
+  appDescription: "LEGACY APP DESCRIPTION - Compliance Automation Center 2012\n\nGovernance and audit-control operations workspace used by internal audit and IT risk teams for control-test schedules, evidence collection, and issue escalation.",
+  seedData: {
+    controls: [
+      { controlId: "CTL-201", domain: "Access", owner: "Security", frequency: "Quarterly", evidenceQueue: "EVQ-12", status: "supervisor review required" },
+      { controlId: "CTL-222", domain: "Change Mgmt", owner: "IT Ops", frequency: "Monthly", evidenceQueue: "EVQ-08", status: "ERP export pending" }
     ],
-    statusText: `System: ${namespace.toUpperCase()} | Session: OPERATOR-01`,
-    contentHtml
-  });
-
-  document.querySelectorAll("[data-module]").forEach((button) => {
-    button.addEventListener("click", () => {
-      activeModule = button.getAttribute("data-module");
-      render();
-    });
-  });
-
-  document.querySelectorAll("[data-action]").forEach((button) => {
-    button.addEventListener("click", () => {
-      const action = button.getAttribute("data-action");
-      const latest = loadSeed(namespace, () => ({}));
-
-      if (action === "toggle-first" && latest[activeModule][0]) {
-        const first = latest[activeModule][0];
-        if (first.status) {
-          first.status = first.status === "Open" ? "Closed" : first.status === "Pending" ? "Approved" : "Open";
-        }
-        saveSeed(namespace, latest);
-      }
-
-      if (action === "delete-last" && latest[activeModule].length > 0) {
-        latest[activeModule].pop();
-        saveSeed(namespace, latest);
-      }
-
-      if (action === "seed-reset") {
-        localStorage.removeItem(`legacy-demo:${namespace}`);
-      }
-
-      render();
-    });
-  });
-
-  const form = document.getElementById("entry-form");
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
-    const formData = new FormData(form);
-    const moduleName = form.getAttribute("data-module");
-    const moduleKeys = columns[moduleName];
-    const row = {};
-    const keyField = moduleKeys[0];
-
-    moduleKeys.forEach((field) => {
-      row[field] = formData.get(field)?.toString() || "";
-    });
-
-    if (!row[keyField]) {
-      row[keyField] = makeId(moduleName.slice(0, 3).toUpperCase());
-    }
-
-    const latest = loadSeed(namespace, () => ({}));
-    const index = latest[moduleName].findIndex((item) => item[keyField] === row[keyField]);
-    if (index >= 0) {
-      latest[moduleName][index] = row;
-    } else {
-      latest[moduleName].push(row);
-    }
-
-    saveSeed(namespace, latest);
-    render();
-  });
-}
-
-render();
+    tests: [
+      { testId: "TST-72", controlId: "CTL-201", tester: "Internal Audit", targetDate: "2012-06-10", result: "Not Started", status: "validation failed" },
+      { testId: "TST-77", controlId: "CTL-222", tester: "SOX PMO", targetDate: "2012-06-14", result: "Partial", status: "retry queue active" }
+    ],
+    evidence: [
+      { evidenceId: "EVD-9", testId: "TST-72", source: "IAM Export", archiveBucket: "Q2-AUDIT", owner: "Security", status: "nightly processing in progress" },
+      { evidenceId: "EVD-14", testId: "TST-77", source: "Change Tickets", archiveBucket: "Q2-REMED", owner: "IT Ops", status: "locked by another user" }
+    ],
+    issues: [
+      { issueId: "ISS-13", controlId: "CTL-201", severity: "High", assignee: "Security", route: "Control Owner -> VP", status: "awaiting host acknowledgement" },
+      { issueId: "ISS-17", controlId: "CTL-222", severity: "Medium", assignee: "IT Ops", route: "PMO -> Director", status: "retry queue active" }
+    ],
+    audit: [
+      { responseId: "AR-5", issueId: "ISS-13", reviewer: "External Audit", dueDate: "2012-06-22", packet: "PKT-2012-06", status: "validation failed" },
+      { responseId: "AR-7", issueId: "ISS-17", reviewer: "Internal Audit", dueDate: "2012-06-25", packet: "PKT-2012-07", status: "ERP export pending" }
+    ]
+  },
+  rpaUseCases: ["Audit evidence collection", "Reminder generation", "Screenshot gathering", "Audit packet assembly", "Issue escalation automation", "Evidence archival"],
+  moduleDescriptions: {
+    controls: "Control inventory tied to ownership, frequency, and evidence queues.",
+    tests: "Control-test schedule and result tracking with retry workflows.",
+    evidence: "Evidence ingestion queue and archival lifecycle management.",
+    issues: "Issue escalation routing for remediation and governance reviews.",
+    audit: "Audit response packet preparation and reviewer coordination."
+  },
+  kpis: [{ moduleId: "controls", label: "Controls" }, { moduleId: "evidence", label: "Evidence queues" }],
+  packetSections: [
+    { title: "Control Tests", moduleId: "tests", fields: ["testId", "controlId", "result", "status"] },
+    { title: "Evidence", moduleId: "evidence", fields: ["evidenceId", "archiveBucket", "owner", "status"] },
+    { title: "Issues", moduleId: "issues", fields: ["issueId", "severity", "route", "status"] }
+  ],
+  initialQueueAging: 14,
+  initialRetryBacklog: 3,
+  formPlaceholder: "Manual governance queue item",
+  identityKey: "compliance-automation-center-2012-audit-office"
+});

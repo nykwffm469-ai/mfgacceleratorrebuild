@@ -1,219 +1,76 @@
 import "@legacy/shared-legacy-styles/legacy.css";
-import { ensureSeed, loadSeed, saveSeed, makeId } from "@legacy/shared-mock-data";
-import { appShell, dataGrid, panel } from "@legacy/shared-ui";
+import { bootLegacyWorkbench } from "@legacy/shared-ui/legacy-workbench.js";
 
-const namespace = "contract-renewal-tracker";
 const modules = [
-  {
-    "id": "contracts",
-    "label": "Contracts"
-  },
-  {
-    "id": "clauses",
-    "label": "Clause Review"
-  },
-  {
-    "id": "reminders",
-    "label": "Reminders"
-  },
-  {
-    "id": "approvals",
-    "label": "Approvals"
-  },
-  {
-    "id": "archives",
-    "label": "Archive"
-  }
+  { id: "contracts", label: "Contracts" },
+  { id: "clauses", label: "Clause Review" },
+  { id: "reminders", label: "Reminders" },
+  { id: "approvals", label: "Approvals" },
+  { id: "archives", label: "Archive" }
 ];
-const columns = {
-  "contracts": [
-    "contractId",
-    "counterparty",
-    "renewalDate",
-    "owner",
-    "status"
-  ],
-  "clauses": [
-    "reviewId",
-    "contractId",
-    "riskClause",
-    "reviewer",
-    "status"
-  ],
-  "reminders": [
-    "reminderId",
-    "contractId",
-    "channel",
-    "sendDate",
-    "status"
-  ],
-  "approvals": [
-    "approvalId",
-    "contractId",
-    "approver",
-    "dueDate",
-    "status"
-  ],
-  "archives": [
-    "archiveId",
-    "contractId",
-    "location",
-    "retention",
-    "status"
-  ]
-};
-const palette = {
-  "--legacy-bg": "#d4d8df",
-  "--legacy-panel": "#eef1f6",
-  "--legacy-nav": "#c7cfdb",
-  "--legacy-grid-head": "#cfd8e5",
-  "--legacy-active": "#2c4e77"
-};
 
-let activeModule = modules[0].id;
-
-ensureSeed(namespace, () => ({
-  "contracts": [
-    {
-      "contractId": "CTR-780",
-      "counterparty": "Northwind Freight",
-      "renewalDate": "2007-10-02",
-      "owner": "Legal Ops",
-      "status": "Watch"
-    }
-  ],
-  "clauses": [
-    {
-      "reviewId": "CR-42",
-      "contractId": "CTR-780",
-      "riskClause": "Auto-renew",
-      "reviewer": "Counsel",
-      "status": "Open"
-    }
-  ],
-  "reminders": [
-    {
-      "reminderId": "REM-88",
-      "contractId": "CTR-780",
-      "channel": "Email",
-      "sendDate": "2007-09-10",
-      "status": "Scheduled"
-    }
-  ],
-  "approvals": [
-    {
-      "approvalId": "APR-650",
-      "contractId": "CTR-780",
-      "approver": "VP Legal",
-      "dueDate": "2007-09-22",
-      "status": "Pending"
-    }
-  ],
-  "archives": [
-    {
-      "archiveId": "ARC-19",
-      "contractId": "CTR-552",
-      "location": "SharePoint",
-      "retention": "7y",
-      "status": "Stored"
-    }
-  ]
-}));
-
-function applyPalette() {
-  const root = document.documentElement;
-  Object.entries(palette).forEach(([name, value]) => root.style.setProperty(name, value));
-}
-
-function render() {
-  applyPalette();
-  const data = loadSeed(namespace, () => ({}));
-  const moduleColumns = columns[activeModule];
-  const rows = data[activeModule].map((row) => moduleColumns.map((key) => row[key]));
-  const grid = dataGrid(moduleColumns, rows);
-
-  const formFields = moduleColumns
-    .map((field) => `<label>${field}</label><input class="legacy-field" name="${field}" />`)
-    .join("");
-
-  const contentHtml =
-    panel("Renewal deadlines, clause review packets, approval routing, and reminder workflows.", grid) +
-    panel("Entry Form", `<form id="entry-form" data-module="${activeModule}"><div class="legacy-form-grid">${formFields}</div><div style="margin-top:8px; display:flex; gap:4px;"><button class="legacy-btn" type="submit">Save</button></div></form>`);
-
-  document.getElementById("app").innerHTML = appShell({
-    title: "Contract Renewal Tracker 2007",
-    modules,
-    activeModule,
-    toolbarButtons: [
-      { id: "toggle-first", label: "Toggle First" },
-      { id: "delete-last", label: "Delete Last" },
-      { id: "seed-reset", label: "Reset Seed" }
+bootLegacyWorkbench({
+  namespace: "contract-renewal-tracker",
+  title: "Contract Renewal Tracker 2007",
+  environmentName: "LEGAL-RENEWALS-PROD07",
+  analyst: "LEGALOPS\\r.finch",
+  workstationPrefix: "LGL-WS",
+  purpose: "Legal operations renewal-management and contract lifecycle application.",
+  modules,
+  columns: {
+    contracts: ["contractId", "counterparty", "renewalDate", "owner", "status"],
+    clauses: ["reviewId", "contractId", "riskClause", "reviewer", "status"],
+    reminders: ["reminderId", "contractId", "channel", "sendDate", "status"],
+    approvals: ["approvalId", "contractId", "approver", "dueDate", "status"],
+    archives: ["archiveId", "contractId", "location", "retention", "status"]
+  },
+  palette: {
+    "--legacy-bg": "#d5d9df",
+    "--legacy-panel": "#edf1f7",
+    "--legacy-nav": "#c9d1dc",
+    "--legacy-grid-head": "#d2dbe7",
+    "--legacy-active": "#3a5877",
+    "--legacy-font": "Tahoma, Verdana, Arial, sans-serif"
+  },
+  appDescription: "LEGACY APP DESCRIPTION - Contract Renewal Tracker 2007\n\nLegal operations shared-services platform for renewal timelines, clause-review routing, approvals, reminder campaigns, and archival synchronization.",
+  seedData: {
+    contracts: [
+      { contractId: "CTR-780", counterparty: "Northwind Freight", renewalDate: "2007-10-02", owner: "Legal Ops", status: "supervisor review required" },
+      { contractId: "CTR-794", counterparty: "Crown Shipping", renewalDate: "2007-10-19", owner: "Commercial Legal", status: "ERP export pending" }
     ],
-    statusText: `System: ${namespace.toUpperCase()} | Session: OPERATOR-01`,
-    contentHtml
-  });
-
-  document.querySelectorAll("[data-module]").forEach((button) => {
-    button.addEventListener("click", () => {
-      activeModule = button.getAttribute("data-module");
-      render();
-    });
-  });
-
-  document.querySelectorAll("[data-action]").forEach((button) => {
-    button.addEventListener("click", () => {
-      const action = button.getAttribute("data-action");
-      const latest = loadSeed(namespace, () => ({}));
-
-      if (action === "toggle-first" && latest[activeModule][0]) {
-        const first = latest[activeModule][0];
-        if (first.status) {
-          first.status = first.status === "Open" ? "Closed" : first.status === "Pending" ? "Approved" : "Open";
-        }
-        saveSeed(namespace, latest);
-      }
-
-      if (action === "delete-last" && latest[activeModule].length > 0) {
-        latest[activeModule].pop();
-        saveSeed(namespace, latest);
-      }
-
-      if (action === "seed-reset") {
-        localStorage.removeItem(`legacy-demo:${namespace}`);
-      }
-
-      render();
-    });
-  });
-
-  const form = document.getElementById("entry-form");
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
-    const formData = new FormData(form);
-    const moduleName = form.getAttribute("data-module");
-    const moduleKeys = columns[moduleName];
-    const row = {};
-    const keyField = moduleKeys[0];
-
-    moduleKeys.forEach((field) => {
-      row[field] = formData.get(field)?.toString() || "";
-    });
-
-    if (!row[keyField]) {
-      row[keyField] = makeId(moduleName.slice(0, 3).toUpperCase());
-    }
-
-    const latest = loadSeed(namespace, () => ({}));
-    const index = latest[moduleName].findIndex((item) => item[keyField] === row[keyField]);
-    if (index >= 0) {
-      latest[moduleName][index] = row;
-    } else {
-      latest[moduleName].push(row);
-    }
-
-    saveSeed(namespace, latest);
-    render();
-  });
-}
-
-render();
+    clauses: [
+      { reviewId: "CR-42", contractId: "CTR-780", riskClause: "Auto-renew", reviewer: "Counsel", status: "retry queue active" },
+      { reviewId: "CR-45", contractId: "CTR-794", riskClause: "Termination", reviewer: "Senior Counsel", status: "validation failed" }
+    ],
+    reminders: [
+      { reminderId: "REM-88", contractId: "CTR-780", channel: "Email", sendDate: "2007-09-10", status: "locked by another user" },
+      { reminderId: "REM-93", contractId: "CTR-794", channel: "Letter", sendDate: "2007-09-12", status: "awaiting host acknowledgement" }
+    ],
+    approvals: [
+      { approvalId: "APR-650", contractId: "CTR-780", approver: "VP Legal", dueDate: "2007-09-22", status: "nightly processing in progress" },
+      { approvalId: "APR-663", contractId: "CTR-794", approver: "Chief Counsel", dueDate: "2007-09-25", status: "retry queue active" }
+    ],
+    archives: [
+      { archiveId: "ARC-19", contractId: "CTR-552", location: "SharePoint", retention: "7y", status: "ERP export pending" },
+      { archiveId: "ARC-24", contractId: "CTR-780", location: "FileNet", retention: "10y", status: "supervisor review required" }
+    ]
+  },
+  rpaUseCases: ["Contract reminder automation", "Approval workflow routing", "Archival synchronization", "Clause-review coordination", "Expiry escalation"],
+  moduleDescriptions: {
+    contracts: "Contract renewal timeline and watchlist monitoring.",
+    clauses: "Clause-review routing and legal risk indicators.",
+    reminders: "Reminder scheduling queues across channels.",
+    approvals: "Approval routing workflow and legal SLA tracking.",
+    archives: "Renewal archive management and retention controls."
+  },
+  kpis: [{ moduleId: "contracts", label: "Contracts" }, { moduleId: "approvals", label: "Approvals" }],
+  packetSections: [
+    { title: "Contracts", moduleId: "contracts", fields: ["contractId", "counterparty", "owner", "status"] },
+    { title: "Clause Reviews", moduleId: "clauses", fields: ["reviewId", "riskClause", "reviewer", "status"] },
+    { title: "Approvals", moduleId: "approvals", fields: ["approvalId", "approver", "dueDate", "status"] }
+  ],
+  initialQueueAging: 13,
+  initialRetryBacklog: 2,
+  formPlaceholder: "Manual contract queue item",
+  identityKey: "contract-renewal-tracker-2007-legal"
+});

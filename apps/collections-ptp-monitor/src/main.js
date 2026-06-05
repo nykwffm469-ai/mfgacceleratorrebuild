@@ -1,219 +1,76 @@
 import "@legacy/shared-legacy-styles/legacy.css";
-import { ensureSeed, loadSeed, saveSeed, makeId } from "@legacy/shared-mock-data";
-import { appShell, dataGrid, panel } from "@legacy/shared-ui";
+import { bootLegacyWorkbench } from "@legacy/shared-ui/legacy-workbench.js";
 
-const namespace = "collections-ptp-monitor";
 const modules = [
-  {
-    "id": "promises",
-    "label": "Promises"
-  },
-  {
-    "id": "followups",
-    "label": "Follow-ups"
-  },
-  {
-    "id": "letters",
-    "label": "Letters"
-  },
-  {
-    "id": "defaults",
-    "label": "Defaults"
-  },
-  {
-    "id": "queues",
-    "label": "Work Queues"
-  }
+  { id: "promises", label: "Promises" },
+  { id: "followups", label: "Follow-ups" },
+  { id: "letters", label: "Letters" },
+  { id: "defaults", label: "Defaults" },
+  { id: "queues", label: "Work Queues" }
 ];
-const columns = {
-  "promises": [
-    "promiseId",
-    "customer",
-    "promiseDate",
-    "amount",
-    "status"
-  ],
-  "followups": [
-    "followupId",
-    "promiseId",
-    "collector",
-    "dueDate",
-    "status"
-  ],
-  "letters": [
-    "letterId",
-    "customer",
-    "template",
-    "sendDate",
-    "status"
-  ],
-  "defaults": [
-    "defaultId",
-    "promiseId",
-    "daysLate",
-    "owner",
-    "status"
-  ],
-  "queues": [
-    "queueId",
-    "collector",
-    "items",
-    "region",
-    "status"
-  ]
-};
-const palette = {
-  "--legacy-bg": "#ddd8ce",
-  "--legacy-panel": "#f6f1e7",
-  "--legacy-nav": "#d2cabd",
-  "--legacy-grid-head": "#d8d0c3",
-  "--legacy-active": "#7a4b1d"
-};
 
-let activeModule = modules[0].id;
-
-ensureSeed(namespace, () => ({
-  "promises": [
-    {
-      "promiseId": "PTP-221",
-      "customer": "Metro Foods",
-      "promiseDate": "2011-08-20",
-      "amount": "9,000",
-      "status": "Active"
-    }
-  ],
-  "followups": [
-    {
-      "followupId": "FU-PTP-8",
-      "promiseId": "PTP-221",
-      "collector": "R. James",
-      "dueDate": "2011-08-21",
-      "status": "Open"
-    }
-  ],
-  "letters": [
-    {
-      "letterId": "LTR-18",
-      "customer": "Metro Foods",
-      "template": "Reminder",
-      "sendDate": "2011-08-19",
-      "status": "Queued"
-    }
-  ],
-  "defaults": [
-    {
-      "defaultId": "DF-10",
-      "promiseId": "PTP-199",
-      "daysLate": "5",
-      "owner": "Collections",
-      "status": "Escalate"
-    }
-  ],
-  "queues": [
-    {
-      "queueId": "Q-AR-2",
-      "collector": "R. James",
-      "items": "23",
-      "region": "Midwest",
-      "status": "Open"
-    }
-  ]
-}));
-
-function applyPalette() {
-  const root = document.documentElement;
-  Object.entries(palette).forEach(([name, value]) => root.style.setProperty(name, value));
-}
-
-function render() {
-  applyPalette();
-  const data = loadSeed(namespace, () => ({}));
-  const moduleColumns = columns[activeModule];
-  const rows = data[activeModule].map((row) => moduleColumns.map((key) => row[key]));
-  const grid = dataGrid(moduleColumns, rows);
-
-  const formFields = moduleColumns
-    .map((field) => `<label>${field}</label><input class="legacy-field" name="${field}" />`)
-    .join("");
-
-  const contentHtml =
-    panel("Promise-to-pay schedules, follow-ups, status letters, and default escalation triggers.", grid) +
-    panel("Entry Form", `<form id="entry-form" data-module="${activeModule}"><div class="legacy-form-grid">${formFields}</div><div style="margin-top:8px; display:flex; gap:4px;"><button class="legacy-btn" type="submit">Save</button></div></form>`);
-
-  document.getElementById("app").innerHTML = appShell({
-    title: "Collections PTP Monitor 2011",
-    modules,
-    activeModule,
-    toolbarButtons: [
-      { id: "toggle-first", label: "Toggle First" },
-      { id: "delete-last", label: "Delete Last" },
-      { id: "seed-reset", label: "Reset Seed" }
+bootLegacyWorkbench({
+  namespace: "collections-ptp-monitor",
+  title: "Collections PTP Monitor 2011",
+  environmentName: "COLLECTIONS-OPS-PROD11",
+  analyst: "AROPS\\j.patterson",
+  workstationPrefix: "CLCT-WS",
+  purpose: "Promise-to-pay monitoring system for collections and AR operations teams.",
+  modules,
+  columns: {
+    promises: ["promiseId", "customer", "promiseDate", "amount", "collector", "status"],
+    followups: ["followupId", "promiseId", "collector", "nextAction", "dueDate", "status"],
+    letters: ["letterId", "customer", "template", "queue", "sendDate", "status"],
+    defaults: ["defaultId", "promiseId", "daysLate", "escalationRoute", "erpBalance", "status"],
+    queues: ["queueId", "collector", "items", "dialerSegment", "approvalGate", "status"]
+  },
+  palette: {
+    "--legacy-bg": "#d9d5cb",
+    "--legacy-panel": "#f3efe6",
+    "--legacy-nav": "#cec7ba",
+    "--legacy-grid-head": "#d7d0c3",
+    "--legacy-active": "#7a4f22",
+    "--legacy-font": "Tahoma, Verdana, Arial, sans-serif"
+  },
+  appDescription: "LEGACY APP DESCRIPTION - Collections PTP Monitor 2011\n\nPromise-to-pay monitoring desktop platform for high-volume collections call center workflows including broken promise escalation, dunning follow-ups, and ERP balance synchronization.",
+  seedData: {
+    promises: [
+      { promiseId: "PTP-221", customer: "Metro Foods", promiseDate: "2011-08-20", amount: "9000", collector: "R. James", status: "supervisor review required" },
+      { promiseId: "PTP-233", customer: "Talon Hardware", promiseDate: "2011-08-22", amount: "12400", collector: "L. Quin", status: "retry queue active" }
     ],
-    statusText: `System: ${namespace.toUpperCase()} | Session: OPERATOR-01`,
-    contentHtml
-  });
-
-  document.querySelectorAll("[data-module]").forEach((button) => {
-    button.addEventListener("click", () => {
-      activeModule = button.getAttribute("data-module");
-      render();
-    });
-  });
-
-  document.querySelectorAll("[data-action]").forEach((button) => {
-    button.addEventListener("click", () => {
-      const action = button.getAttribute("data-action");
-      const latest = loadSeed(namespace, () => ({}));
-
-      if (action === "toggle-first" && latest[activeModule][0]) {
-        const first = latest[activeModule][0];
-        if (first.status) {
-          first.status = first.status === "Open" ? "Closed" : first.status === "Pending" ? "Approved" : "Open";
-        }
-        saveSeed(namespace, latest);
-      }
-
-      if (action === "delete-last" && latest[activeModule].length > 0) {
-        latest[activeModule].pop();
-        saveSeed(namespace, latest);
-      }
-
-      if (action === "seed-reset") {
-        localStorage.removeItem(`legacy-demo:${namespace}`);
-      }
-
-      render();
-    });
-  });
-
-  const form = document.getElementById("entry-form");
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
-    const formData = new FormData(form);
-    const moduleName = form.getAttribute("data-module");
-    const moduleKeys = columns[moduleName];
-    const row = {};
-    const keyField = moduleKeys[0];
-
-    moduleKeys.forEach((field) => {
-      row[field] = formData.get(field)?.toString() || "";
-    });
-
-    if (!row[keyField]) {
-      row[keyField] = makeId(moduleName.slice(0, 3).toUpperCase());
-    }
-
-    const latest = loadSeed(namespace, () => ({}));
-    const index = latest[moduleName].findIndex((item) => item[keyField] === row[keyField]);
-    if (index >= 0) {
-      latest[moduleName][index] = row;
-    } else {
-      latest[moduleName].push(row);
-    }
-
-    saveSeed(namespace, latest);
-    render();
-  });
-}
-
-render();
+    followups: [
+      { followupId: "FU-PTP-8", promiseId: "PTP-221", collector: "R. James", nextAction: "Outbound call", dueDate: "2011-08-21", status: "validation failed" },
+      { followupId: "FU-PTP-9", promiseId: "PTP-233", collector: "L. Quin", nextAction: "Reminder email", dueDate: "2011-08-22", status: "ERP export pending" }
+    ],
+    letters: [
+      { letterId: "LTR-18", customer: "Metro Foods", template: "PTP-BROKEN", queue: "Print-02", sendDate: "2011-08-19", status: "nightly processing in progress" },
+      { letterId: "LTR-21", customer: "Talon Hardware", template: "DUNNING-2", queue: "Print-01", sendDate: "2011-08-19", status: "locked by another user" }
+    ],
+    defaults: [
+      { defaultId: "DF-10", promiseId: "PTP-199", daysLate: "5", escalationRoute: "Supervisor -> Legal", erpBalance: "15120", status: "awaiting host acknowledgement" },
+      { defaultId: "DF-11", promiseId: "PTP-201", daysLate: "9", escalationRoute: "Legal Queue", erpBalance: "9300", status: "retry queue active" }
+    ],
+    queues: [
+      { queueId: "Q-AR-2", collector: "R. James", items: "23", dialerSegment: "Segment-B", approvalGate: "Manager", status: "ERP export pending" },
+      { queueId: "Q-AR-7", collector: "L. Quin", items: "17", dialerSegment: "Segment-A", approvalGate: "Supervisor", status: "supervisor review required" }
+    ]
+  },
+  rpaUseCases: ["Automated reminder emails", "Collections queue monitoring", "Broken promise escalation", "ERP balance lookups", "Auto-generation of payment letters", "Customer follow-up workflows"],
+  moduleDescriptions: {
+    promises: "Promise scheduling and aging indicators for high-volume collector workflows.",
+    followups: "Dunning follow-up management with outbound reminders and retry counters.",
+    letters: "Letter queue operations for payment reminders and collections notifications.",
+    defaults: "Broken promise tracking and default escalation routing.",
+    queues: "Collector workload queues with approval and host-acknowledgement states."
+  },
+  kpis: [{ moduleId: "promises", label: "Promises" }, { moduleId: "defaults", label: "Default escalations" }],
+  packetSections: [
+    { title: "Promises", moduleId: "promises", fields: ["promiseId", "customer", "amount", "status"] },
+    { title: "Follow-ups", moduleId: "followups", fields: ["followupId", "collector", "nextAction", "status"] },
+    { title: "Letters", moduleId: "letters", fields: ["letterId", "template", "queue", "status"] }
+  ],
+  initialQueueAging: 18,
+  initialRetryBacklog: 4,
+  formPlaceholder: "Manual collections queue item",
+  identityKey: "collections-ptp-monitor-2011-call-center"
+});
