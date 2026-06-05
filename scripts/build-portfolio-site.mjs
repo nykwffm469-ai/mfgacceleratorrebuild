@@ -380,7 +380,7 @@ const html = `<!doctype html>
           <option value="">All Interfaces</option>
           ${interfaceOptions.map((value) => `<option value="${value}">${value}</option>`).join("")}
         </select>
-        <label class="filter-compact"><input id="console-filter" type="checkbox" />Terminal only</label>
+        <label class="filter-compact"><input id="console-filter" type="checkbox" />Terminal</label>
         <select id="kind-filter" aria-label="Filter by app hosting kind">
           <option value="">Local + Hosted</option>
           <option value="local">Local only</option>

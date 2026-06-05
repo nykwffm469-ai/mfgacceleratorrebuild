@@ -26,16 +26,16 @@ const columns = {
 };
 
 const palette = {
-  "--legacy-bg": "#060b06",
-  "--legacy-panel": "#0b170b",
-  "--legacy-nav": "#0d1f0d",
-  "--legacy-grid-head": "#102910",
-  "--legacy-border": "#2f5a2f",
-  "--legacy-text": "#8dff8d",
-  "--legacy-muted": "#62b862",
-  "--legacy-button-top": "#0d240d",
-  "--legacy-button-bottom": "#081608",
-  "--legacy-active": "#5aff5a"
+  "--legacy-bg": "#122412",
+  "--legacy-panel": "#183218",
+  "--legacy-nav": "#1a371a",
+  "--legacy-grid-head": "#204920",
+  "--legacy-border": "#386a38",
+  "--legacy-text": "#b2ffb2",
+  "--legacy-muted": "#88d888",
+  "--legacy-button-top": "#1a3d1a",
+  "--legacy-button-bottom": "#143014",
+  "--legacy-active": "#cbffcb"
 };
 
 let activeModule = modules[0].id;
@@ -173,15 +173,15 @@ function render() {
     `<style>
       .legacy-window {
         font-family: "Lucida Console", "Courier New", monospace;
-        background: radial-gradient(circle at top, #0d220d 0%, #050805 65%);
+        background: radial-gradient(circle at top, #255225 0%, #102010 66%);
       }
       .legacy-titlebar,
       .legacy-menubar,
       .legacy-toolbar,
       .legacy-statusbar {
         background: linear-gradient(to bottom, #0f2d0f 0%, #081608 100%);
-        color: #90ff90;
-        border-color: #2f5a2f;
+        color: #ceffce;
+        border-color: #3f703f;
       }
       .legacy-panel,
       .legacy-panel-body,
@@ -197,25 +197,25 @@ function render() {
       .legacy-panel-body,
       .legacy-grid,
       .legacy-grid td {
-        background: #081208;
-        color: #8dff8d;
-        border-color: #2f5a2f;
+        background: #153015;
+        color: #ceffce;
+        border-color: #3c6c3c;
       }
       .legacy-grid th,
       .legacy-panel-head,
       .legacy-pill {
-        background: #123412;
-        color: #a7ffa7;
-        border-color: #3a6d3a;
+        background: #214d21;
+        color: #d9ffd9;
+        border-color: #4a804a;
       }
       .legacy-btn,
       .legacy-field {
-        background: #0b1e0b;
-        color: #9cff9c;
-        border-color: #3d6d3d;
+        background: #1b3d1b;
+        color: #e2ffe2;
+        border-color: #4f874f;
       }
       .legacy-btn:hover {
-        background: #163116;
+        background: #275427;
       }
       .legacy-row-selected {
         background: #1f4f1f !important;
@@ -227,7 +227,7 @@ function render() {
     panel("Cross-Functional Operations Context", renderDomainPanel()) +
     panel(
       "Workflow Console",
-      `<div style="display:flex;gap:4px;flex-wrap:wrap;"><button class="legacy-btn" type="button" data-local-action="open-audit">Audit History</button><button class="legacy-btn" type="button" data-local-action="open-retry">Retry Failed</button><button class="legacy-btn" type="button" data-local-action="open-approval">Supervisor Review</button><button class="legacy-btn" type="button" data-local-action="open-export">Print/Export</button></div>`
+      `<div style="display:flex;gap:4px;flex-wrap:wrap;"><button class="legacy-btn" type="button" data-local-action="open-audit">Audit History</button><button class="legacy-btn" type="button" data-local-action="open-retry">Retry Failed</button><button class="legacy-btn" type="button" data-local-action="open-approval">Sup Review</button><button class="legacy-btn" type="button" data-local-action="open-export">Print/Export</button></div>`
     ) +
     panel(
       "Entry Form",
@@ -243,6 +243,7 @@ function render() {
     toolbarButtons: [
       { id: "toggle-first", label: "Toggle First" },
       { id: "delete-last", label: "Delete Last" },
+      { id: "supervisor-review", label: "Sup Review" },
       { id: "seed-reset", label: "Reset Seed" }
     ],
     statusText: "System: ERP-CMD-CTR | Queue: CROSS-FUNCTION | Operator: Ops Planner",
